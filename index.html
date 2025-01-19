@@ -364,24 +364,24 @@
                 document.getElementById('content').classList.add('show-content');
             }, 3000);
         };
+        
+        let song = new Audio('bg.mp3');
+song.loop = true; // Background music loops
 
-      
-
+let voiceMessage = new Audio('voice.mp3');
 
 
 function toggleEnvelope() {
-    var song = new Audio('bg.mp3');
 
-    var voiceMessage = new Audio('voice.mp3');
 
     const envelope = document.getElementById('envelope');
     const button = document.querySelector('.button');
 
     if (!envelope.classList.contains('open')) {
         // Open the envelope
-        voiceMessage.play();
+        voiceMessage.play().catch(err => console.error('Voice message failed:', err));
         setTimeout(() => {
-            song.play();
+            song.play().catch(err => console.error('Background music failed:', err));
         }, 2000);
 
         envelope.classList.add('open');
