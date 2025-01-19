@@ -363,35 +363,42 @@
             }, 3000);
         };
 
-        const song = new Audio('bg.mp3'); 
-        song.loop = true;
-    
-        function toggleEnvelope() {
+        const song = new Audio('bg.mp3');
+song.loop = true;
+const voiceMessage = new Audio('voice-message.ogg');
+let audioPlayed = false; // Tracks if audio has been played
+
+function toggleEnvelope() {
     const envelope = document.getElementById('envelope');
     const button = document.querySelector('.button');
-    const audio = new Audio('voice-message.ogg'); 
 
-    // Ensure audio playback is triggered by user interaction
     if (!envelope.classList.contains('open')) {
-        audio.play().catch(error => {
-            console.error('Audio play failed:', error);
+        // Play the voice message first
+        voiceMessage.play().catch((err) => {
+            console.error('Voice message playback failed:', err);
         });
 
+        // Start the background music after a 2-second delay
         setTimeout(() => {
-            song.play().catch(error => {
-                console.error('Background music failed:', error);
+            song.play().catch((err) => {
+                console.error('Background music playback failed:', err);
             });
         }, 2000);
 
+        audioPlayed = true; // Mark audio as played
         envelope.classList.add('open');
         button.textContent = "Close the Love Letter";
     } else {
+        // Close the letter and reset the audio state
         envelope.classList.remove('open');
         button.textContent = "Open the Love Letter";
-        song.pause();
-        song.currentTime = 0;
+
+        song.pause(); // Pause the background music
+        song.currentTime = 0; // Reset background music to the start
+        audioPlayed = false; // Allow audio to replay when reopened
     }
 }
+
     </script>
 </body>
 </html>
