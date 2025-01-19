@@ -380,9 +380,8 @@ function toggleEnvelope() {
     if (!envelope.classList.contains('open')) {
         // Open the envelope
         voiceMessage.play();
-        setTimeout(() => {
-            song.play();
-        }, 2000);
+        song.play();
+
 
         envelope.classList.add('open');
         button.textContent = "Close the Love Letter";
