@@ -364,24 +364,12 @@
                 document.getElementById('content').classList.add('show-content');
             }, 3000);
         };
-        let song = new Audio('bg.mp3');
-song.loop = true; // Background music loops
 
-let voiceMessage = new Audio('voice-message.ogg');
-let audioContext;
+        var song = new Audio('bg.mp3');
 
-// Ensure the AudioContext is created and resumed for mobile compatibility
-document.addEventListener('click', () => {
-    if (!audioContext) {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        audioContext = new AudioContext();
-    }
-    if (audioContext.state === 'suspended') {
-        audioContext.resume().catch(err => {
-            console.error('Failed to resume AudioContext:', err);
-        });
-    }
-});
+var voiceMessage = new Audio('voice-message.ogg');
+
+
 
 function toggleEnvelope() {
     const envelope = document.getElementById('envelope');
@@ -389,9 +377,9 @@ function toggleEnvelope() {
 
     if (!envelope.classList.contains('open')) {
         // Open the envelope
-        voiceMessage.play().catch(err => console.error('Voice message failed:', err));
+        voiceMessage.play();
         setTimeout(() => {
-            song.play().catch(err => console.error('Background music failed:', err));
+            song.play();
         }, 2000);
 
         envelope.classList.add('open');
