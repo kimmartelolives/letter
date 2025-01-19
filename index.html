@@ -365,13 +365,15 @@
             }, 3000);
         };
 
-        var song = new Audio('bg.mp3');
-
-var voiceMessage = new Audio('voice-message.ogg');
+      
 
 
 
 function toggleEnvelope() {
+    var song = new Audio('bg.mp3');
+
+var voiceMessage = new Audio('voice-message.ogg');
+
     voiceMessage.play();
     const envelope = document.getElementById('envelope');
     const button = document.querySelector('.button');
