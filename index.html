@@ -379,9 +379,9 @@ function toggleEnvelope() {
 
     if (!envelope.classList.contains('open')) {
         // Open the envelope
-        voiceMessage.play().catch(err => console.error('Voice message failed:', err));
+        voiceMessage.play();
         setTimeout(() => {
-            song.play().catch(err => console.error('Background music failed:', err));
+            song.play();
         }, 2000);
 
         envelope.classList.add('open');
