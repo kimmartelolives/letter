@@ -367,24 +367,31 @@
         song.loop = true;
     
         function toggleEnvelope() {
-            const envelope = document.getElementById('envelope');
-            const button = document.querySelector('.button');
-            const audio = new Audio('voice-message.ogg'); 
-    
-            if (!envelope.classList.contains('open')) {
-                audio.play();
-                setTimeout(() => {
-                    song.play();
-                }, 2000);
-                envelope.classList.add('open');
-                button.textContent = "Close the Love Letter";
-            } else {
-                envelope.classList.remove('open');
-                button.textContent = "Open the Love Letter";
-                song.pause();
-                song.currentTime = 0;
-            }
-        }
+    const envelope = document.getElementById('envelope');
+    const button = document.querySelector('.button');
+    const audio = new Audio('voice-message.ogg'); 
+
+    // Ensure audio playback is triggered by user interaction
+    if (!envelope.classList.contains('open')) {
+        audio.play().catch(error => {
+            console.error('Audio play failed:', error);
+        });
+
+        setTimeout(() => {
+            song.play().catch(error => {
+                console.error('Background music failed:', error);
+            });
+        }, 2000);
+
+        envelope.classList.add('open');
+        button.textContent = "Close the Love Letter";
+    } else {
+        envelope.classList.remove('open');
+        button.textContent = "Open the Love Letter";
+        song.pause();
+        song.currentTime = 0;
+    }
+}
     </script>
 </body>
 </html>
