@@ -329,6 +329,7 @@
 
         <div class="container">
             <!-- <h1>💌 A Love Letter for You 💌</h1> -->
+            <input type="button" value="sound" onclick="playMusic()" />
             <button class="button" onclick="toggleEnvelope()">Open the Love Letter</button>
             <div class="envelope" id="envelope">
                 <div class="flap"></div>
@@ -356,6 +357,11 @@
     <footer>Made with 💕 for someone special.</footer>
 
     <script>
+        function playMusic(){
+  var music = new Audio('bg.mp3');
+  music.play();
+  }
+
         window.onload = function() {
             setTimeout(function() {
                 document.getElementById('loadingContainer').style.display = 'none';
