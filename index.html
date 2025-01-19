@@ -348,7 +348,7 @@
 <body>
     <div class="loading-container" id="loadingContainer">
         <div class="spinner"></div>
-        <span>Receiving a Love Letter...</span>
+        <span><b>Receiving a Love Letter... 😽</b></span>
     </div>
 
     <div class="content" id="content">
@@ -384,7 +384,7 @@
                             <br>
                             <b>N</b>eed mo kadamay huwag ka mag dalawang isip na kausapin ako 🤗 for sure na sasagot naman ako diyan and don't worry wala na "Likewise." yan. 
                             <br>
-                            <b>T</b>Take care always. 😽 Always think positive lang pero lagyan mo na rin negative para masaya ang buhay! Stay safe and HAPPY.
+                            <b>T</b>ake care always. 😽 Always think positive lang pero lagyan mo na rin negative para masaya ang buhay! Stay safe and HAPPY.
                             <br>
                             <b>O</b>f course nandito lang naman ako susuporta sayo wow ako na 'to eh. 😉
                             <br><br>
@@ -392,7 +392,7 @@
                             <br>
                             <b>O</b>nti nalang lapit kana grumaduate future RN yarn? 👩‍🎓 👩‍⚕️ Naul!! At alam ko kayang kaya mo yan ikaw na yan syempre. 🫡 Good luck future RN!!!! 🫰
                             <br>
-                            <b>U</b>so naman siguro gumawa pa letter ngayon eh no? Oo uso yan ako na gumawa eh. 😜 Keep smiling lang ang cute mo naman eh maganda pa wow naks sana naman naka ngiti ka habang binabasa mo 'to? So good luck sa future mo ate kaya mo yan 1k lang masaya na ako thank you! Good luck sayo kaya mo lahat yan! Take care always!! 😼
+                            <b>U</b>so naman siguro gumawa pa letter nayon eh no? Oo uso yan ako na gumawa eh. 😜 Keep smiling lang ang cute mo naman eh maganda pa wow naks sana naman naka ngiti ka habang binabasa mo 'to? So good luck sa future mo ate kaya mo yan 1k lang masaya na ako thank you! Good luck sayo kaya mo lahat yan! Take care always!! 😼
                             <br><br>
                             Your #1 Fan, <br><b>Martel</b></p>
                             <button class="close-button" onclick="toggleEnvelope()">Close the Letter</button>
@@ -434,11 +434,21 @@
     
                 song.pause();
                 song.currentTime = 0;
+     
+
+                  // Scroll to the very top of the page
+    window.scrollTo({ top: 0, behavior: 'instant' }); // Use 'instant' if smooth scroll isn't working
+
+// Ensure the top scroll behavior is enforced
+document.body.scrollTop = 0; // For Safari
+document.documentElement.scrollTop = 0; // For other browsers
+
             }
         }
     
         // Adding event listener to the seal
         document.querySelector('.seal').addEventListener('click', toggleEnvelope);
+        
     </script>
     
 </body>
