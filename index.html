@@ -357,10 +357,7 @@
     <footer>Made with 💕 for someone special.</footer>
 
     <script>
-        function playMusic(){
-  var music = new Audio('bg.mp3');
-  music.play();
-  }
+       
 
         window.onload = function() {
             setTimeout(function() {
@@ -368,22 +365,20 @@
                 document.getElementById('content').classList.add('show-content');
             }, 3000);
         };
-
         let song = new Audio('bg.mp3');
-song.loop = true;
+song.loop = true; // Background music loops
 
 let voiceMessage = new Audio('voice-message.ogg');
-let audioPlayed = false; // Tracks whether the audio has been played
+let audioContext;
 
-// Ensure AudioContext is resumed (for Safari on iOS)
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-const audioContext = new AudioContext();
-
+// Ensure the AudioContext is created and resumed for mobile compatibility
 document.addEventListener('click', () => {
+    if (!audioContext) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioContext = new AudioContext();
+    }
     if (audioContext.state === 'suspended') {
-        audioContext.resume().then(() => {
-            console.log('AudioContext resumed');
-        }).catch(err => {
+        audioContext.resume().catch(err => {
             console.error('Failed to resume AudioContext:', err);
         });
     }
@@ -394,35 +389,23 @@ function toggleEnvelope() {
     const button = document.querySelector('.button');
 
     if (!envelope.classList.contains('open')) {
-        // Resume AudioContext before playing
-        audioContext.resume().then(() => {
-            console.log('Playing audio...');
-            voiceMessage.play().catch(err => {
-                console.error('Failed to play voice message:', err);
-            });
+        // Open the envelope
+        voiceMessage.play().catch(err => console.error('Voice message failed:', err));
+        setTimeout(() => {
+            song.play().catch(err => console.error('Background music failed:', err));
+        }, 2000);
 
-            // Start background music after 2 seconds
-            setTimeout(() => {
-                song.play().catch(err => {
-                    console.error('Failed to play background music:', err);
-                });
-            }, 2000);
-        });
-
-        audioPlayed = true; // Mark audio as played
         envelope.classList.add('open');
         button.textContent = "Close the Love Letter";
     } else {
-        // Close the letter and stop all audio
+        // Close the envelope
         envelope.classList.remove('open');
         button.textContent = "Open the Love Letter";
 
         song.pause();
         song.currentTime = 0;
-        audioPlayed = false; // Allow replay on reopening
     }
 }
-
 
 
     </script>
