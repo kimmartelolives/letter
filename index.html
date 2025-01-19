@@ -328,7 +328,7 @@
         
 
         <div class="container">
-            <h1>💌 A Love Letter for You 💌</h1>
+            <!-- <h1>💌 A Love Letter for You 💌</h1> -->
             <button class="button" onclick="toggleEnvelope()">Open the Love Letter</button>
             <div class="envelope" id="envelope">
                 <div class="flap"></div>
@@ -363,41 +363,61 @@
             }, 3000);
         };
 
-        const song = new Audio('bg.mp3');
+        let song = new Audio('bg.mp3');
 song.loop = true;
-const voiceMessage = new Audio('voice-message.ogg');
-let audioPlayed = false; // Tracks if audio has been played
+
+let voiceMessage = new Audio('voice-message.ogg');
+let audioPlayed = false; // Tracks whether the audio has been played
+
+// Ensure AudioContext is resumed (for Safari on iOS)
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioContext = new AudioContext();
+
+document.addEventListener('click', () => {
+    if (audioContext.state === 'suspended') {
+        audioContext.resume().then(() => {
+            console.log('AudioContext resumed');
+        }).catch(err => {
+            console.error('Failed to resume AudioContext:', err);
+        });
+    }
+});
 
 function toggleEnvelope() {
     const envelope = document.getElementById('envelope');
     const button = document.querySelector('.button');
 
     if (!envelope.classList.contains('open')) {
-        // Play the voice message first
-        voiceMessage.play().catch((err) => {
-            console.error('Voice message playback failed:', err);
-        });
-
-        // Start the background music after a 2-second delay
-        setTimeout(() => {
-            song.play().catch((err) => {
-                console.error('Background music playback failed:', err);
+        // Resume AudioContext before playing
+        audioContext.resume().then(() => {
+            console.log('Playing audio...');
+            voiceMessage.play().catch(err => {
+                console.error('Failed to play voice message:', err);
             });
-        }, 2000);
+
+            // Start background music after 2 seconds
+            setTimeout(() => {
+                song.play().catch(err => {
+                    console.error('Failed to play background music:', err);
+                });
+            }, 2000);
+        });
 
         audioPlayed = true; // Mark audio as played
         envelope.classList.add('open');
         button.textContent = "Close the Love Letter";
     } else {
-        // Close the letter and reset the audio state
+        // Close the letter and stop all audio
         envelope.classList.remove('open');
         button.textContent = "Open the Love Letter";
 
-        song.pause(); // Pause the background music
-        song.currentTime = 0; // Reset background music to the start
-        audioPlayed = false; // Allow audio to replay when reopened
+        song.pause();
+        song.currentTime = 0;
+        audioPlayed = false; // Allow replay on reopening
     }
 }
+
+
 
     </script>
 </body>
