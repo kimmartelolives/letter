@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Letter Animation</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow-y: auto; /* Automatically show scrollbar when content overflows */
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffd1dc, #c4f4ff); /* Pop Mart inspired gradient */
+            overflow-y: auto;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Floating shape animation */
+        .floating-shape {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 136, 168, 0.6); /* Pink with transparency */
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.8;
+            z-index: 0;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: float 5s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 10%;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 50%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            bottom: 20%;
+            left: 30%;
+            animation-delay: 1s;
+        }
+
+        .floating-shape:nth-child(4) {
+            width: 120px;
+            height: 120px;
+            top: 30%;
+            right: 25%;
+            animation-delay: 3s;
+        }
+
+        .floating-shape:nth-child(5) {
+            width: 140px;
+            height: 140px;
+            bottom: 15%;
+            left: 50%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .loading-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+        }
+
+        .loading-container span {
+            font-size: 1.5em;
+            color: #fff;
+            display: block;
+            margin-top: 20px;
+            animation: fadeIn 2s ease-in-out forwards;
+            animation-delay: 1s;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #ff8fa8;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Hide main content initially */
+        .content {
+            display: none;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .show-content {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Styles for the main page (content) */
+        .container {
+            text-align: center;
+            z-index: 5;
+        }
+
+        /* Make h1 fixed at the top */
+        h1 {
+            position: fixed;
+            top: 10px; /* Keep it a bit from the very top */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            z-index: 5;
+            white-space: nowrap; /* Prevent text from wrapping */
+            background: rgba(0, 0, 0, 0.1); /* Optional: Adds background to improve text visibility */
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        @media screen and (max-width: 768px) {
+            h1 {
+                font-size: 2em; /* Adjust font size for mobile */
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            h1 {
+                font-size: 1.5em; /* Further adjust for smaller screens */
+            }
+        }
+
+        /* Envelope styles */
+        .envelope {
+            position: relative;
+            width: 360px;
+            height: 240px;
+            background: #f9d8d5; /* Pop Mart pastel pink */
+            border: 2px solid #f9bfc0;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+            margin: 0 auto;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .envelope .flap {
+            position: absolute;
+            width: 100%;
+            height: 120px;
+            background: #f9d8d5;
+            top: 0;
+            left: 0;
+            border-bottom: 2px solid #f9bfc0;
+            clip-path: polygon(50% 0, 0 100%, 100% 100%);
+            transform-origin: top center;
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 2;
+            backface-visibility: hidden;
+        }
+
+        .seal {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 25% 25%, #ff8fa8, #ff6070); /* Gradient for depth */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            clip-path: polygon(50% 0, 61% 18%, 85% 18%, 100% 34%, 100% 60%, 50% 100%, 0 60%, 0 34%, 15% 18%, 39% 18%); /* Enhanced shape */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 6px 12px rgba(0, 0, 0, 0.1); /* Multiple shadows for depth */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+            z-index: 3;
+            border: 3px solid #f9bfc0; /* Light border to simulate embossed effect */
+        }
+
+        .seal span {
+            transform: rotate(-45deg);
+            font-family: 'Cursive', Georgia, serif;
+            font-size: 16px; /* Slightly larger text for more visibility */
+            color: #fff;
+            font-weight: bold; /* Make the text stand out more */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Text shadow for extra depth */
+        }
+
+        .envelope.open .flap {
+            transform: rotateX(-180deg);
+        }
+
+        .envelope.open .seal {
+            transform: translate(-50%, -50%) scale(0.7);
+            opacity: 0;
+        }
+
+        .letter {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            width: 320px;
+            background: #fff;
+            border: 2px solid #f9bfc0;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            opacity: 0; /* Hidden initially */
+            z-index: 5;
+            overflow: visible;
+            transition: transform 1.2s ease-out, opacity 0.8s ease-in;
+        }
+
+        .envelope.open .letter {
+            transform: translate(-50%, -20%) rotateX(0);
+            opacity: 1; /* Make it visible */
+        }
+
+        .letter-content {
+            padding: 20px;
+            color: #333;
+            font-size: 1.1em;
+            line-height: 1.8;
+            font-family: 'Cursive', Georgia, serif;
+            text-align: justify;
+        }
+
+        .button {
+            background: linear-gradient(135deg, #ff8fa8, #ffcce6); /* Pink gradient for button */
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-size: 1em;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            margin-bottom: 140px;
+            z-index: 5
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            font-size: 0.9em;
+            color: #fff;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            padding: 10px 0;
+            background-color: rgba(0, 0, 0, 0.1); /* Optional: Adds a background to make the footer more visible */
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container" id="loadingContainer">
+        <div class="spinner"></div>
+        <span>Receiving a Love Letter...</span>
+    </div>
+
+    <div class="content" id="content">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        
+
+        <div class="container">
+            <h1>💌 A Love Letter for You 💌</h1>
+            <button class="button" onclick="toggleEnvelope()">Open the Love Letter</button>
+            <div class="envelope" id="envelope">
+                <div class="flap"></div>
+                <div class="seal"><span>💖</span></div>
+                <div class="letter">
+                    <div class="letter-content">
+                        <p>My dearest,
+                            <br><br>
+                            From the moment our paths crossed, my world was forever changed...
+                            <br><br>
+                            From the moment our paths crossed, my world was forever changed...
+                            <br><br>
+                            From the moment our paths crossed, my world was forever changed...
+                            <br><br>
+                            From the moment our paths crossed, my world was forever changed...
+                            <br><br>
+                            From the moment our paths crossed, my world was forever changed...
+                            <br><br>
+                            Forever yours,<br><br>[Your Name]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>Made with 💕 for someone special.</footer>
+
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                document.getElementById('loadingContainer').style.display = 'none';
+                document.getElementById('content').classList.add('show-content');
+            }, 3000);
+        };
+
+        const song = new Audio('bg.mp3'); 
+        song.loop = true;
+    
+        function toggleEnvelope() {
+            const envelope = document.getElementById('envelope');
+            const button = document.querySelector('.button');
+            const audio = new Audio('voice-message.ogg'); 
+    
+            if (!envelope.classList.contains('open')) {
+                audio.play();
+                setTimeout(() => {
+                    song.play();
+                }, 2000);
+                envelope.classList.add('open');
+                button.textContent = "Close the Love Letter";
+            } else {
+                envelope.classList.remove('open');
+                button.textContent = "Open the Love Letter";
+                song.pause();
+                song.currentTime = 0;
+            }
+        }
+    </script>
+</body>
+</html>
