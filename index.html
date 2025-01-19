@@ -372,6 +372,7 @@ var voiceMessage = new Audio('voice-message.ogg');
 
 
 function toggleEnvelope() {
+    voiceMessage.play();
     const envelope = document.getElementById('envelope');
     const button = document.querySelector('.button');
 
