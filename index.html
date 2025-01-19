@@ -152,7 +152,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Hide main content initially */
+
         .content {
             display: none;
             opacity: 0;
@@ -164,16 +164,16 @@
             opacity: 1;
         }
 
-        /* Styles for the main page (content) */
+ 
         .container {
             text-align: center;
             z-index: 5;
         }
 
-        /* Make h1 fixed at the top */
+   
         h1 {
             position: fixed;
-            top: 10px; /* Keep it a bit from the very top */
+            top: 10px; 
             left: 50%;
             transform: translateX(-50%);
             font-size: 3em;
@@ -181,30 +181,30 @@
             color: #fff;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
             z-index: 5;
-            white-space: nowrap; /* Prevent text from wrapping */
-            background: rgba(0, 0, 0, 0.1); /* Optional: Adds background to improve text visibility */
+            white-space: nowrap; 
+            background: rgba(0, 0, 0, 0.1); 
             padding: 10px;
             border-radius: 10px;
         }
 
         @media screen and (max-width: 768px) {
             h1 {
-                font-size: 2em; /* Adjust font size for mobile */
+                font-size: 2em; 
             }
         }
 
         @media screen and (max-width: 480px) {
             h1 {
-                font-size: 1.5em; /* Further adjust for smaller screens */
+                font-size: 1.5em; 
             }
         }
 
-        /* Envelope styles */
+      
         .envelope {
             position: relative;
             width: 360px;
             height: 240px;
-            background: #f9d8d5; /* Pop Mart pastel pink */
+            background: #f9d8d5; 
             border: 2px solid #f9bfc0;
             border-radius: 12px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
@@ -232,34 +232,34 @@
     position: absolute;
     width: 60px;
     height: 60px;
-    background: radial-gradient(circle at 25% 25%, #ff8fa8, #ff6070); /* Gradient for depth */
+    background: radial-gradient(circle at 25% 25%, #ff8fa8, #ff6070); 
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(45deg);
-    clip-path: polygon(50% 0, 61% 18%, 85% 18%, 100% 34%, 100% 60%, 50% 100%, 0 60%, 0 34%, 15% 18%, 39% 18%); /* Enhanced shape */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 6px 12px rgba(0, 0, 0, 0.1); /* Multiple shadows for depth */
+    clip-path: polygon(50% 0, 61% 18%, 85% 18%, 100% 34%, 100% 60%, 50% 100%, 0 60%, 0 34%, 15% 18%, 39% 18%); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 6px 12px rgba(0, 0, 0, 0.1); 
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease; /* Add transition for hover effects */
+    transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease; 
     z-index: 3;
-    border: 3px solid #f9bfc0; /* Light border to simulate embossed effect */
-    cursor: pointer; /* Make it feel like a clickable button */
+    border: 3px solid #f9bfc0; 
+    cursor: pointer; 
 }
 
 .seal:hover {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1.1); /* Slightly enlarge the seal on hover */
-    background: radial-gradient(circle at 25% 25%, #ff6070, #ff8fa8); /* Change the background on hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25), 0 8px 16px rgba(0, 0, 0, 0.15); /* Increase shadow depth */
+    transform: translate(-50%, -50%) rotate(45deg) scale(1.1); 
+    background: radial-gradient(circle at 25% 25%, #ff6070, #ff8fa8); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25), 0 8px 16px rgba(0, 0, 0, 0.15); 
 }
 
 .seal span {
     transform: rotate(-45deg);
     font-family: 'Cursive', Georgia, serif;
-    font-size: 16px; /* Slightly larger text for more visibility */
+    font-size: 16px; 
     color: #fff;
-    font-weight: bold; /* Make the text stand out more */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Text shadow for extra depth */
+    font-weight: bold; 
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); 
 }
 
         .envelope.open .flap {
@@ -281,7 +281,7 @@
             border: 2px solid #f9bfc0;
             border-radius: 8px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            opacity: 0; /* Hidden initially */
+            opacity: 0; 
             z-index: 5;
             overflow: visible;
             transition: transform 1.2s ease-out, opacity 0.8s ease-in;
@@ -289,7 +289,7 @@
 
         .envelope.open .letter {
             transform: translate(-50%, -20%) rotateX(0);
-            opacity: 1; /* Make it visible */
+            opacity: 1; 
         }
 
         .letter-content {
@@ -303,7 +303,7 @@
 
         .button {
             visibility: hidden;
-            background: linear-gradient(135deg, #ff8fa8, #ffcce6); /* Pink gradient for button */
+            background: linear-gradient(135deg, #ff8fa8, #ffcce6); 
             color: #fff;
             border: none;
             border-radius: 25px;
@@ -355,7 +355,7 @@
             text-align: center;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
             padding: 10px 0;
-            background-color: rgba(0, 0, 0, 0.1); /* Optional: Adds a background to make the footer more visible */
+            background-color: rgba(0, 0, 0, 0.1); 
         }
     </style>
 </head>
@@ -426,7 +426,7 @@
         };
     
         let song = new Audio('bg.mp3');
-        song.loop = true; // Background music loops
+        song.loop = true; 
     
         let voiceMessage = new Audio('voice.mp3');
     
@@ -435,14 +435,14 @@
             const button = document.querySelector('.button');
     
             if (!envelope.classList.contains('open')) {
-                // Open the envelope
+               
                 voiceMessage.play();
                 song.play();
     
                 envelope.classList.add('open');
                 button.textContent = "Close the Love Letter";
             } else {
-                // Close the envelope
+             
                 envelope.classList.remove('open');
                 button.textContent = "Open the Love Letter";
     
@@ -450,7 +450,7 @@
                 song.currentTime = 0;
      
 
-                  // Scroll to the very top of the page
+                
     window.scrollTo({ top: 0, behavior: 'instant' }); // Use 'instant' if smooth scroll isn't working
 
 document.body.scrollTop = 0; // For Safari
@@ -459,7 +459,6 @@ document.documentElement.scrollTop = 0; // For other browsers
             }
         }
     
-        // Adding event listener to the seal
         document.querySelector('.seal').addEventListener('click', toggleEnvelope);
         
     </script>
