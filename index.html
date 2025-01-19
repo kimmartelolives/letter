@@ -215,31 +215,38 @@
         }
 
         .seal {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle at 25% 25%, #ff8fa8, #ff6070); /* Gradient for depth */
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-            clip-path: polygon(50% 0, 61% 18%, 85% 18%, 100% 34%, 100% 60%, 50% 100%, 0 60%, 0 34%, 15% 18%, 39% 18%); /* Enhanced shape */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 6px 12px rgba(0, 0, 0, 0.1); /* Multiple shadows for depth */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.6s ease, opacity 0.6s ease;
-            z-index: 3;
-            border: 3px solid #f9bfc0; /* Light border to simulate embossed effect */
-        }
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle at 25% 25%, #ff8fa8, #ff6070); /* Gradient for depth */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    clip-path: polygon(50% 0, 61% 18%, 85% 18%, 100% 34%, 100% 60%, 50% 100%, 0 60%, 0 34%, 15% 18%, 39% 18%); /* Enhanced shape */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 6px 12px rgba(0, 0, 0, 0.1); /* Multiple shadows for depth */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease; /* Add transition for hover effects */
+    z-index: 3;
+    border: 3px solid #f9bfc0; /* Light border to simulate embossed effect */
+    cursor: pointer; /* Make it feel like a clickable button */
+}
 
-        .seal span {
-            transform: rotate(-45deg);
-            font-family: 'Cursive', Georgia, serif;
-            font-size: 16px; /* Slightly larger text for more visibility */
-            color: #fff;
-            font-weight: bold; /* Make the text stand out more */
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Text shadow for extra depth */
-        }
+.seal:hover {
+    transform: translate(-50%, -50%) rotate(45deg) scale(1.1); /* Slightly enlarge the seal on hover */
+    background: radial-gradient(circle at 25% 25%, #ff6070, #ff8fa8); /* Change the background on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25), 0 8px 16px rgba(0, 0, 0, 0.15); /* Increase shadow depth */
+}
+
+.seal span {
+    transform: rotate(-45deg);
+    font-family: 'Cursive', Georgia, serif;
+    font-size: 16px; /* Slightly larger text for more visibility */
+    color: #fff;
+    font-weight: bold; /* Make the text stand out more */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Text shadow for extra depth */
+}
 
         .envelope.open .flap {
             transform: rotateX(-180deg);
@@ -290,7 +297,6 @@
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease;
-            margin-bottom: 330px;
             z-index: 5
         }
 
@@ -301,6 +307,27 @@
         .button:active {
             transform: translateY(0);
         }
+
+        .close-button {
+    background: linear-gradient(135deg, #ff8fa8, #ffcce6);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    margin-top: 20px;
+}
+
+.close-button:hover {
+    transform: translateY(-3px);
+}
+
+.close-button:active {
+    transform: translateY(0);
+}
 
         footer {
             position: fixed;
@@ -333,7 +360,7 @@
 
         <div class="container">
             <h1>💌 A Love Letter for You 💌</h1>
-            <button class="button" onclick="toggleEnvelope()">Open the Love Letter</button>
+            <!-- <button class="button" onclick="toggleEnvelope()">Open the Love Letter</button> -->
             <div class="envelope" id="envelope">
                 <div class="flap"></div>
                 <div class="seal"><span>💖</span></div>
@@ -366,6 +393,7 @@
                             <b>U</b>so naman siguro gumawa pa letter ngayon eh no? Oo uso yan ako na gumawa eh. 😜 Keep smiling lang ang cute mo naman eh maganda pa wow naks sana naman naka ngiti ka habang binabasa mo 'to? So good luck sa future mo ate kaya mo yan 1k lang masaya na ako thank you! Good luck sayo kaya mo lahat yan! Take care always!! 😼
                             <br><br>
                             Your #1 Fan, <br><b>Martel</b></p>
+                            <button class="close-button" onclick="toggleEnvelope()">Close the Letter</button>
                     </div>
                 </div>
             </div>
@@ -374,46 +402,42 @@
     <footer>Made with 💕 for someone special.</footer>
 
     <script>
-       
-
         window.onload = function() {
             setTimeout(function() {
                 document.getElementById('loadingContainer').style.display = 'none';
                 document.getElementById('content').classList.add('show-content');
             }, 3000);
         };
-        
+    
         let song = new Audio('bg.mp3');
-song.loop = true; // Background music loops
-
-let voiceMessage = new Audio('voice.mp3');
-
-
-function toggleEnvelope() {
-
-
-    const envelope = document.getElementById('envelope');
-    const button = document.querySelector('.button');
-
-    if (!envelope.classList.contains('open')) {
-        // Open the envelope
-        voiceMessage.play();
-        song.play();
-
-
-        envelope.classList.add('open');
-        button.textContent = "Close the Love Letter";
-    } else {
-        // Close the envelope
-        envelope.classList.remove('open');
-        button.textContent = "Open the Love Letter";
-
-        song.pause();
-        song.currentTime = 0;
-    }
-}
-
-
+        song.loop = true; // Background music loops
+    
+        let voiceMessage = new Audio('voice.mp3');
+    
+        function toggleEnvelope() {
+            const envelope = document.getElementById('envelope');
+            const button = document.querySelector('.button');
+    
+            if (!envelope.classList.contains('open')) {
+                // Open the envelope
+                voiceMessage.play();
+                song.play();
+    
+                envelope.classList.add('open');
+                button.textContent = "Close the Love Letter";
+            } else {
+                // Close the envelope
+                envelope.classList.remove('open');
+                button.textContent = "Open the Love Letter";
+    
+                song.pause();
+                song.currentTime = 0;
+            }
+        }
+    
+        // Adding event listener to the seal
+        document.querySelector('.seal').addEventListener('click', toggleEnvelope);
     </script>
+    
 </body>
 </html>
