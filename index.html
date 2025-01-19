@@ -276,7 +276,6 @@
         .envelope.open .letter {
             transform: translate(-50%, -20%) rotateX(0);
             opacity: 1; /* Make it visible */
-            margin-top: 100px;
         }
 
         .letter-content {
@@ -289,6 +288,7 @@
         }
 
         .button {
+            visibility: hidden;
             background: linear-gradient(135deg, #ff8fa8, #ffcce6); /* Pink gradient for button */
             color: #fff;
             border: none;
@@ -298,6 +298,7 @@
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease;
+            margin-bottom: 200px;
             z-index: 5
         }
 
@@ -361,6 +362,7 @@
 
         <div class="container">
             <h1>💌 A Love Letter for You 💌</h1>
+            <button class="button" onclick="toggleEnvelope()">Open the Love Letter</button>
             <div class="envelope" id="envelope">
                 <div class="flap"></div>
                 <div class="seal"><span>💖</span></div>
