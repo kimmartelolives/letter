@@ -396,7 +396,7 @@ function handleSuggestionClick(action) {
 function makeJoke() {
     const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
     addMessage('bot', randomJoke, [
-        { text: 'Pickup lines 😂', action: 'make_a_joke' }
+        { text: 'More Pickup lines 😂', action: 'make_a_joke' }
     ]); 
 
     chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
