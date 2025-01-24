@@ -90,8 +90,8 @@ body {
 .chatbox {
     background: linear-gradient(135deg, #ffd1dc, #c4f4ff); 
     width: 100%;
-    max-width: 600px;
-    height: 700px;
+    max-width: 400px;
+    height: 500px;
     display: flex;
     flex-direction: column;
     border-radius: 20px;
