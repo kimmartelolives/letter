@@ -83,7 +83,17 @@ const botReplies = {
     "haha": [
         "Happy yarn? Ok yan ganyan lang lagi!",
         "HAHAHAHAHAHAHAHAAHAHA gew",
-        "HGJAKHDJHAGDGHDHGAHHGAHAHAHNVADA"
+        "HGJAKHDJHAGDGHDHGAHHGAH"
+    ],
+    "hahahaha": [
+        "Happy yarn? Ok yan ganyan lang lagi!",
+        "HAHAHAHAHAHAHAHAAHAHA gew",
+        "HGJAKHDJHAGDGHDHGAHHGAH"
+    ],
+    "hahaha": [
+        "Happy yarn? Ok yan ganyan lang lagi!",
+        "HAHAHAHAHAHAHAHAAHAHA gew",
+        "HGJAKHDJHAGDGHDHGAHHGAH"
     ],
     "cute": [
         "Uu parang ikaw no?",
