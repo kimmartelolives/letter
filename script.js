@@ -135,6 +135,9 @@ const botReplies = {
         "Oo naman yes! Totoo!",
         "All in pati pamato sure yon HAHAHAHAHA"
     ],
+    "tama": [
+        "Yes naman!",
+    ],
     "ty": [
         "Thank you ka diyan?! 1k lang bayad 😆",
     ],
