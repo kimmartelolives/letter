@@ -8,17 +8,41 @@ let audioElement; // Variable to track the audio element
 const images = [
     'https://i.pinimg.com/originals/75/b3/c8/75b3c8eca95d917c650cd574b91db7f7.gif', // Original image
     'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3UzeTJ2YnB4NGJydmlpcjNjZmExYXV0Zm13MG1oZjBjM2FuZHpqaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PUBxelwT57jsQ/giphy.gif',
-    'https://media1.tenor.com/m/zlKoX5HPPu8AAAAC/cat-annoyed.gif'
+    'https://media1.tenor.com/m/zlKoX5HPPu8AAAAC/cat-annoyed.gif',
+    'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGF2a2wxc2JoYzd2b2c3MmpvcTY2ZWM5N3lidm5lYnRpYzZ6MG1hOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gVsmn4qdyBn1Bra2tN/giphy.gif',
+    'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGFvNGI3andqcnllMjVvN3hkejZyMmtrbzVya2FzajRnYjlvaTF4ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kVlLRtRWAVsDC/giphy.gif',
+    'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWFib3BwMDBxcG1jb3c4eTJiajVmOTVraGg3eDUxcGx3MXBrbHh2aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/euMphY08JNims/giphy.gif',
+    'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmRvNHp6cnlzMjU3MTR4cHJrb2RwaWEzazV5NGljeDFmbzR6dm1lbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/GUdouh1kQMHddy32ks/giphy.gif',
+    'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOTR1ODJuOXliemFla2Fvd3d2bG9wcnd6am9pYW5zNzMzdDFndDl5YiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/liamKgDNyZi3C/giphy.gif',
+    'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWp2aGdncWJnaW5icWJmaGxrN3RzemEwcjZuYXlia2p1MmRhNjljdSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/CgIeq5ekpE5uzARb4O/giphy.gif',
+];
+
+// martel images
+const martel = [
+    'ura.gif',
+    'ura.gif',
+
+];
+
+// kim images
+const kim = [
+    '1.jpg',
+    '2.jpg',
+    '3.jpg'
 
 ];
 
 // List of song URLs (you can replace these with actual URLs)
 const songs = [
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'
+    'happier.mp3',
+    'bewithu.mp3',
+    'espresso.mp3',
+    'nonsense.mp3',
+    'taste.mp3',
+    'good4u.mp3',
+    'feather.mp3'
+    
+
 ];
 
 // List of random response
@@ -137,6 +161,14 @@ const botReplies = {
         "Sure! Here's a picture for you.",
         "Take a look at this!"
     ],
+    "kim": [  
+        "I have a special image just for you, please don't laugh! Hahahaha! 🖼️",
+        "Jusko po nakakahiya HAHAAHAHAHA"
+    ],
+    "martel": [  
+        "Here’s a special picture just for you! 🖼️",
+        "You mentioned 'martel'! Take a look at this! 👀"
+    ],
     "default": [
         "Hmm, Try mo etong nasa below na mga suggestions",
         "Ok check mo below suggestions, but I'm here to help!",
@@ -172,6 +204,54 @@ function calculateLevenshtein(a, b) {
     }
 
     return tmp[alen][blen];
+}
+
+// Function to handle the "kim" response and send a picture
+function handleMartelResponse() {
+    // Send a random image from the images list
+    const randomImageUrl = martel[Math.floor(Math.random() * martel.length)];
+    
+    const imageContainer = document.createElement('div');
+    imageContainer.classList.add('chat-message', 'bot'); // Bot-style message container
+
+    const imgElement = document.createElement('img');
+    imgElement.src = randomImageUrl; // Set random image URL
+    imgElement.alt = 'Chatbot Image';
+
+    // Adjust the width and height for resizing the image
+    imgElement.style.maxWidth = '300px'; // Max width of 300px (you can change this value)
+    imgElement.style.width = '100%'; // Set width to 100% so it scales well within the container
+    imgElement.style.height = 'auto'; // Maintain the aspect ratio
+    imgElement.style.borderRadius = '10px';
+    imgElement.style.marginTop = '10px';
+
+    imageContainer.appendChild(imgElement);
+    chatLog.appendChild(imageContainer);
+    chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
+}
+
+// Function to handle the "kim" response and send a picture
+function handleKimResponse() {
+    // Send a random image from the images list
+    const randomImageUrl = kim[Math.floor(Math.random() * kim.length)];
+    
+    const imageContainer = document.createElement('div');
+    imageContainer.classList.add('chat-message', 'bot'); // Bot-style message container
+
+    const imgElement = document.createElement('img');
+    imgElement.src = randomImageUrl; // Set random image URL
+    imgElement.alt = 'Chatbot Image';
+
+    // Adjust the width and height for resizing the image
+    imgElement.style.maxWidth = '300px'; // Max width of 300px (you can change this value)
+    imgElement.style.width = '100%'; // Set width to 100% so it scales well within the container
+    imgElement.style.height = 'auto'; // Maintain the aspect ratio
+    imgElement.style.borderRadius = '10px';
+    imgElement.style.marginTop = '10px';
+
+    imageContainer.appendChild(imgElement);
+    chatLog.appendChild(imageContainer);
+    chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
 }
 
 // Function to find the closest response based on string similarity
@@ -212,6 +292,18 @@ function getBotResponse(userMessage) {
         setTimeout(() => {
             window.location.href = "index.html"; // Redirect to the home page
         }, 1500); // Delay redirection for 1.5 seconds
+    }
+
+     // Check if the message contains the word "martel"
+     if (preprocessedMessage.includes("martel")) {
+        handleMartelResponse();  // Trigger the function to display the image
+        return getRandomResponse(botReplies["martel"]);  // Return a random response from the "kim" replies
+    }
+
+     // Check if the message contains the word "kim"
+     if (preprocessedMessage.includes("kim")) {
+        handleKimResponse();  // Trigger the function to display the image
+        return getRandomResponse(botReplies["kim"]);  // Return a random response from the "kim" replies
     }
 
     return getRandomResponse(botReplies[closestMatch]);
