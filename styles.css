@@ -97,6 +97,7 @@ body {
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
 }
 
 .chat-header {
@@ -265,3 +266,21 @@ footer {
     padding: 10px 0;
     background-color: rgba(0, 0, 0, 0.1); 
 }
+
+.suggestions {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #007bff;
+}
+
+.suggestion-text {
+    cursor: pointer;
+    display: block;
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.suggestion-text:hover {
+    color: #0056b3;
+}
+

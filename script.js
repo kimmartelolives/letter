@@ -13,6 +13,24 @@ const songs = [
     'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'
 ];
 
+// List of jokes (you can add more jokes here)
+const random = [
+    "wew",
+    "wwwwwww",
+    "111111111",
+    "ewewew",
+    "ewewe"
+];
+
+// List of jokes (you can add more jokes here)
+const jokes = [
+    "Why don't skeletons fight each other? They don't have the guts!",
+    "Why did the math book look sad? Because it had too many problems.",
+    "Why don't programmers like nature? It has too many bugs.",
+    "What do you call fake spaghetti? An impasta!",
+    "Why did the scarecrow win an award? Because he was outstanding in his field!"
+];
+
 // Dynamic bot replies
 const botReplies = {
     "hi": [
@@ -120,7 +138,7 @@ function getRandomResponse(responses) {
 }
 
 // Function to add a new message to the chat log
-function addMessage(sender, message) {
+function addMessage(sender, message, suggestions = []) {
     const messageContainer = document.createElement('div');
     messageContainer.classList.add('chat-message', sender);
 
@@ -136,22 +154,53 @@ function addMessage(sender, message) {
 
     chatLog.appendChild(messageContainer);
     chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
+
+    // Add suggestions (text links)
+    if (suggestions.length > 0) {
+        const suggestionsContainer = document.createElement('div');
+        suggestionsContainer.classList.add('suggestions');
+        
+        suggestions.forEach(suggestion => {
+            const suggestionText = document.createElement('span');
+            suggestionText.classList.add('suggestion-text');
+            suggestionText.textContent = suggestion.text;
+            suggestionText.addEventListener('click', () => handleSuggestionClick(suggestion.action));
+            suggestionsContainer.appendChild(suggestionText);
+        });
+
+        messageContainer.appendChild(suggestionsContainer);
+    }
+}
+
+// Handle the suggestion text click
+function handleSuggestionClick(action) {
+    if (action === 'play_a_song') {
+        playSong();
+    } else if (action === 'send_a_picture') {
+        displayImage();
+    } else if (action === 'stop_music') {
+        stopMusic();
+    } else if (action === 'make_a_joke') {
+        makeJoke();
+    }
+}
+
+// Function to make a random joke
+function makeJoke() {
+    const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+    addMessage('bot', randomJoke);
 }
 
 // Function to play a song
 function playSong() {
-    // Stop any previously playing audio
-    if (audioElement) {
-        audioElement.pause();
-        audioElement.currentTime = 0; // Reset the audio to the start
+    if (!audioElement) {
+        // Randomly select a song from the songs list
+        const songUrl = songs[Math.floor(Math.random() * songs.length)];
+        audioElement = document.createElement('audio');
+        audioElement.src = songUrl;
+        audioElement.controls = true;
+        chatLog.appendChild(audioElement);
     }
-
-    // Randomly select a song from the songs list
-    const songUrl = songs[Math.floor(Math.random() * songs.length)];
-    audioElement = document.createElement('audio');
-    audioElement.src = songUrl;
-    audioElement.controls = true;
-    chatLog.appendChild(audioElement);
 
     audioElement.play().catch((error) => {
         console.log("Autoplay is blocked. User interaction required.", error);
@@ -195,21 +244,30 @@ async function handleSendMessage() {
     if (userMessage !== "") {
         addMessage('user', userMessage); // Display user message
 
-        // Check for "send a picture" in various forms of user input
-        if (userMessage.toLowerCase().includes("send a picture") || userMessage.toLowerCase().includes("penge pic") || userMessage.toLowerCase().includes("send ka pic") || userMessage.toLowerCase().includes("send ka nga picture")) {
-            displayImage(); // Display the picture if the command matches
-        } else {
-            const botMessage = getBotResponse(userMessage); // Generate bot response
-            const simulatedMessage = await simulateTyping(botMessage); // Simulate typing
-            addMessage('bot', simulatedMessage); // Display bot response
-        }
-
-        if (userMessage.toLowerCase().trim() === "play a song") playSong(); // Play the song
-        if (userMessage.toLowerCase().trim() === "stop music") stopMusic(); // Stop the music
+        const botMessage = getBotResponse(userMessage); // Generate bot response
+        const suggestions = [
+            { text: 'Make a joke 🎧', action: 'make_a_joke' },
+            { text: 'Play a song 🎶', action: 'play_a_song' },
+            { text: 'Send a picture 🖼️', action: 'send_a_picture' },
+            { text: 'Stop music 🎧', action: 'stop_music' }
+        ];
+        
+        addMessage('bot', botMessage, suggestions); // Display bot response with suggestions
 
         userInput.value = ""; // Clear the input field
     }
 }
+
+// Function to trigger random responses every 5 seconds
+function startRandomResponses() {
+    setInterval(() => {
+        const randomResponse = getRandomResponse(random);
+        addMessage('bot', randomResponse); // Send random response every 15 seconds
+    }, 15000); // 15000ms = 15 seconds
+}
+
+// Start random responses when the bot loads
+startRandomResponses();
 
 // Simulate typing effect
 function simulateTyping(message) {
@@ -234,3 +292,11 @@ userInput.addEventListener('keypress', (e) => {
         handleSendMessage();
     }
 });
+
+function sendGreetingMessage() {
+    const greetingMessage = "Hello! I’m PopMart Bot. How can I assist you today?";
+    addMessage('bot', greetingMessage); // Send greeting message
+}
+
+// Call sendGreetingMessage when the page loads
+sendGreetingMessage();
