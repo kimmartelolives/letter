@@ -7,7 +7,7 @@ let audioElement; // Variable to track the audio element
 // List of image URLs (You can add more image URLs here)
 const images = [
     'https://i.pinimg.com/originals/75/b3/c8/75b3c8eca95d917c650cd574b91db7f7.gif', // Original image
-    'https://media.giphy.com/media/3o6ozFySvEXZ6fgvUw/giphy.gif', // Another animated image
+    'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3UzeTJ2YnB4NGJydmlpcjNjZmExYXV0Zm13MG1oZjBjM2FuZHpqaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PUBxelwT57jsQ/giphy.gif',
     'https://media1.tenor.com/m/zlKoX5HPPu8AAAAC/cat-annoyed.gif'
 
 ];
@@ -29,42 +29,44 @@ const random = [
     "Aba! Bakit may maganda dito?",
     "HAAHHHHAHAHAHAAA wala lang random tawa lang",
     "Omchim",
-    "Gew"
+    "Gew",
+    "Good luck Future RN laban lang boss lapit na!",
 ];
 
 // List of jokes (you can add more jokes here)
 const jokes = [
-    "Why don't skeletons fight each other? They don't have the guts!",
-    "Why did the math book look sad? Because it had too many problems.",
-    "Why don't programmers like nature? It has too many bugs.",
-    "What do you call fake spaghetti? An impasta!",
-    "Why did the scarecrow win an award? Because he was outstanding in his field!"
+    "Ilang coke pa ba? Ang kailangan kong inumin para ma mismo ko?",
+    "Sa dami kong memes na nakita sa soc med, pero ikaw pa rin ang na-memes ko!",
+    "Wala na intro intro! Ang ganda mo!",
+    "Lahat ng tao iba iba ang pananaw, katulad q walang ibang tinatanaw kundi ikaw!",
+    "Grabe talaga nakakalunod ang kagandahan mo!",
+    "Bagay na mahirap gawin: #1 Mag kunwaring di ka miss."
 ];
 
 // Dynamic bot replies
 const botReplies = {
     "hi": [
-        "Hello! Kamusta naman araw mo?",
-        "Hi! Ano trip natin ngayon boss?!",
-        "Hello ganda!"
+        "Hello! Kamusta naman araw mo? 😀",
+        "Hi! Ano trip natin ngayon boss?! 😎",
+        "Hello ganda! Kamusta? 🥰"
     ],
     "hello": [
-        "Hello!",
-        "Hi! Ano trip natin ngayon?",
-        "Hi! What can I do for you?"
+        "Hello! Kamusta? 🤗",
+        "Hi! Okie ka lang ba? Kamusta naman?",
+        "Hi! Kamusta?"
     ],
     "cute": [
         "Uu parang ikaw no?",
         "Pero mas cute ka naman e",
-        "Naul ang cute!"
+        "Naul ang cute! 🤭"
     ],
     "wala": [
-        "Alam ko wala sasabihin mo hay nako eto mga suggestion:",
-        "Wala ka diyan?! Sakalin kaya kita!",
-        "Osige eto oh try mo."
+        "Alam ko wala sasabihin mo hay nako eto mga suggestion: 😉",
+        "Wala ka diyan?! Sakalin kaya kita! 😁",
+        "Osige eto oh try mo. 🥳"
     ],
     "wala naman": [
-        "Alam ko wala sasabihin mo hay nako eto mga suggestion:",
+        "Alam ko wala sasabihin mo hay nako eto mga suggestion: 😒",
         "Wala ka diyan?! Sakalin kaya kita!",
         "Osige wala pala ah eto oh."
     ],
@@ -73,10 +75,47 @@ const botReplies = {
         "Osige sure yan ah? Message mo ako now na!!!",
         "..... *blush*"
     ],
-    "how are you": [
-        "I'm just a bot, but I'm here and ready to help!",
-        "Feeling fantastic! Thanks for asking.",
-        "I'm doing great! How about you?"
+    "kamusta": [
+        "Kung want mo ako kamustahin i-chat mo kaya ako now na!",
+        "Eto miss ka. NABAJBAJBABAJANAWNHAHA ikaw ba?",
+        "Ayos naman! Ikaw ba?"
+    ],
+    "okay lang": [
+        "Sure na okay ka lang?",
+        "Okie ngiti ka kaya muna yan ang ganda talaga!",
+        "Buti naman na okay ka lang!"
+    ],
+    "pagod": [
+        "Pagod ang baby na yan? Pwede ba kita gawing baby ko! asfnjasnjknxjacl 🫣",
+        "Pahinga ka muna nandito lang naman ako hehe 😌",
+        "Wala naman masakit sayo? Masahe kita HAHAHAAhahaa 😜"
+    ],
+    "che": [
+        "Damot naman!!!!!!!",
+        "HAHAHAHAHAHJBANJABNAJAHAMKFSKS",
+        "Grabe naman HAAMHKAMHKAHMKAMHK 😾"
+    ],
+    "char": [
+        "Sabay char tsk tsk",
+        "HAHAHAHAHAHJBANJABNAJAHAMKFSKS",
+        "Ayos ah HAHAHAHAHAHAHA sige na!"
+    ],
+    "weh": [
+        "Uu ako pa ba? Ako na 'to eh",
+        "Oo naman yes! Totoo!",
+        "All in pati pamato sure yon HAHAHAHAHA"
+    ],
+    "sino ka": [
+        "MARTEL AI v1.0 - Bot 🤖 developed by Kim Martel Olives"
+    ],
+    "about": [
+        "MARTEL AI v1.0 - Bot 🤖 developed by Kim Martel Olives"
+    ],
+    "i love you": [
+        "Sure yan? Walang bawian? Hindi joke? I Love You Too! 😽"
+    ],
+    "i like you": [
+        "Weh? Talaga ba? Ako matagal na gusto kita HAHAHAHAHAHABAABADB 😖"
     ],
     "bye": [
         "Goodbye! Have a wonderful day!",
@@ -239,7 +278,12 @@ function handleSuggestionClick(action) {
 // Function to make a random joke
 function makeJoke() {
     const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
-    addMessage('bot', randomJoke);
+    addMessage('bot', randomJoke, [
+        { text: 'Pickup lines 😂', action: 'make_a_joke' }
+    ]); 
+
+    chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
+
 }
 
 // Function to play a song
@@ -307,10 +351,12 @@ function displayImage() {
       imgElement.style.borderRadius = '10px';
       imgElement.style.marginTop = '10px';
   
+      
       imageContainer.appendChild(imgElement);
       chatLog.appendChild(imageContainer);
+      chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
 
-    chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
+    
 }
 
 // Function to handle sending the message
@@ -321,16 +367,17 @@ async function handleSendMessage() {
 
         const botMessage = getBotResponse(userMessage); // Generate bot response
         const suggestions = [
-            { text: 'Make a joke 🎧', action: 'make_a_joke' },
+            { text: 'Pickup lines 😂', action: 'make_a_joke' },
             { text: 'Play a song 🎶', action: 'play_a_song' }, // Play a song suggestion
             { text: 'Send a picture 🖼️', action: 'send_a_picture' },
             { text: 'Stop music 🎧', action: 'stop_music' }
         ];
 
+        userInput.value = ""; // Clear the input field
         const simulatedMessage = await simulateTyping(botMessage); // Simulate typing
         addMessage('bot', botMessage, suggestions); // Display bot response with suggestions
-
-        userInput.value = ""; // Clear the input field
+        chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
+        
     }
 }
 

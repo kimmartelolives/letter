@@ -113,9 +113,13 @@ body {
 }
 
 .mascot {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
+    border-color: #ffffff;
+    border: 2px solid white;  /* Add a white border */
+    padding: 5px;  /* Optional: adds padding between the image and the border */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);  /* Optional: adds a subtle shadow */
 }
 
 .chat-log {
@@ -298,4 +302,11 @@ footer {
     display: inline-block;
 }
 
+
+.version {
+    font-size: 14px; /* Adjust the font size as needed */
+    color: #ffffff; /* Lighter color for version */
+    margin-top: 5px; /* A little space between the title and version */
+    display: block; /* Make sure it's displayed as a block element */
+}
 
