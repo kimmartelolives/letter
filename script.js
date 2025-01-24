@@ -4,6 +4,14 @@ const chatLog = document.getElementById('chat-log');
 
 let audioElement; // Variable to track the audio element
 
+// List of image URLs (You can add more image URLs here)
+const images = [
+    'https://i.pinimg.com/originals/75/b3/c8/75b3c8eca95d917c650cd574b91db7f7.gif', // Original image
+    'https://media.giphy.com/media/3o6ozFySvEXZ6fgvUw/giphy.gif', // Another animated image
+    'https://media1.tenor.com/m/zlKoX5HPPu8AAAAC/cat-annoyed.gif'
+
+];
+
 // List of song URLs (you can replace these with actual URLs)
 const songs = [
     'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
@@ -15,11 +23,11 @@ const songs = [
 
 // List of random response
 const random = [
-    "Okie ka lang ba?",
+    "aklsmfklamgkxmkqkmkeqmkv ang lag",
     "Kamusta naman araw mo?",
     "Ayos!",
-    "Bakit may kumakausap sakin maganda?!",
-    "HAHAHAHAHAHAHAHA wala lang random tawa lang",
+    "Aba! Bakit may maganda dito?",
+    "HAAHHHHAHAHAHAAA wala lang random tawa lang",
     "Omchim",
     "Gew"
 ];
@@ -45,15 +53,25 @@ const botReplies = {
         "Hi! Ano trip natin ngayon?",
         "Hi! What can I do for you?"
     ],
+    "cute": [
+        "Uu parang ikaw no?",
+        "Pero mas cute ka naman e",
+        "Naul ang cute!"
+    ],
     "wala": [
         "Alam ko wala sasabihin mo hay nako eto mga suggestion:",
         "Wala ka diyan?! Sakalin kaya kita!",
-        "Osige wala pala ah eto oh."
+        "Osige eto oh try mo."
     ],
     "wala naman": [
         "Alam ko wala sasabihin mo hay nako eto mga suggestion:",
         "Wala ka diyan?! Sakalin kaya kita!",
         "Osige wala pala ah eto oh."
+    ],
+    "baby mo ako": [
+        "Weh? Kung ganon ako na mismo kausapin mo hindi 'to!!!",
+        "Osige sure yan ah? Message mo ako now na!!!",
+        "..... *blush*"
     ],
     "how are you": [
         "I'm just a bot, but I'm here and ready to help!",
@@ -81,9 +99,9 @@ const botReplies = {
         "Take a look at this!"
     ],
     "default": [
-        "Hmm, I didn't quite catch that. Could you rephrase?",
-        "I'm not sure I understand, but I'm here to help!",
-        "Sorry, I didn’t get that. Could you say it differently?"
+        "Hmm, Try mo etong nasa below na mga suggestions",
+        "Ok check mo below suggestions, but I'm here to help!",
+        "Wait sorry? Ano ulit? HAHAHAHA!"
     ]
 };
 
@@ -93,6 +111,7 @@ function getCurrentTime() {
     const currentTime = new Date().toLocaleString('en-US', options);
     return currentTime; // Format: "HH:mm"
 }
+
 
 // Function to calculate the Levenshtein distance (edit distance)
 function calculateLevenshtein(a, b) {
@@ -204,10 +223,10 @@ function addMessage(sender, message, suggestions = []) {
     }
 }
 
-// Handle the suggestion text click
+// Function to handle suggestion text click
 function handleSuggestionClick(action) {
     if (action === 'play_a_song') {
-        playSong();
+        playSong(); // Call the playSong function when "Play a song" is clicked
     } else if (action === 'send_a_picture') {
         displayImage();
     } else if (action === 'stop_music') {
@@ -225,15 +244,22 @@ function makeJoke() {
 
 // Function to play a song
 function playSong() {
-    if (!audioElement) {
-        // Randomly select a song from the songs list
-        const songUrl = songs[Math.floor(Math.random() * songs.length)];
-        audioElement = document.createElement('audio');
-        audioElement.src = songUrl;
-        audioElement.controls = true;
-        chatLog.appendChild(audioElement);
+    if (audioElement) {
+        // If a song is already playing, stop it and reset the audio element
+        audioElement.pause();
+        audioElement.currentTime = 0; // Reset the audio
     }
+    
+    // Randomly select a song from the songs list
+    const songUrl = songs[Math.floor(Math.random() * songs.length)];
 
+    // Create a new audio element for each song
+    audioElement = document.createElement('audio');
+    audioElement.src = songUrl;
+    audioElement.controls = true;
+    chatLog.appendChild(audioElement); // Append the audio player to chat
+
+    // Play the audio
     audioElement.play().catch((error) => {
         console.log("Autoplay is blocked. User interaction required.", error);
         const messageContainer = document.createElement('div');
@@ -243,6 +269,12 @@ function playSong() {
     });
 
     chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
+
+    // Send confirmation response after playing the song
+    const confirmationMessage = "I’m playing a song for you now 🎶. Enjoy!";
+    addMessage('bot', confirmationMessage, [
+        { text: 'Stop music 🎧', action: 'stop_music' }
+    ]); // Add "Stop music" suggestion
 }
 
 // Function to stop the music
@@ -250,23 +282,34 @@ function stopMusic() {
     if (audioElement && !audioElement.paused) {
         audioElement.pause();
         audioElement.currentTime = 0; // Reset the audio to the start
+        const messageContainer = document.createElement('div');
+        messageContainer.classList.add('chat-message', 'bot');
+        messageContainer.textContent = "Music stopped. Let me know if you'd like me to play something else!";
+        addMessage('bot', messageContainer.textContent); // Confirm stopping music
     }
 }
 
-// Function to display an image
 function displayImage() {
     const imageContainer = document.createElement('div');
     imageContainer.classList.add('chat-message', 'bot'); // Bot-style message container
 
-    const imgElement = document.createElement('img');
-    imgElement.src = 'https://via.placeholder.com/300'; // Replace with your image URL
-    imgElement.alt = 'Chatbot Image';
-    imgElement.style.maxWidth = '100%';
-    imgElement.style.borderRadius = '10px';
-    imgElement.style.marginTop = '10px';
+    // Randomly select an image from the list
+    const randomImageUrl = images[Math.floor(Math.random() * images.length)];
 
-    imageContainer.appendChild(imgElement);
-    chatLog.appendChild(imageContainer);
+    const imgElement = document.createElement('img');
+    imgElement.src = randomImageUrl; // Set random image URL
+    imgElement.alt = 'Chatbot Image';
+
+      // Adjust the width and height for resizing the image
+      imgElement.style.maxWidth = '300px'; // Max width of 300px (you can change this value)
+      imgElement.style.width = '100%'; // Set width to 100% so it scales well within the container
+      imgElement.style.height = 'auto'; // Maintain the aspect ratio
+      imgElement.style.borderRadius = '10px';
+      imgElement.style.marginTop = '10px';
+  
+      imageContainer.appendChild(imgElement);
+      chatLog.appendChild(imageContainer);
+
     chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
 }
 
@@ -279,11 +322,12 @@ async function handleSendMessage() {
         const botMessage = getBotResponse(userMessage); // Generate bot response
         const suggestions = [
             { text: 'Make a joke 🎧', action: 'make_a_joke' },
-            { text: 'Play a song 🎶', action: 'play_a_song' },
+            { text: 'Play a song 🎶', action: 'play_a_song' }, // Play a song suggestion
             { text: 'Send a picture 🖼️', action: 'send_a_picture' },
             { text: 'Stop music 🎧', action: 'stop_music' }
         ];
-        
+
+        const simulatedMessage = await simulateTyping(botMessage); // Simulate typing
         addMessage('bot', botMessage, suggestions); // Display bot response with suggestions
 
         userInput.value = ""; // Clear the input field
@@ -306,7 +350,7 @@ function simulateTyping(message) {
     return new Promise((resolve) => {
         const typingIndicator = document.createElement('div');
         typingIndicator.classList.add('chat-message', 'bot');
-        typingIndicator.textContent = "PopMart Bot is typing...";
+        typingIndicator.textContent = "Martel AI is typing...";
         chatLog.appendChild(typingIndicator);
         chatLog.scrollTop = chatLog.scrollHeight;
 
