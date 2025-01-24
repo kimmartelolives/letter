@@ -13,13 +13,15 @@ const songs = [
     'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'
 ];
 
-// List of jokes (you can add more jokes here)
+// List of random response
 const random = [
-    "wew",
-    "wwwwwww",
-    "111111111",
-    "ewewew",
-    "ewewe"
+    "Okie ka lang ba?",
+    "Kamusta naman araw mo?",
+    "Ayos!",
+    "Bakit may kumakausap sakin maganda?!",
+    "HAHAHAHAHAHAHAHA wala lang random tawa lang",
+    "Omchim",
+    "Gew"
 ];
 
 // List of jokes (you can add more jokes here)
@@ -34,14 +36,24 @@ const jokes = [
 // Dynamic bot replies
 const botReplies = {
     "hi": [
-        "Hello! How can I assist you today?",
-        "Hi there! What's on your mind?",
-        "Hey! How's your day going?"
+        "Hello! Kamusta naman araw mo?",
+        "Hi! Ano trip natin ngayon boss?!",
+        "Hello ganda!"
     ],
     "hello": [
-        "Hey there! How's it going?",
-        "Hi! Glad to chat with you.",
-        "Hello! What can I do for you?"
+        "Hello!",
+        "Hi! Ano trip natin ngayon?",
+        "Hi! What can I do for you?"
+    ],
+    "wala": [
+        "Alam ko wala sasabihin mo hay nako eto mga suggestion:",
+        "Wala ka diyan?! Sakalin kaya kita!",
+        "Osige wala pala ah eto oh."
+    ],
+    "wala naman": [
+        "Alam ko wala sasabihin mo hay nako eto mga suggestion:",
+        "Wala ka diyan?! Sakalin kaya kita!",
+        "Osige wala pala ah eto oh."
     ],
     "how are you": [
         "I'm just a bot, but I'm here and ready to help!",
@@ -51,7 +63,7 @@ const botReplies = {
     "bye": [
         "Goodbye! Have a wonderful day!",
         "See you later! Take care.",
-        "Bye! Don't hesitate to chat again."
+        "Bye! Don't hesitate to chat again. See you on the homepage!"
     ],
     "play a song": [
         "Sure! Playing a song for you now. 🎵",
@@ -74,6 +86,13 @@ const botReplies = {
         "Sorry, I didn’t get that. Could you say it differently?"
     ]
 };
+
+// Function to get the current time in Philippine Standard Time (PST)
+function getCurrentTime() {
+    const options = { timeZone: 'Asia/Manila', hour: '2-digit', minute: '2-digit', hour12: true };
+    const currentTime = new Date().toLocaleString('en-US', options);
+    return currentTime; // Format: "HH:mm"
+}
 
 // Function to calculate the Levenshtein distance (edit distance)
 function calculateLevenshtein(a, b) {
@@ -129,6 +148,14 @@ function preprocessInput(userMessage) {
 function getBotResponse(userMessage) {
     const preprocessedMessage = preprocessInput(userMessage); // Normalize user input
     const closestMatch = getClosestResponse(preprocessedMessage);
+    
+    // If the bot responds with "bye", redirect to index.html
+    if (closestMatch === "bye") {
+        setTimeout(() => {
+            window.location.href = "index.html"; // Redirect to the home page
+        }, 1500); // Delay redirection for 1.5 seconds
+    }
+
     return getRandomResponse(botReplies[closestMatch]);
 }
 
@@ -151,6 +178,11 @@ function addMessage(sender, message, suggestions = []) {
     messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
     messageDiv.textContent = message;
     messageContainer.appendChild(messageDiv);
+
+    const timeDiv = document.createElement('div');
+    timeDiv.classList.add('message-time');
+    timeDiv.textContent = getCurrentTime();
+    messageContainer.appendChild(timeDiv);
 
     chatLog.appendChild(messageContainer);
     chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
@@ -262,8 +294,8 @@ async function handleSendMessage() {
 function startRandomResponses() {
     setInterval(() => {
         const randomResponse = getRandomResponse(random);
-        addMessage('bot', randomResponse); // Send random response every 15 seconds
-    }, 25000); // 15000ms = 15 seconds
+        addMessage('bot', randomResponse); // Send random response every 30 seconds
+    }, 30000); 
 }
 
 // Start random responses when the bot loads
@@ -294,7 +326,7 @@ userInput.addEventListener('keypress', (e) => {
 });
 
 function sendGreetingMessage() {
-    const greetingMessage = "Hello! I’m PopMart Bot. How can I assist you today?";
+    const greetingMessage = "Hello! Rosaura! Ano mapaglilingkod ko sayo boss?";
     addMessage('bot', greetingMessage); // Send greeting message
 }
 
