@@ -397,13 +397,16 @@ function botResponse(message) {
     botMessage.classList.add('bot-message');
     botMessage.textContent = message;
 
+    
+
+    messageContainer.appendChild(botMessage);
+    chatLog.appendChild(messageContainer);
+
     const timeDiv = document.createElement('div');
     timeDiv.classList.add('message-time');
     timeDiv.textContent = getCurrentTime();
     messageContainer.appendChild(timeDiv);
-
-    messageContainer.appendChild(botMessage);
-    chatLog.appendChild(messageContainer);
+    
     chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
 }
 
