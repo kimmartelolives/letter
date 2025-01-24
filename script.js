@@ -137,6 +137,9 @@ const botReplies = {
         "Tapon ko na 'to",
         "Hays laggers"
     ],
+    "sinisigawan mo ako": [
+        "Hindi boss",
+    ],
     "baliw ka": [
         "Mana lang sayo hays",
         "Uu mana lang sayo kaya ganon",
