@@ -213,6 +213,9 @@ const botReplies = {
     "ano name": [  
         "Pangalan ko? Martel boss!",
     ],
+    "bbm": [  
+        "Pukingina mga yan! Salot! Pwe!",
+    ],
     "default": [
         "Hmm, Try mo etong nasa below na mga suggestions",
         "Ok check mo below suggestions, but I'm here to help!",
