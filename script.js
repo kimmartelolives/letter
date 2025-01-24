@@ -53,7 +53,7 @@ const random = [
     "Aba! Bakit may maganda dito?",
     "HAAHHHHAHAHAHAAA wala lang random tawa lang",
     "Omchim",
-    "Gew",
+    "Type mo lang 'bye' sa chat kung want mo bumalik sa letter",
     "Ayos ba?",
     "Good luck Future RN laban lang boss lapit na!",
     "Nakuha mo na ano ang password?",
