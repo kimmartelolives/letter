@@ -56,6 +56,7 @@ const random = [
     "Gew",
     "Ayos ba?",
     "Good luck Future RN laban lang boss lapit na!",
+    "Ano password?",
 ];
 
 // List of jokes (you can add more jokes here)
@@ -79,6 +80,16 @@ const botReplies = {
         "Hello! Kamusta? 🤗",
         "Hi! Okie ka lang ba? Kamusta naman?",
         "Hi! Kamusta?"
+    ],
+    "password": [
+        "Uu password!",
+        "Hulaan mo dali!",
+        "Yes password!"
+    ],
+    "pass": [
+        "Uu password!",
+        "Hulaan mo dali!",
+        "Yes password!"
     ],
     "haha": [
         "Happy yarn? Ok yan ganyan lang lagi!",
