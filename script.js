@@ -323,6 +323,7 @@ function getBotResponse(userMessage) {
     // If the bot responds with "bye", redirect to index.html
     if (closestMatch === "bye") {
         setTimeout(() => {
+           
             window.location.href = "index.html"; // Redirect to the home page
         }, 1500); // Delay redirection for 1.5 seconds
     }
