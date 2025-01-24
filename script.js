@@ -24,6 +24,11 @@ const meowie = [
 
 ];
 
+const little = [
+    '4.jpg',
+
+];
+
 // kim images
 const kim = [
     '1.jpg',
@@ -162,6 +167,9 @@ const botReplies = {
         "Sure na okay ka lang?",
         "Okie ngiti ka kaya muna yan ang ganda talaga!",
         "Buti naman na okay ka lang!"
+    ],
+    "little martel": [
+        "Little me jusko po",
     ],
     "pagod": [
         "Pagod ang baby na yan? asfnjasnjknxjacl 🫣",
@@ -516,6 +524,29 @@ function calculateLevenshtein(a, b) {
     return tmp[alen][blen];
 }
 
+function handleLittleResponse() {
+  
+    const randomImageUrl = little[Math.floor(Math.random() * little.length)];
+    
+    const imageContainer = document.createElement('div');
+    imageContainer.classList.add('chat-message', 'bot');
+
+    const imgElement = document.createElement('img');
+    imgElement.src = randomImageUrl; 
+    imgElement.alt = 'Chatbot Image';
+
+
+    imgElement.style.maxWidth = '300px'; 
+    imgElement.style.width = '100%'; 
+    imgElement.style.height = 'auto';
+    imgElement.style.borderRadius = '10px';
+    imgElement.style.marginTop = '10px';
+
+    imageContainer.appendChild(imgElement);
+    chatLog.appendChild(imageContainer);
+    chatLog.scrollTop = chatLog.scrollHeight; 
+}
+
 
 function handleMartelResponse() {
   
@@ -609,6 +640,11 @@ function getBotResponse(userMessage) {
      if (preprocessedMessage.includes("meowie")) {
         handleMartelResponse();  
         return getRandomResponse(botReplies["meowie"]);  
+    }
+
+    if (preprocessedMessage.includes("little")) {
+        handleLittleResponse();  
+        return getRandomResponse(botReplies["little martel"]);  
     }
 
   
