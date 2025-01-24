@@ -144,7 +144,7 @@ function addMessage(sender, message, suggestions = []) {
 
     const username = document.createElement('div');
     username.classList.add('username');
-    username.textContent = sender === 'user' ? 'You' : 'PopMart Bot';
+    username.textContent = sender === 'user' ? 'You' : 'Martel AI';
     messageContainer.appendChild(username);
 
     const messageDiv = document.createElement('div');
@@ -263,7 +263,7 @@ function startRandomResponses() {
     setInterval(() => {
         const randomResponse = getRandomResponse(random);
         addMessage('bot', randomResponse); // Send random response every 15 seconds
-    }, 15000); // 15000ms = 15 seconds
+    }, 25000); // 15000ms = 15 seconds
 }
 
 // Start random responses when the bot loads
