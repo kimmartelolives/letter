@@ -6,7 +6,7 @@ let audioElement;
 
 
 const images = [
-    'https://i.pinimg.com/originals/75/b3/c8/75b3c8eca95d917c650cd574b91db7f7.gif', // Original image
+    'https://i.pinimg.com/originals/75/b3/c8/75b3c8eca95d917c650cd574b91db7f7.gif',
     'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3UzeTJ2YnB4NGJydmlpcjNjZmExYXV0Zm13MG1oZjBjM2FuZHpqaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PUBxelwT57jsQ/giphy.gif',
     'https://media1.tenor.com/m/zlKoX5HPPu8AAAAC/cat-annoyed.gif',
     'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGF2a2wxc2JoYzd2b2c3MmpvcTY2ZWM5N3lidm5lYnRpYzZ6MG1hOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gVsmn4qdyBn1Bra2tN/giphy.gif',
@@ -40,7 +40,8 @@ const songs = [
     'nonsense.mp3',
     'taste.mp3',
     'good4u.mp3',
-    'feather.mp3'
+    'feather.mp3',
+    'dilaw.mp3'
     
 
 ];
