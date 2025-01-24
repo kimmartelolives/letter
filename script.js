@@ -129,6 +129,18 @@ const botReplies = {
         "Oo naman yes! Totoo!",
         "All in pati pamato sure yon HAHAHAHAHA"
     ],
+    "ty": [
+        "Thank you ka diyan?! 1k lang bayad 😆",
+    ],
+    "thank you": [
+        "Thank you ka diyan?! 1k lang bayad 😆",
+    ],
+    "lungkot": [
+        "Malungkot yarn? Wag kana malungkot maganda ka naman e",
+    ],
+    "lungcoat": [
+        "Malungkot yarn? Wag kana malungkot maganda ka naman e",
+    ],
     "sino ka": [
         "MARTEL AI v1.0 - Bot 🤖 developed by Kim Martel Olives"
     ],
@@ -168,6 +180,12 @@ const botReplies = {
     "martel": [  
         "Here’s a special picture just for you! 🖼️",
         "You mentioned 'martel'! Take a look at this! 👀"
+    ],
+    "rosaura": [  
+        "Ang ganda!",
+    ],
+    "saura": [  
+        "Matik ang ganda talaga!",
     ],
     "default": [
         "Hmm, Try mo etong nasa below na mga suggestions",
@@ -509,7 +527,7 @@ userInput.addEventListener('keypress', (e) => {
 });
 
 function sendGreetingMessage() {
-    const greetingMessage = "Hello! Rosaura! Ano mapaglilingkod ko sayo boss?";
+    const greetingMessage = "Hello! Rosaura! Ang ganda mo naman!";
     addMessage('bot', greetingMessage); // Send greeting message
 }
 
