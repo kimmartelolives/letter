@@ -116,7 +116,7 @@ const botReplies = {
         "Wala naman masakit sayo? Masahe kita HAHAHAAhahaa 😜"
     ],
     "che": [
-        "Damot naman!!!!!!!",
+        "Hala siya ASDKLAJDSAJJSAFJS",
         "HAHAHAHAHAHJBANJABNAJAHAMKFSKS",
         "Grabe naman HAAMHKAMHKAHMKAMHK 😾"
     ],
