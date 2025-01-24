@@ -72,7 +72,7 @@ const jokes = [
 const botReplies = {
     "hi": [
         "Hello! Kamusta naman araw mo? 😀",
-        "Hi! Ano trip natin ngayon boss?! 😎",
+        "Hi!",
         "Hello ganda! Kamusta? 🥰"
     ],
     "hello": [
@@ -406,7 +406,7 @@ function botResponse(message) {
     timeDiv.classList.add('message-time');
     timeDiv.textContent = getCurrentTime();
     messageContainer.appendChild(timeDiv);
-    
+
     chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
 }
 
