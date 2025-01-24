@@ -54,6 +54,7 @@ const random = [
     "HAAHHHHAHAHAHAAA wala lang random tawa lang",
     "Omchim",
     "Gew",
+    "Ayos ba?",
     "Good luck Future RN laban lang boss lapit na!",
 ];
 
@@ -183,6 +184,12 @@ const botReplies = {
     ],
     "rosaura": [  
         "Ang ganda!",
+    ],
+    "uu": [  
+        "Weh?",
+    ],
+    "oo": [  
+        "Talaga ba?",
     ],
     "saura": [  
         "Matik ang ganda talaga!",
@@ -339,7 +346,7 @@ function addMessage(sender, message, suggestions = []) {
 
     const username = document.createElement('div');
     username.classList.add('username');
-    username.textContent = sender === 'user' ? 'You' : 'Martel AI';
+    username.textContent = sender === 'user' ? 'You' : 'Martel';
     messageContainer.appendChild(username);
 
     const messageDiv = document.createElement('div');
@@ -496,7 +503,7 @@ function startRandomResponses() {
     setInterval(() => {
         const randomResponse = getRandomResponse(random);
         addMessage('bot', randomResponse); // Send random response every 30 seconds
-    }, 30000); 
+    }, 50000); 
 }
 
 // Start random responses when the bot loads
@@ -507,7 +514,7 @@ function simulateTyping(message) {
     return new Promise((resolve) => {
         const typingIndicator = document.createElement('div');
         typingIndicator.classList.add('chat-message', 'bot');
-        typingIndicator.textContent = "Martel AI is typing...";
+        typingIndicator.textContent = "Martel is typing...";
         chatLog.appendChild(typingIndicator);
         chatLog.scrollTop = chatLog.scrollHeight;
 
