@@ -145,7 +145,7 @@ const botReplies = {
         "Buti naman na okay ka lang!"
     ],
     "pagod": [
-        "Pagod ang baby na yan? Pwede ba kita gawing baby ko! asfnjasnjknxjacl 🫣",
+        "Pagod ang baby na yan? asfnjasnjknxjacl 🫣",
         "Pahinga ka muna nandito lang naman ako hehe 😌",
         "Wala naman masakit sayo? Masahe kita HAHAHAAhahaa 😜"
     ],
