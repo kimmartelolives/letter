@@ -222,6 +222,12 @@ const botReplies = {
     "ano fave mo": [  
         "Ikaw",
     ],
+    "gutom ako": [  
+        "Tara kain tayo? Saan ba gusto mo",
+    ],
+    "kain tayo": [  
+        "Tara!",
+    ],
     "default": [
         "Hmm, Try mo etong nasa below na mga suggestions",
         "Ok check mo below suggestions, but I'm here to help!",
