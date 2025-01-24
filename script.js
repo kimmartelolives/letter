@@ -112,6 +112,11 @@ const botReplies = {
         "Pero mas cute ka naman e",
         "Naul ang cute! 🤭"
     ],
+    "ang cute": [
+        "Uu parang ikaw no?",
+        "Pero mas cute ka naman e",
+        "Naul ang cute! 🤭"
+    ],
     "wala": [
         "Alam ko wala sasabihin mo hay nako eto mga suggestion: 😉",
         "Wala ka diyan?! Sakalin kaya kita! 😁",
