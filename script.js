@@ -210,6 +210,9 @@ const botReplies = {
     "saura": [  
         "Matik ang ganda talaga!",
     ],
+    "ano name": [  
+        "Pangalan ko? Martel boss!",
+    ],
     "default": [
         "Hmm, Try mo etong nasa below na mga suggestions",
         "Ok check mo below suggestions, but I'm here to help!",
