@@ -1,0 +1,93 @@
+
+/* Container for centering the button */
+.container {
+    text-align: center;
+}
+
+/* Button Styling */
+.new-button {
+    position: relative;
+ 
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(135deg, #ff8fa8, #ffcce6);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    margin-top: 20px;
+}
+
+/* Adding pulse effect on hover */
+.new-button:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+    background-color: #45a049;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* "NEW" Indicator Styling - Fire-like animation */
+.new-indicator {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: linear-gradient(45deg, #ff4500, #ff6347, #ff8c00); /* Fire-like gradient */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: bold;
+    opacity: 0;
+    transform: scale(0);
+    animation: fireAnimation 1s ease-in-out forwards, flicker 0.5s infinite alternate;
+}
+
+/* Fire-like flickering animation */
+@keyframes fireAnimation {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+        box-shadow: 0 0 10px 2px rgba(255, 69, 0, 0.7); /* Glowing effect */
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2); /* Slightly grow */
+        box-shadow: 0 0 15px 5px rgba(255, 69, 0, 0.8), 0 0 20px 10px rgba(255, 69, 0, 0.5); /* Intensifying glow */
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        box-shadow: 0 0 10px 3px rgba(255, 69, 0, 0.7); /* Glowing effect */
+    }
+}
+
+/* Flickering animation for realistic fire effect */
+@keyframes flicker {
+    0% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    75% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Button Text Styling */
+.button-text {
+    position: relative;
+    z-index: 1;
+}
