@@ -159,10 +159,10 @@ const botReplies = {
         "Malungkot yarn? Wag kana malungkot maganda ka naman e",
     ],
     "sino ka": [
-        "MARTEL AI v1.0 - Bot 🤖 developed by Kim Martel Olives"
+        "MARTEL v1.0 - 🤖 developed by Kim Martel Olives"
     ],
     "about": [
-        "MARTEL AI v1.0 - Bot 🤖 developed by Kim Martel Olives"
+        "MARTEL v1.0 - 🤖 developed by Kim Martel Olives"
     ],
     "i love you": [
         "Sure yan? Walang bawian? fr fr?"
