@@ -2,9 +2,9 @@ const sendButton = document.getElementById('send-btn');
 const userInput = document.getElementById('user-input');
 const chatLog = document.getElementById('chat-log');
 
-let audioElement; // Variable to track the audio element
+let audioElement; 
 
-// List of image URLs (You can add more image URLs here)
+
 const images = [
     'https://i.pinimg.com/originals/75/b3/c8/75b3c8eca95d917c650cd574b91db7f7.gif', // Original image
     'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3UzeTJ2YnB4NGJydmlpcjNjZmExYXV0Zm13MG1oZjBjM2FuZHpqaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PUBxelwT57jsQ/giphy.gif',
@@ -32,7 +32,7 @@ const kim = [
 
 ];
 
-// List of song URLs (you can replace these with actual URLs)
+
 const songs = [
     'happier.mp3',
     'bewithu.mp3',
@@ -45,7 +45,7 @@ const songs = [
 
 ];
 
-// List of random response
+
 const random = [
     "aklsmfklamgkxmkqkmkeqmkv ang lag",
     "Kamusta naman araw mo?",
@@ -59,7 +59,7 @@ const random = [
     "Nakuha mo na ano ang password?",
 ];
 
-// List of jokes (you can add more jokes here)
+
 const jokes = [
     "Ilang coke pa ba? Ang kailangan kong inumin para ma mismo ko?",
     "Sa dami kong memes na nakita sa soc med, pero ikaw pa rin ang na-memes ko!",
@@ -69,7 +69,7 @@ const jokes = [
     "Bagay na mahirap gawin: #1 Mag kunwaring di ka miss."
 ];
 
-// Dynamic bot replies
+
 const botReplies = {
     "hi": [
         "Hello! Kamusta naman araw mo? 😀",
@@ -276,8 +276,8 @@ function handleCellClick(cell, index) {
     checkGameStatus();
     
     if (gameActive) {
-        currentPlayer = 'O'; // Switch to AI after user's turn
-        aiMove(); // AI makes its move
+        currentPlayer = 'O'; 
+        aiMove(); 
     }
 }
 
@@ -287,7 +287,7 @@ function aiMove() {
     let index = bestMove.index;
     gameBoard[index] = 'O';
     
-    // Find the cell and update it
+
     const cell = document.querySelector(`[data-index="${index}"]`);
     cell.textContent = 'O';
     
@@ -315,11 +315,11 @@ function minimax(board, player) {
             move.score = minimax(board, 'O').score;
         }
 
-        board[cell] = ''; // Reset the cell
+        board[cell] = ''; 
         moves.push(move);
     });
 
-    // Choose the best move
+  
     let bestMove;
     if (player === 'O') {
         let bestScore = -Infinity;
@@ -342,7 +342,7 @@ function minimax(board, player) {
     return bestMove;
 }
 
-// Get all empty cells on the board
+
 function getEmptyCells(board) {
     return board.reduce((acc, val, index) => {
         if (val === '') acc.push(index);
@@ -363,7 +363,7 @@ function checkWinner(board, player) {
     });
 }
 
-// Check the game status (win, draw, continue)
+
 function checkGameStatus() {
     if (checkWinner(gameBoard, 'X')) {
         alert('You win! 🎉 Great job!');
@@ -380,7 +380,7 @@ function checkGameStatus() {
     }
 }
 
-// Reset the game board
+
 function resetGame() {
     gameBoard = ['', '', '', '', '', '', '', '', ''];
     gameActive = true;
@@ -391,19 +391,19 @@ function resetGame() {
     });
 }
 
-// Add event listeners to each cell
+
 document.querySelectorAll('.tic-tac-toe-cell').forEach((cell, index) => {
     cell.addEventListener('click', () => handleCellClick(cell, index));
 });
 
-// Add event listener to reset button
+
 document.getElementById('reset-game').addEventListener('click', resetGame);
 
 document.getElementById('close-game').addEventListener('click', () => {
     document.getElementById('tic-tac-toe-game').style.display = 'none'; // Hide the game
 });
 
-// Function to add a bot response to the chat
+
 function botResponse(message) {
     const chatLog = document.getElementById('chat-log');
     const messageContainer = document.createElement('div');
@@ -447,11 +447,11 @@ function botResponse(message) {
 function getCurrentTime() {
     const options = { timeZone: 'Asia/Manila', hour: '2-digit', minute: '2-digit', hour12: true };
     const currentTime = new Date().toLocaleString('en-US', options);
-    return currentTime; // Format: "HH:mm"
+    return currentTime; 
 }
 
 
-// Function to calculate the Levenshtein distance (edit distance)
+
 function calculateLevenshtein(a, b) {
     const tmp = [];
     let i, j, alen = a.length, blen = b.length, cost;
@@ -473,55 +473,55 @@ function calculateLevenshtein(a, b) {
     return tmp[alen][blen];
 }
 
-// Function to handle the "kim" response and send a picture
+
 function handleMartelResponse() {
-    // Send a random image from the images list
+  
     const randomImageUrl = martel[Math.floor(Math.random() * martel.length)];
     
     const imageContainer = document.createElement('div');
-    imageContainer.classList.add('chat-message', 'bot'); // Bot-style message container
+    imageContainer.classList.add('chat-message', 'bot');
 
     const imgElement = document.createElement('img');
-    imgElement.src = randomImageUrl; // Set random image URL
+    imgElement.src = randomImageUrl; 
     imgElement.alt = 'Chatbot Image';
 
-    // Adjust the width and height for resizing the image
-    imgElement.style.maxWidth = '300px'; // Max width of 300px (you can change this value)
-    imgElement.style.width = '100%'; // Set width to 100% so it scales well within the container
-    imgElement.style.height = 'auto'; // Maintain the aspect ratio
+
+    imgElement.style.maxWidth = '300px'; 
+    imgElement.style.width = '100%'; 
+    imgElement.style.height = 'auto';
     imgElement.style.borderRadius = '10px';
     imgElement.style.marginTop = '10px';
 
     imageContainer.appendChild(imgElement);
     chatLog.appendChild(imageContainer);
-    chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
+    chatLog.scrollTop = chatLog.scrollHeight; 
 }
 
-// Function to handle the "kim" response and send a picture
+
 function handleKimResponse() {
-    // Send a random image from the images list
+    
     const randomImageUrl = kim[Math.floor(Math.random() * kim.length)];
     
     const imageContainer = document.createElement('div');
-    imageContainer.classList.add('chat-message', 'bot'); // Bot-style message container
+    imageContainer.classList.add('chat-message', 'bot'); 
 
     const imgElement = document.createElement('img');
-    imgElement.src = randomImageUrl; // Set random image URL
+    imgElement.src = randomImageUrl; 
     imgElement.alt = 'Chatbot Image';
 
-    // Adjust the width and height for resizing the image
-    imgElement.style.maxWidth = '300px'; // Max width of 300px (you can change this value)
-    imgElement.style.width = '100%'; // Set width to 100% so it scales well within the container
-    imgElement.style.height = 'auto'; // Maintain the aspect ratio
+
+    imgElement.style.maxWidth = '300px'; 
+    imgElement.style.width = '100%'; 
+    imgElement.style.height = 'auto'; 
     imgElement.style.borderRadius = '10px';
     imgElement.style.marginTop = '10px';
 
     imageContainer.appendChild(imgElement);
     chatLog.appendChild(imageContainer);
-    chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
+    chatLog.scrollTop = chatLog.scrollHeight; 
 }
 
-// Function to find the closest response based on string similarity
+
 function getClosestResponse(userMessage) {
     let bestMatch = { key: "default", similarity: 0 };
 
@@ -532,57 +532,57 @@ function getClosestResponse(userMessage) {
         }
     });
 
-    // We set a threshold to ensure the match is not too weak
-    return bestMatch.similarity > 0.5 ? bestMatch.key : "default"; // Threshold for similarity (50%)
+   
+    return bestMatch.similarity > 0.5 ? bestMatch.key : "default"; 
 }
 
-// Preprocess user input (normalize and handle slang)
+
 function preprocessInput(userMessage) {
-    // Convert to lowercase to handle case insensitivity
+
     let normalizedMessage = userMessage.toLowerCase();
 
-    // Handle common abbreviations or slang
-    normalizedMessage = normalizedMessage.replace(/ka/g, "a"); // Replace "ka" with "a" (informal tagalog)
-    normalizedMessage = normalizedMessage.replace(/penge/g, "send"); // Replace "penge" with "send"
-    normalizedMessage = normalizedMessage.replace(/nga/g, "a"); // Replace "nga" with "a"
+  
+    normalizedMessage = normalizedMessage.replace(/ka/g, "a"); 
+    normalizedMessage = normalizedMessage.replace(/penge/g, "send"); 
+    normalizedMessage = normalizedMessage.replace(/nga/g, "a");
 
     return normalizedMessage;
 }
 
-// Function to get the bot's response based on user input
+
 function getBotResponse(userMessage) {
-    const preprocessedMessage = preprocessInput(userMessage); // Normalize user input
+    const preprocessedMessage = preprocessInput(userMessage);
     const closestMatch = getClosestResponse(preprocessedMessage);
     
-    // If the bot responds with "bye", redirect to index.html
+   
     if (closestMatch === "bye") {
         setTimeout(() => {
            
-            window.location.href = "index.html"; // Redirect to the home page
-        }, 2000); // Delay redirection for 1.5 seconds
+            window.location.href = "index.html"; 
+        }, 2000); 
     }
 
-     // Check if the message contains the word "martel"
+   
      if (preprocessedMessage.includes("martel")) {
-        handleMartelResponse();  // Trigger the function to display the image
-        return getRandomResponse(botReplies["martel"]);  // Return a random response from the "kim" replies
+        handleMartelResponse();  
+        return getRandomResponse(botReplies["martel"]);  
     }
 
-     // Check if the message contains the word "kim"
+  
      if (preprocessedMessage.includes("kim")) {
-        handleKimResponse();  // Trigger the function to display the image
-        return getRandomResponse(botReplies["kim"]);  // Return a random response from the "kim" replies
+        handleKimResponse();  
+        return getRandomResponse(botReplies["kim"]); 
     }
 
     return getRandomResponse(botReplies[closestMatch]);
 }
 
-// Function to pick a random response from the selected bot replies
+
 function getRandomResponse(responses) {
     return responses[Math.floor(Math.random() * responses.length)];
 }
 
-// Function to add a new message to the chat log
+
 function addMessage(sender, message, suggestions = []) {
     const messageContainer = document.createElement('div');
     messageContainer.classList.add('chat-message', sender);
@@ -603,9 +603,9 @@ function addMessage(sender, message, suggestions = []) {
     messageContainer.appendChild(timeDiv);
 
     chatLog.appendChild(messageContainer);
-    chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
+    chatLog.scrollTop = chatLog.scrollHeight; 
 
-    // Add suggestions (text links)
+
     if (suggestions.length > 0) {
         const suggestionsContainer = document.createElement('div');
         suggestionsContainer.classList.add('suggestions');
@@ -622,10 +622,10 @@ function addMessage(sender, message, suggestions = []) {
     }
 }
 
-// Function to handle suggestion text click
+
 function handleSuggestionClick(action) {
     if (action === 'play_a_song') {
-        playSong(); // Call the playSong function when "Play a song" is clicked
+        playSong(); 
     } else if (action === 'send_a_picture') {
         displayImage();
     } else if (action === 'stop_music') {
@@ -633,46 +633,44 @@ function handleSuggestionClick(action) {
     } else if (action === 'make_a_joke') {
         makeJoke();
     } else if (action === 'play_tic_tac_toe') {
-    displayTicTacToeGame(); // Show Tic-Tac-Toe game
+    displayTicTacToeGame(); 
 }
 }
 
 
-// Display the Tic-Tac-Toe game when selected
+
 function displayTicTacToeGame() {
     const gameContainer = document.getElementById('tic-tac-toe-game');
-    gameContainer.style.display = 'block'; // Show the game
+    gameContainer.style.display = 'block'; 
 }
 
-// Function to make a random joke
+
 function makeJoke() {
     const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
     addMessage('bot', randomJoke, [
         { text: 'More Pickup lines 😂', action: 'make_a_joke' }
     ]); 
 
-    chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
-
+    chatLog.scrollTop = chatLog.scrollHeight; 
 }
 
-// Function to play a song
 function playSong() {
     if (audioElement) {
-        // If a song is already playing, stop it and reset the audio element
+       
         audioElement.pause();
-        audioElement.currentTime = 0; // Reset the audio
+        audioElement.currentTime = 0; 
     }
     
-    // Randomly select a song from the songs list
+
     const songUrl = songs[Math.floor(Math.random() * songs.length)];
 
-    // Create a new audio element for each song
+
     audioElement = document.createElement('audio');
     audioElement.src = songUrl;
     audioElement.controls = true;
-    chatLog.appendChild(audioElement); // Append the audio player to chat
+    chatLog.appendChild(audioElement); 
 
-    // Play the audio
+
     audioElement.play().catch((error) => {
         console.log("Autoplay is blocked. User interaction required.", error);
         const messageContainer = document.createElement('div');
@@ -681,88 +679,86 @@ function playSong() {
         chatLog.appendChild(messageContainer);
     });
 
-    chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
+    chatLog.scrollTop = chatLog.scrollHeight;
 
-    // Send confirmation response after playing the song
+ 
     const confirmationMessage = "I’m playing a song for you now 🎶. Enjoy!";
     addMessage('bot', confirmationMessage, [
         { text: 'Stop music 🎧', action: 'stop_music' }
-    ]); // Add "Stop music" suggestion
+    ]); 
 }
 
-// Function to stop the music
+
 function stopMusic() {
     if (audioElement && !audioElement.paused) {
         audioElement.pause();
-        audioElement.currentTime = 0; // Reset the audio to the start
+        audioElement.currentTime = 0;
         const messageContainer = document.createElement('div');
         messageContainer.classList.add('chat-message', 'bot');
         messageContainer.textContent = "Music stopped. Let me know if you'd like me to play something else!";
-        addMessage('bot', messageContainer.textContent); // Confirm stopping music
+        addMessage('bot', messageContainer.textContent); 
     }
 }
 
 function displayImage() {
     const imageContainer = document.createElement('div');
-    imageContainer.classList.add('chat-message', 'bot'); // Bot-style message container
+    imageContainer.classList.add('chat-message', 'bot'); 
 
-    // Randomly select an image from the list
+  
     const randomImageUrl = images[Math.floor(Math.random() * images.length)];
 
     const imgElement = document.createElement('img');
-    imgElement.src = randomImageUrl; // Set random image URL
+    imgElement.src = randomImageUrl; 
     imgElement.alt = 'Chatbot Image';
 
-      // Adjust the width and height for resizing the image
-      imgElement.style.maxWidth = '300px'; // Max width of 300px (you can change this value)
-      imgElement.style.width = '100%'; // Set width to 100% so it scales well within the container
-      imgElement.style.height = 'auto'; // Maintain the aspect ratio
+      imgElement.style.maxWidth = '300px'; 
+      imgElement.style.width = '100%'; 
+      imgElement.style.height = 'auto'; 
       imgElement.style.borderRadius = '10px';
       imgElement.style.marginTop = '10px';
   
       
       imageContainer.appendChild(imgElement);
       chatLog.appendChild(imageContainer);
-      chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
+      chatLog.scrollTop = chatLog.scrollHeight; 
 
     
 }
 
-// Function to handle sending the message
 async function handleSendMessage() {
     const userMessage = userInput.value.trim();
     if (userMessage !== "") {
-        addMessage('user', userMessage); // Display user message
+        addMessage('user', userMessage); 
 
-        const botMessage = getBotResponse(userMessage); // Generate bot response
+        const botMessage = getBotResponse(userMessage);
         const suggestions = [
             { text: 'Pickup lines 😂', action: 'make_a_joke' },
-            { text: 'Play a random song 🎶', action: 'play_a_song' }, // Play a song suggestion
+            { text: 'Play a random song 🎶', action: 'play_a_song' }, 
             { text: 'Send a random cat 🖼️', action: 'send_a_picture' },
             { text: 'Stop music 🎧', action: 'stop_music' },
             { text: 'Play Tic-Tac-Toe 🎮', action: 'play_tic_tac_toe' }
         ];
 
-        userInput.value = ""; // Clear the input field
-        const simulatedMessage = await simulateTyping(botMessage); // Simulate typing
-        addMessage('bot', botMessage, suggestions); // Display bot response with suggestions
-        chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
+        userInput.value = ""; 
+        const simulatedMessage = await simulateTyping(botMessage);
+        addMessage('bot', botMessage, suggestions);
+        chatLog.scrollTop = chatLog.scrollHeight; 
         
     }
 }
 
-// Function to trigger random responses every 5 seconds
+
 function startRandomResponses() {
     setInterval(() => {
         const randomResponse = getRandomResponse(random);
-        addMessage('bot', randomResponse); // Send random response every 30 seconds
+        addMessage('bot', randomResponse); 
     }, 50000); 
 }
 
-// Start random responses when the bot loads
+
 startRandomResponses();
 
-// Simulate typing effect
+
 function simulateTyping(message) {
     return new Promise((resolve) => {
         const typingIndicator = document.createElement('div');
@@ -774,11 +770,11 @@ function simulateTyping(message) {
         setTimeout(() => {
             chatLog.removeChild(typingIndicator);
             resolve(message);
-        }, 1000 + Math.random() * 1000); // Random typing delay
+        }, 1000 + Math.random() * 1000); 
     });
 }
 
-// Add event listeners
+
 sendButton.addEventListener('click', handleSendMessage);
 userInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
@@ -788,8 +784,7 @@ userInput.addEventListener('keypress', (e) => {
 
 function sendGreetingMessage() {
     const greetingMessage = "Hello! Rosaura! Ang ganda mo naman!";
-    addMessage('bot', greetingMessage); // Send greeting message
+    addMessage('bot', greetingMessage);
 }
 
-// Call sendGreetingMessage when the page loads
 sendGreetingMessage();
