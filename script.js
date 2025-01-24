@@ -264,7 +264,19 @@ const botReplies = {
     "ano name": [  
         "Pangalan ko? Martel boss!",
     ],
+    "bbm ka": [  
+        "Basta BBM! Pukingina mga yan! Salot! Pwe!",
+        "HAHAHAHAHAHAH salot"
+    ],
     "bbm": [  
+        "Basta BBM! Pukingina mga yan! Salot! Pwe!",
+        "HAHAHAHAHAHAH salot"
+    ],
+    "maka bbm ka ba": [  
+        "Basta BBM! Pukingina mga yan! Salot! Pwe!",
+        "HAHAHAHAHAHAH salot"
+    ],
+    "fan ka ni bbm": [  
         "Basta BBM! Pukingina mga yan! Salot! Pwe!",
         "HAHAHAHAHAHAH salot"
     ],
