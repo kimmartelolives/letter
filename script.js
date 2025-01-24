@@ -224,6 +224,10 @@ const botReplies = {
         "Ayos ba?",
         "Bakit? HAHAHAHA"
     ],
+    "edi wow": [  
+        "Ayos ba?",
+        "Bakit? HAHAHAHA"
+    ],
     "rosaura": [  
         "Ang ganda talaga jusko!",
     ],
