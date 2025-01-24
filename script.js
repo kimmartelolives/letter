@@ -228,12 +228,186 @@ const botReplies = {
     "kain tayo": [  
         "Tara!",
     ],
+  
+    "play tic-tac-toe": [
+        "Let me pull up a Tic-Tac-Toe game for you. 🎮"
+    ],
+
     "default": [
         "Hmm, Try mo etong nasa below na mga suggestions",
         "Ok check mo below suggestions, but I'm here to help!",
         "Wait sorry? Ano ulit? HAHAHAHA!"
     ]
 };
+
+
+
+let currentPlayer = 'X'; // User starts
+let gameBoard = ['', '', '', '', '', '', '', '', ''];
+let gameActive = true;
+
+// Handle cell click to make a move
+function handleCellClick(cell, index) {
+    if (gameBoard[index] !== '' || !gameActive || currentPlayer === 'O') return; // Block if AI's turn
+
+    gameBoard[index] = currentPlayer;
+    cell.textContent = currentPlayer;
+    checkGameStatus();
+    
+    if (gameActive) {
+        currentPlayer = 'O'; // Switch to AI after user's turn
+        aiMove(); // AI makes its move
+    }
+}
+
+// AI's move (Minimax algorithm)
+function aiMove() {
+    let bestMove = minimax(gameBoard, 'O');
+    let index = bestMove.index;
+    gameBoard[index] = 'O';
+    
+    // Find the cell and update it
+    const cell = document.querySelector(`[data-index="${index}"]`);
+    cell.textContent = 'O';
+    
+    checkGameStatus();
+    if (gameActive) {
+        currentPlayer = 'X'; // Switch back to player
+    }
+}
+
+// Minimax algorithm to find the best move
+function minimax(board, player) {
+    let emptyCells = getEmptyCells(board);
+    if (checkWinner(board, 'X')) return { score: -10 };
+    if (checkWinner(board, 'O')) return { score: 10 };
+    if (emptyCells.length === 0) return { score: 0 };
+
+    let moves = [];
+    emptyCells.forEach(cell => {
+        let move = { index: cell };
+        board[cell] = player;
+
+        if (player === 'O') {
+            move.score = minimax(board, 'X').score;
+        } else {
+            move.score = minimax(board, 'O').score;
+        }
+
+        board[cell] = ''; // Reset the cell
+        moves.push(move);
+    });
+
+    // Choose the best move
+    let bestMove;
+    if (player === 'O') {
+        let bestScore = -Infinity;
+        moves.forEach(move => {
+            if (move.score > bestScore) {
+                bestScore = move.score;
+                bestMove = move;
+            }
+        });
+    } else {
+        let bestScore = Infinity;
+        moves.forEach(move => {
+            if (move.score < bestScore) {
+                bestScore = move.score;
+                bestMove = move;
+            }
+        });
+    }
+
+    return bestMove;
+}
+
+// Get all empty cells on the board
+function getEmptyCells(board) {
+    return board.reduce((acc, val, index) => {
+        if (val === '') acc.push(index);
+        return acc;
+    }, []);
+}
+
+// Check if a player has won
+function checkWinner(board, player) {
+    const winPatterns = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+        [0, 4, 8], [2, 4, 6] // Diagonals
+    ];
+
+    return winPatterns.some(pattern => {
+        return pattern.every(index => board[index] === player);
+    });
+}
+
+// Check the game status (win, draw, continue)
+function checkGameStatus() {
+    if (checkWinner(gameBoard, 'X')) {
+        alert('You win! 🎉 Great job!');
+        botResponse('Grabe ang lakas ah! 🎉');
+        gameActive = false;
+    } else if (checkWinner(gameBoard, 'O')) {
+        alert('Martel wins! 😎 Better luck next time!');
+        botResponse('HAHAHAHA, Ez win! 😎 Galingan mo naman?');
+        gameActive = false;
+    } else if (!gameBoard.includes('')) {
+        alert('It\'s a draw! 🤝');
+        botResponse('Patas lang pala draw HAHAHAHAHA');
+        gameActive = false;
+    }
+}
+
+// Reset the game board
+function resetGame() {
+    gameBoard = ['', '', '', '', '', '', '', '', ''];
+    gameActive = true;
+    currentPlayer = 'X';
+    const cells = document.querySelectorAll('.tic-tac-toe-cell');
+    cells.forEach(cell => {
+        cell.textContent = '';
+    });
+}
+
+// Add event listeners to each cell
+document.querySelectorAll('.tic-tac-toe-cell').forEach((cell, index) => {
+    cell.addEventListener('click', () => handleCellClick(cell, index));
+});
+
+// Add event listener to reset button
+document.getElementById('reset-game').addEventListener('click', resetGame);
+
+document.getElementById('close-game').addEventListener('click', () => {
+    document.getElementById('tic-tac-toe-game').style.display = 'none'; // Hide the game
+});
+
+// Function to add a bot response to the chat
+function botResponse(message) {
+    const chatLog = document.getElementById('chat-log');
+    const messageContainer = document.createElement('div');
+    messageContainer.classList.add('chat-message', 'bot');
+
+    const botMessage = document.createElement('div');
+    botMessage.classList.add('bot-message');
+    botMessage.textContent = message;
+
+    messageContainer.appendChild(botMessage);
+    chatLog.appendChild(messageContainer);
+    chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Function to get the current time in Philippine Standard Time (PST)
 function getCurrentTime() {
@@ -424,7 +598,16 @@ function handleSuggestionClick(action) {
         stopMusic();
     } else if (action === 'make_a_joke') {
         makeJoke();
-    }
+    } else if (action === 'play_tic_tac_toe') {
+    displayTicTacToeGame(); // Show Tic-Tac-Toe game
+}
+}
+
+
+// Display the Tic-Tac-Toe game when selected
+function displayTicTacToeGame() {
+    const gameContainer = document.getElementById('tic-tac-toe-game');
+    gameContainer.style.display = 'block'; // Show the game
 }
 
 // Function to make a random joke
@@ -522,7 +705,8 @@ async function handleSendMessage() {
             { text: 'Pickup lines 😂', action: 'make_a_joke' },
             { text: 'Play a random song 🎶', action: 'play_a_song' }, // Play a song suggestion
             { text: 'Send a random cat 🖼️', action: 'send_a_picture' },
-            { text: 'Stop music 🎧', action: 'stop_music' }
+            { text: 'Stop music 🎧', action: 'stop_music' },
+            { text: 'Play Tic-Tac-Toe 🎮', action: 'play_tic_tac_toe' }
         ];
 
         userInput.value = ""; // Clear the input field
