@@ -216,6 +216,12 @@ const botReplies = {
     "bbm": [  
         "Basta BBM! Pukingina mga yan! Salot! Pwe!",
     ],
+    "ano favorite mo": [  
+        "Ikaw",
+    ],
+    "ano fave mo": [  
+        "Ikaw",
+    ],
     "default": [
         "Hmm, Try mo etong nasa below na mga suggestions",
         "Ok check mo below suggestions, but I'm here to help!",
