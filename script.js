@@ -150,6 +150,11 @@ const botReplies = {
         "Okie ngiti ka kaya muna yan ang ganda talaga!",
         "Buti naman na okay ka lang!"
     ],
+    "ayos lang": [
+        "Sure na okay ka lang?",
+        "Okie ngiti ka kaya muna yan ang ganda talaga!",
+        "Buti naman na okay ka lang!"
+    ],
     "pagod": [
         "Pagod ang baby na yan? asfnjasnjknxjacl 🫣",
         "Pahinga ka muna nandito lang naman ako hehe 😌",
