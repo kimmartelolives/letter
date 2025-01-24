@@ -171,6 +171,9 @@ const botReplies = {
     "ty": [
         "Thank you ka diyan?! 1k lang bayad 😆",
     ],
+    "gusto kita": [
+        "Weh? Talaga ba? Ako matagal na gusto kita HAHAHAHAHAHABAABADB 😖",
+    ],
     "thank you": [
         "Thank you ka diyan?! 1k lang bayad 😆",
     ],
