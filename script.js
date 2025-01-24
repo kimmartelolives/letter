@@ -80,6 +80,11 @@ const botReplies = {
         "Hi! Okie ka lang ba? Kamusta naman?",
         "Hi! Kamusta?"
     ],
+    "haha": [
+        "Happy yarn? Ok yan ganyan lang lagi!",
+        "HAHAHAHAHAHAHAHAAHAHA gew",
+        "HGJAKHDJHAGDGHDHGAHHGAHAHAHNVADA"
+    ],
     "cute": [
         "Uu parang ikaw no?",
         "Pero mas cute ka naman e",
