@@ -56,7 +56,7 @@ const random = [
     "Gew",
     "Ayos ba?",
     "Good luck Future RN laban lang boss lapit na!",
-    "Ano password?",
+    "Nakuha mo na ano ang password?",
 ];
 
 // List of jokes (you can add more jokes here)
