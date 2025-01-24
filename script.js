@@ -132,11 +132,6 @@ const botReplies = {
         "Wala ka diyan?! Sakalin kaya kita!",
         "Osige wala pala ah eto oh."
     ],
-    "baby": [
-        "Weh? Kung ganon ako na mismo kausapin mo hindi 'to!!!",
-        "Osige sure yan ah? Message mo ako now na!!!",
-        "..... *blush*"
-    ],
     "lag": [
         "Ang lag ko bulok net hays",
         "Tapon ko na 'to",
