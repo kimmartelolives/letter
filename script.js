@@ -460,8 +460,8 @@ async function handleSendMessage() {
         const botMessage = getBotResponse(userMessage); // Generate bot response
         const suggestions = [
             { text: 'Pickup lines 😂', action: 'make_a_joke' },
-            { text: 'Play a song 🎶', action: 'play_a_song' }, // Play a song suggestion
-            { text: 'Send a picture 🖼️', action: 'send_a_picture' },
+            { text: 'Play a random song 🎶', action: 'play_a_song' }, // Play a song suggestion
+            { text: 'Send a random cat 🖼️', action: 'send_a_picture' },
             { text: 'Stop music 🎧', action: 'stop_music' }
         ];
 
