@@ -559,7 +559,7 @@ function getBotResponse(userMessage) {
         setTimeout(() => {
            
             window.location.href = "index.html"; // Redirect to the home page
-        }, 1500); // Delay redirection for 1.5 seconds
+        }, 2000); // Delay redirection for 1.5 seconds
     }
 
      // Check if the message contains the word "martel"
