@@ -220,6 +220,10 @@ const botReplies = {
         "Here’s a special picture just for you! 🖼️",
         "You mentioned 'martel'! Take a look at this! 👀"
     ],
+    "wow": [  
+        "Ayos ba?",
+        "Bakit? HAHAHAHA"
+    ],
     "rosaura": [  
         "Ang ganda talaga jusko!",
     ],
