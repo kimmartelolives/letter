@@ -104,11 +104,19 @@ function playSong() {
         audioElement.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'; // Replace with your song URL
         audioElement.controls = true;
         chatLog.appendChild(audioElement);
-        audioElement.play();
-        chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
-    } else {
-        audioElement.play();
     }
+
+    audioElement.play().catch((error) => {
+        console.log("Autoplay is blocked. User interaction required.", error);
+        // Display a message or ask for user interaction
+        const messageContainer = document.createElement('div');
+        messageContainer.classList.add('chat-message', 'bot');
+        messageContainer.textContent =
+            "Tap the play button below to start the music 🎶.";
+        chatLog.appendChild(messageContainer);
+    });
+
+    chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
 }
 
 // Function to stop the music
