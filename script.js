@@ -388,6 +388,11 @@ function botResponse(message) {
     const messageContainer = document.createElement('div');
     messageContainer.classList.add('chat-message', 'bot');
 
+    const senderName = document.createElement('div');
+    senderName.classList.add('username');
+    senderName.textContent = "Martel";
+    messageContainer.appendChild(senderName);
+
     const botMessage = document.createElement('div');
     botMessage.classList.add('bot-message');
     botMessage.textContent = message;
