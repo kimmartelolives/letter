@@ -165,7 +165,7 @@ const botReplies = {
         "MARTEL AI v1.0 - Bot 🤖 developed by Kim Martel Olives"
     ],
     "i love you": [
-        "Sure yan? Walang bawian? Hindi joke? I Love You Too! 😽"
+        "Sure yan? Walang bawian? fr fr?"
     ],
     "i like you": [
         "Weh? Talaga ba? Ako matagal na gusto kita HAHAHAHAHAHABAABADB 😖"
