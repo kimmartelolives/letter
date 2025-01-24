@@ -220,7 +220,7 @@ const botReplies = {
         "You mentioned 'martel'! Take a look at this! 👀"
     ],
     "rosaura": [  
-        "Ang ganda!",
+        "Ang ganda talaga jusko!",
     ],
     "uu": [  
         "Weh?",
