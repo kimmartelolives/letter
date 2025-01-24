@@ -18,7 +18,7 @@ const images = [
 ];
 
 // martel images
-const martel = [
+const meowie = [
     'ura.gif',
     'ura.gif',
 
@@ -237,9 +237,9 @@ const botReplies = {
         "I have a special image just for you, please don't laugh! Hahahaha! 🖼️",
         "Jusko po nakakahiya HAHAAHAHAHA"
     ],
-    "martel": [  
+    "meowie": [  
         "Here’s a special picture just for you! 🖼️",
-        "You mentioned 'martel'! Take a look at this! 👀"
+        "You mentioned 'meowie'! Take a look at this! 👀"
     ],
     "wow": [  
         "Ayos ba?",
@@ -519,7 +519,7 @@ function calculateLevenshtein(a, b) {
 
 function handleMartelResponse() {
   
-    const randomImageUrl = martel[Math.floor(Math.random() * martel.length)];
+    const randomImageUrl = meowie[Math.floor(Math.random() * meowie.length)];
     
     const imageContainer = document.createElement('div');
     imageContainer.classList.add('chat-message', 'bot');
@@ -606,9 +606,9 @@ function getBotResponse(userMessage) {
     }
 
    
-     if (preprocessedMessage.includes("martel")) {
+     if (preprocessedMessage.includes("meowie")) {
         handleMartelResponse();  
-        return getRandomResponse(botReplies["martel"]);  
+        return getRandomResponse(botReplies["meowie"]);  
     }
 
   
