@@ -4,6 +4,15 @@ const chatLog = document.getElementById('chat-log');
 
 let audioElement; // Variable to track the audio element
 
+// List of song URLs (you can replace these with actual URLs)
+const songs = [
+    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
+    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'
+];
+
 // Dynamic bot replies
 const botReplies = {
     "hi": [
@@ -48,34 +57,66 @@ const botReplies = {
     ]
 };
 
-// Function to pick a random response
+// Function to calculate the Levenshtein distance (edit distance)
+function calculateLevenshtein(a, b) {
+    const tmp = [];
+    let i, j, alen = a.length, blen = b.length, cost;
+
+    if (alen === 0) return blen;
+    if (blen === 0) return alen;
+
+    for (i = 0; i <= alen; i++) tmp[i] = [i];
+
+    for (j = 0; j <= blen; j++) tmp[0][j] = j;
+
+    for (i = 1; i <= alen; i++) {
+        for (j = 1; j <= blen; j++) {
+            cost = a[i - 1] === b[j - 1] ? 0 : 1;
+            tmp[i][j] = Math.min(tmp[i - 1][j] + 1, tmp[i][j - 1] + 1, tmp[i - 1][j - 1] + cost);
+        }
+    }
+
+    return tmp[alen][blen];
+}
+
+// Function to find the closest response based on string similarity
+function getClosestResponse(userMessage) {
+    let bestMatch = { key: "default", similarity: 0 };
+
+    Object.keys(botReplies).forEach((key) => {
+        const similarity = 1 - calculateLevenshtein(userMessage, key) / Math.max(userMessage.length, key.length);
+        if (similarity > bestMatch.similarity) {
+            bestMatch = { key, similarity };
+        }
+    });
+
+    // We set a threshold to ensure the match is not too weak
+    return bestMatch.similarity > 0.5 ? bestMatch.key : "default"; // Threshold for similarity (50%)
+}
+
+// Preprocess user input (normalize and handle slang)
+function preprocessInput(userMessage) {
+    // Convert to lowercase to handle case insensitivity
+    let normalizedMessage = userMessage.toLowerCase();
+
+    // Handle common abbreviations or slang
+    normalizedMessage = normalizedMessage.replace(/ka/g, "a"); // Replace "ka" with "a" (informal tagalog)
+    normalizedMessage = normalizedMessage.replace(/penge/g, "send"); // Replace "penge" with "send"
+    normalizedMessage = normalizedMessage.replace(/nga/g, "a"); // Replace "nga" with "a"
+
+    return normalizedMessage;
+}
+
+// Function to get the bot's response based on user input
+function getBotResponse(userMessage) {
+    const preprocessedMessage = preprocessInput(userMessage); // Normalize user input
+    const closestMatch = getClosestResponse(preprocessedMessage);
+    return getRandomResponse(botReplies[closestMatch]);
+}
+
+// Function to pick a random response from the selected bot replies
 function getRandomResponse(responses) {
     return responses[Math.floor(Math.random() * responses.length)];
-}
-
-// Function to simulate typing effect
-function simulateTyping(message) {
-    return new Promise((resolve) => {
-        const typingIndicator = document.createElement('div');
-        typingIndicator.classList.add('chat-message', 'bot');
-        typingIndicator.textContent = "PopMart Bot is typing...";
-        chatLog.appendChild(typingIndicator);
-        chatLog.scrollTop = chatLog.scrollHeight;
-
-        setTimeout(() => {
-            chatLog.removeChild(typingIndicator);
-            resolve(message);
-        }, 1000 + Math.random() * 1000); // Random typing delay
-    });
-}
-
-// Function to get bot response
-function getBotResponse(userMessage) {
-    const message = userMessage.toLowerCase().trim();
-    if (botReplies[message]) {
-        return getRandomResponse(botReplies[message]);
-    }
-    return getRandomResponse(botReplies["default"]);
 }
 
 // Function to add a new message to the chat log
@@ -99,20 +140,24 @@ function addMessage(sender, message) {
 
 // Function to play a song
 function playSong() {
-    if (!audioElement) {
-        audioElement = document.createElement('audio');
-        audioElement.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'; // Replace with your song URL
-        audioElement.controls = true;
-        chatLog.appendChild(audioElement);
+    // Stop any previously playing audio
+    if (audioElement) {
+        audioElement.pause();
+        audioElement.currentTime = 0; // Reset the audio to the start
     }
+
+    // Randomly select a song from the songs list
+    const songUrl = songs[Math.floor(Math.random() * songs.length)];
+    audioElement = document.createElement('audio');
+    audioElement.src = songUrl;
+    audioElement.controls = true;
+    chatLog.appendChild(audioElement);
 
     audioElement.play().catch((error) => {
         console.log("Autoplay is blocked. User interaction required.", error);
-        // Display a message or ask for user interaction
         const messageContainer = document.createElement('div');
         messageContainer.classList.add('chat-message', 'bot');
-        messageContainer.textContent =
-            "Tap the play button below to start the music 🎶.";
+        messageContainer.textContent = "Tap the play button below to start the music 🎶.";
         chatLog.appendChild(messageContainer);
     });
 
@@ -150,25 +195,36 @@ async function handleSendMessage() {
     if (userMessage !== "") {
         addMessage('user', userMessage); // Display user message
 
-        const botMessage = getBotResponse(userMessage); // Generate bot response
-        const simulatedMessage = await simulateTyping(botMessage); // Simulate typing
-        addMessage('bot', simulatedMessage); // Display bot response
-
-        // Special actions for specific commands
-        if (userMessage.toLowerCase().trim() === "play a song") {
-            playSong(); // Play the song
+        // Check for "send a picture" in various forms of user input
+        if (userMessage.toLowerCase().includes("send a picture") || userMessage.toLowerCase().includes("penge pic") || userMessage.toLowerCase().includes("send ka pic") || userMessage.toLowerCase().includes("send ka nga picture")) {
+            displayImage(); // Display the picture if the command matches
+        } else {
+            const botMessage = getBotResponse(userMessage); // Generate bot response
+            const simulatedMessage = await simulateTyping(botMessage); // Simulate typing
+            addMessage('bot', simulatedMessage); // Display bot response
         }
 
-        if (userMessage.toLowerCase().trim() === "stop music") {
-            stopMusic(); // Stop the music
-        }
-
-        if (userMessage.toLowerCase().trim() === "send a picture") {
-            displayImage(); // Display the picture
-        }
+        if (userMessage.toLowerCase().trim() === "play a song") playSong(); // Play the song
+        if (userMessage.toLowerCase().trim() === "stop music") stopMusic(); // Stop the music
 
         userInput.value = ""; // Clear the input field
     }
+}
+
+// Simulate typing effect
+function simulateTyping(message) {
+    return new Promise((resolve) => {
+        const typingIndicator = document.createElement('div');
+        typingIndicator.classList.add('chat-message', 'bot');
+        typingIndicator.textContent = "PopMart Bot is typing...";
+        chatLog.appendChild(typingIndicator);
+        chatLog.scrollTop = chatLog.scrollHeight;
+
+        setTimeout(() => {
+            chatLog.removeChild(typingIndicator);
+            resolve(message);
+        }, 1000 + Math.random() * 1000); // Random typing delay
+    });
 }
 
 // Add event listeners
