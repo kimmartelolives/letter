@@ -30,7 +30,7 @@
             margin: 0;
             text-align: center;
         }
-        .message, .love, .extra {
+        .message, .love, .love1, .extra {
             font-size: 2.5rem;
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
@@ -40,6 +40,11 @@
         }
         .love {
             font-size: 1.2rem;
+            margin-top: 10px;
+            transition: opacity 2s ease-in-out, transform 2s ease-in-out;
+        }
+        .love1 {
+            font-size: 0.5rem;
             margin-top: 10px;
             transition: opacity 2s ease-in-out, transform 2s ease-in-out;
         }
@@ -65,7 +70,8 @@
 </head>
 <body>
     <div class="message">You Look Amazing Tonight ✨</div>
-    <div class="love">I Love You ❤️</div>
+    <div class="love">I Love You ..</div>
+    <div class="love1">You know that, right?</div>
     <div class="heart">💖</div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -75,6 +81,9 @@
             setTimeout(() => {
                 document.querySelector(".love").classList.add("show");
             }, 2000);
+            setTimeout(() => {
+                document.querySelector(".love1").classList.add("show");
+            }, 4000);
         });
     </script>
 </body>
