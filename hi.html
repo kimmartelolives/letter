@@ -13,11 +13,20 @@
         }
         .container {
             margin-top: 100px;
+            padding: 0 20px;
         }
         h1 {
             color: #ff4081;
             font-size: 3rem;
             text-shadow: 2px 2px #ff80ab;
+            word-wrap: break-word;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
         }
         .heart {
             position: absolute;
