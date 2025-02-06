@@ -91,11 +91,17 @@ const botReplies = {
         "Uu password!",
         "Hulaan mo dali!",
         "Yes password!"
+ 
     ],
     "pass": [
         "Uu password!",
         "Hulaan mo dali!",
         "Yes password!"
+    ],
+    "clue": [
+        "maganda ung password",
+        "basta maganda ung password",
+        "Oo maganda talaga ung clue hehe!"
     ],
     "haha": [
         "Happy yarn? Ok yan ganyan lang lagi!",
