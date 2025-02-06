@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Girlfriend?</title>
+    <style>
+        body {
+            background-color: #ffccdc;
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        .container {
+            margin-top: 100px;
+        }
+        h1 {
+            color: #ff4081;
+            font-size: 3rem;
+            text-shadow: 2px 2px #ff80ab;
+        }
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 24px;
+            animation: float 5s infinite ease-in-out;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); opacity: 1; }
+            100% { transform: translateY(-500px); opacity: 0; }
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .yes-button {
+            background-color: #ff80ab; 
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        }
+        .yes-button:hover {
+            background-color: #ff4081;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Will You Be My Wifey/Girlfriend/Bestfriend/Bb/Baby/Lahat na!!!? 💖</h1>
+        <div class="buttons">
+            <button class="yes-button" onclick="showLove()">Yes? 💕</button>
+        </div>
+    </div>
+    <script>
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.innerHTML = "❤️";
+            heart.classList.add("heart");
+            document.body.appendChild(heart);
+            
+            let x = Math.random() * window.innerWidth;
+            let y = window.innerHeight;
+            heart.style.left = `${x}px`;
+            heart.style.top = `${y}px`;
+            heart.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            
+            setTimeout(() => heart.remove(), 5000);
+        }
+        
+        function showLove() {
+            alert("Tell me now, what is your answer?💖🥰");
+            setInterval(createHeart, 200);
+        }
+    </script>
+</body>
+</html>

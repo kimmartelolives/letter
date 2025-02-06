@@ -244,6 +244,10 @@ const botReplies = {
         "Here’s a special picture just for you! 🖼️",
         "You mentioned 'meowie'! Take a look at this! 👀"
     ],
+    "martel": [  
+        "Here’s a special picture just for you! 🖼️",
+        "You mentioned 'meowie'! Take a look at this! 👀"
+    ],
     "wow": [  
         "Ayos ba?",
         "Bakit? HAHAHAHA"
@@ -628,6 +632,13 @@ function getBotResponse(userMessage) {
         setTimeout(() => {
            
             window.location.href = "index.html"; 
+        }, 2000); 
+    }
+
+    if (closestMatch === "rosaura") {
+        setTimeout(() => {
+           
+            window.location.href = "hi.html"; 
         }, 2000); 
     }
 
