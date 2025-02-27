@@ -233,7 +233,7 @@
         function enterDigit(digit) {
             if (enteredPasscode.length < 6) {
                 enteredPasscode += digit;
-                document.getElementById("enteredPasscode").textContent = "●".repeat(enteredPasscode.length);
+                document.getElementById("enteredPasscode").textContent = "● ".repeat(enteredPasscode.length);
             }
             if (enteredPasscode.length === 6) {
                 checkPasscode();
