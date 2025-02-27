@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhone 15 Style Romantic Lock</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('romantic-bg.jpeg') no-repeat center center/cover;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            transition: opacity 1s ease-in-out;
+        }
+        .status-bar {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            z-index: 20;
+        }
+        .status-icons {
+            display: flex;
+            gap: 10px;
+        }
+        .dynamic-island {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 35px;
+            background: black;
+            border-radius: 20px;
+            z-index: 15;
+        }
+        .notification {
+            position: absolute;
+            bottom: 180px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 350px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        .notif-icon {
+            width: 40px;
+            height: 40px;
+            background: gray;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .notif-text {
+            text-align: left;
+            font-size: 14px;
+            color: black;
+        }
+        .notif-text strong {
+            font-size: 16px;
+        }
+        .overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(3px);
+        }
+        .lock-screen {
+            position: absolute;
+            color: white;
+            top: 20%;
+            text-align: center;
+            transition: opacity 1s ease-in-out;
+            z-index: 5;
+        }
+        .passcode-display {
+            font-size: 24px;
+            letter-spacing: 10px;
+            color: white;
+            margin-top: 10px;
+            height: 30px;
+        }
+        .passcode-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .passcode-btn {
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            cursor: pointer;
+        }
+        .passcode-btn:active {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .bottom-icons {
+            position: absolute;
+            bottom: 60px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 50px;
+        }
+        .bottom-icons button {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .bottom-icons button:active {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .home-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 5px;
+            background: white;
+            border-radius: 10px;
+            opacity: 0.8;
+        }
+
+        .home-screen {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: center;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px 15px;
+            padding: 40px 20px;
+            z-index: 1000;
+            position: relative;
+        }
+        .app {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 20px;
+            padding: 10px;
+            width: 60px;
+            height: 60px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+        .app img {
+            width: 50px;
+            height: 50px;
+            border-radius: 22%;
+        }
+        .app span {
+            font-size: 10px;
+            margin-top: 5px;
+        }
+        .dock {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            background: rgba(255, 255, 255, 0.8);
+            
+            border-radius: 20px;
+            padding: 10px;
+   
+            position: absolute;
+            bottom: 20px;
+            width: 90%;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+        }
+        .modal.active {
+            display: block;
+        }
+        .modal button {
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        let enteredPasscode = "";
+        const correctPasscode = "123456";
+        
+        function enterDigit(digit) {
+            if (enteredPasscode.length < 6) {
+                enteredPasscode += digit;
+                document.getElementById("enteredPasscode").textContent = "●".repeat(enteredPasscode.length);
+            }
+            if (enteredPasscode.length === 6) {
+                checkPasscode();
+            }
+        }
+
+        function clearPasscode() {
+            passcode = "";
+            document.getElementById('enteredPasscode').textContent = '';
+        }
+        
+        function checkPasscode() {
+            setTimeout(() => {
+                if (enteredPasscode === correctPasscode) {
+                    document.getElementById("lockScreen").style.opacity = "0";
+                    setTimeout(() => {
+                        document.getElementById("lockScreen").style.display = "none";
+                        document.getElementById("lockScreen1").style.display = "none";
+                        document.getElementById("lockScreen2").style.display = "none";
+                        document.querySelector(".home-screen").style.display = "flex";
+                        document.querySelector(".dock").style.display = "flex";
+                    }, 1000);
+                } else {
+                    alert("Incorrect Passcode. Try Again.");
+                    enteredPasscode = "";
+                    document.getElementById("enteredPasscode").textContent = "";
+                }
+            }, 500);
+        }
+    </script>
+        <script>
+            function updateTime() {
+                const now = new Date();
+                const optionsTime = { timeZone: 'Asia/Manila', hour: '2-digit', minute: '2-digit', hour12: false };
+                const optionsDate = { timeZone: 'Asia/Manila', weekday: 'long', month: 'long', day: 'numeric' };
+                document.getElementById('status-time').textContent = new Intl.DateTimeFormat('en-US', optionsTime).format(now);
+                document.getElementById('time').textContent = new Intl.DateTimeFormat('en-US', optionsTime).format(now);
+                document.getElementById('date').textContent = new Intl.DateTimeFormat('en-US', optionsDate).format(now);
+            }
+            setInterval(updateTime, 1000);
+            updateTime();
+        </script>
+</head>
+<body>
+    <div class="status-bar">
+        <div id="status-time">4:56</div>
+        <div class="dynamic-island"></div>
+        <div class="status-icons">📶 Wi-Fi 🔋 100%</div>
+    </div>
+    <div class="notification" id="lockScreen2">
+        <div class="notif-icon"></div>
+        <div class="notif-text">
+            <strong>Finish Cellular Setup</strong><br>
+            An eSIM from Tracfone is ready to be set up on this iPhone.
+        </div>
+    </div>
+    <div class="overlay"></div>
+    <div class="lock-screen" id="lockScreen">
+        <div class="time" id="time">12:00</div>
+        <div class="date" id="date">Monday, January 1</div>
+        <div class="passcode-display" id="enteredPasscode"></div>
+        <div class="passcode-container">
+            <button class="passcode-btn" onclick="enterDigit(1)">1</button>
+            <button class="passcode-btn" onclick="enterDigit(2)">2</button>
+            <button class="passcode-btn" onclick="enterDigit(3)">3</button>
+            <button class="passcode-btn" onclick="enterDigit(4)">4</button>
+            <button class="passcode-btn" onclick="enterDigit(5)">5</button>
+            <button class="passcode-btn" onclick="enterDigit(6)">6</button>
+            <button class="passcode-btn" onclick="enterDigit(7)">7</button>
+            <button class="passcode-btn" onclick="enterDigit(8)">8</button>
+            <button class="passcode-btn" onclick="enterDigit(9)">9</button>
+            <div></div>
+            <button class="passcode-btn" onclick="enterDigit(0)">0</button>
+            <button class="passcode-btn" onclick="clearPasscode()">⌫</button>
+        </div>
+    </div>
+    <div class="bottom-icons" id="lockScreen1">
+        <button onclick="alert('Flashlight toggled! (Simulation)')">🔦</button>
+        <button onclick="alert('Camera opened! (Simulation)')">📷</button>
+    </div>
+    <div class="home-indicator"></div>
+    <div class="home-screen">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZTFidGRieTBobGppc2RweDNyZGU4cnlhbnkyY3A4bHdtbDNuaDQ5NCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/eLv7gJpxqiQtbNNQUe/giphy.gif" alt="Cute animated illustration">
+    </div>
+    <div class="dock">
+        <div class="app" onclick="openModal('Calling my Saura!  💕')"><img src="phone.jpg" alt="Phone"><span>Phone</span></div>
+        <div class="app" onclick="openModal('Sending to rosauramaningas: Just felt like reminding you how much I LOVE YOU! Mwah! 🥰')"><img src="mail.jpg" alt="Mail"><span>Mail</span></div>
+        <div class="app" onclick="openModal('Alam mo ba meaning niyang SAFARI? S-aura lang A-raw araw kitang iniisip F-orever iingatan A-t sayo ko lang R-amdaman ang tunay na ligaya I-kaw lang lablab ko!')"><img src="safari.png" alt="Safari"><span>Safari</span></div>
+        <div class="app" onclick="playMusic()"><img src="music.png" alt="Music"><span>Music</span></div>
+    </div>
+    <div id="modal" class="modal">
+        <p id="modal-text"></p>
+        <button onclick="closeModal()">Close</button>
+    </div>
+
+    <audio id="music-player" src="dilaw.mp3"></audio>
+    <script>
+    
+        function openModal(appName) {
+            document.getElementById('modal-text').textContent = `Hello! ${appName}`;
+            document.getElementById('modal').classList.add('active');
+        }
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function playMusic() {
+            const musicPlayer = document.getElementById('music-player');
+            musicPlayer.play();
+        }
+    </script>
+    
+
+     
+    
+    
+</body>
+</html>
