@@ -25,6 +25,8 @@
             background: linear-gradient(135deg, #ff9a9e, #fad0c4);
             margin: 0;
             text-align: center;
+            overflow: hidden;
+            position: relative;
         }
         .message, .love, .love1, .extra, .letter {
             font-size: 2.5rem;
@@ -33,6 +35,8 @@
             opacity: 0;
             transform: scale(0.8);
             transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
+            position: relative;
+            z-index: 2;
         }
         .love {
             font-size: 1.5rem;
@@ -55,6 +59,8 @@
             border-radius: 12px;
             max-width: 80%;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
         }
         .show {
             opacity: 1;
@@ -63,11 +69,29 @@
         .heart {
             font-size: 3rem;
             animation: heartbeat 1.5s infinite;
+            position: relative;
+            z-index: 2;
         }
         @keyframes heartbeat {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
+        }
+        .floating-image {
+            position: absolute;
+            width: 100px;
+            opacity: 0;
+            animation: float 5s infinite ease-in-out, fade-in 2s forwards;
+            z-index: 1;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        @keyframes fade-in {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
@@ -93,14 +117,27 @@
             }, 500);
             setTimeout(() => {
                 document.querySelector(".love").classList.add("show");
-            }, 2000);
+            }, 5000);
             setTimeout(() => {
                 document.querySelector(".love1").classList.add("show");
-            }, 4000);
+            }, 7000);
             setTimeout(() => {
                 document.querySelector(".letter").classList.add("show");
             }, 13000);
+            setTimeout(() => {
+                const images = ['bb.jpg', 'bb1.jpeg', 'bb2.jpeg', 'bb3.jpeg', 'bb5.jpg', 'bb.jpg', 'bb1.jpeg', 'bb2.jpeg', 'bb3.jpeg', 'bb5.jpg', 'bb.jpg', 'bb1.jpeg', 'bb2.jpeg', 'bb3.jpeg', 'bb5.jpg'];
+                images.forEach(src => {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.className = 'floating-image';
+                    img.style.left = Math.random() * window.innerWidth + 'px';
+                    img.style.top = Math.random() * window.innerHeight + 'px';
+                    document.body.appendChild(img);
+                });
+            }, 15000);
         });
     </script>
+
+    
 </body>
 </html>
