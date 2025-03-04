@@ -28,6 +28,21 @@
             overflow: hidden;
             position: relative;
         }
+        .start-button {
+            background: #ff6f91;
+            color: white;
+            font-size: 1.5rem;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 3;
+        }
+        .hidden {
+            display: none;
+        }
+
         .message, .love, .love1, .extra, .letter {
             font-size: 2.5rem;
             color: white;
@@ -93,24 +108,32 @@
             0% { opacity: 0; }
             100% { opacity: 1; }
         }
+  
     </style>
 </head>
 <body>
-    <div class="message">You Look Amazing Tonight ✨</div>
-    <div class="love">I Love You So Much ..</div>
-    <div class="love1">You know that, right?</div>
-    <div class="heart">💖</div>
-    <div class="letter">My dearest Rosaura,<br><br>
-        Hi baby, alam mo naman siguro na mahal na mahal kita! Sana nagustuhan mo 'tong ginawa ko para sayo hehe! Masaya ka naman ba ngayon? Sana masaya ka ah! I love you so much!<br><br>
-        Always ka mag-iingat! Thank you kasi dumating ka sa life ko hehe I love you so much! And I miss you so much!<br><br>
-        Inlove sayo,<br>
-        Martel
+    <button class="start-button" onclick="startPage()">Click Here to Begin</button>
+    <div id="content" class="hidden">
+        <div class="message">You Look Amazing Tonight ✨</div>
+        <div class="love">I Love You So Much ..</div>
+        <div class="love1">You know that, right?</div>
+        <div class="heart">💖</div>
+        <div class="letter">My dearest Rosaura,<br><br>
+            Hi baby, alam mo naman siguro na mahal na mahal kita! Sana nagustuhan mo 'tong ginawa ko para sayo hehe! Masaya ka naman ba ngayon? Sana masaya ka ah! I love you so much!<br><br>
+            Always ka mag-iingat! Thank you kasi dumating ka sa life ko hehe I love you so much! And I miss you so much!<br><br>
+            Inlove sayo,<br>
+            Martel
+        </div>
+
+        <audio id="music-player" src="itsyou.mp3"></audio>
     </div>
-    <audio autoplay loop>
-        <source src="itsyou.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
     <script>
+        function startPage() {
+            document.querySelector('.start-button').classList.add('hidden');
+            document.getElementById('content').classList.remove('hidden');
+            const musicPlayer = document.getElementById('music-player');
+            musicPlayer.play();
+        }
         document.addEventListener("DOMContentLoaded", function() {
             setTimeout(() => {
                 document.querySelector(".message").classList.add("show");
@@ -137,7 +160,5 @@
             }, 15000);
         });
     </script>
-
-    
 </body>
 </html>
