@@ -2,21 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta property="og:site_name" content="Hello, Rosaura Meowie!">
     <meta property="og:title" content="Hello, Rosaura Meowie!" />
     <meta property="og:description" content="A special letter for someone special!" />
     <meta property="og:image" content="/pink.png/" />
     <meta property="og:url" content="https://rosaura-letter.vercel.app/" />
     <meta property="og:type" content="website" />
-
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Hello, Rosaura Meowie!" />
     <meta name="twitter:description" content="A special letter for someone special!" />
     <meta name="twitter:image" content="/pink.png/" /> 
-
     <link rel="icon" href="pink.png" type="image/png">
     <title>Hello, Rosaura Meowie!</title>
     <style>
@@ -30,7 +26,7 @@
             margin: 0;
             text-align: center;
         }
-        .message, .love, .love1, .extra {
+        .message, .love, .love1, .extra, .letter {
             font-size: 2.5rem;
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
@@ -41,17 +37,24 @@
         .love {
             font-size: 1.5rem;
             margin-top: 10px;
-            transition: opacity 2s ease-in-out, transform 2s ease-in-out;
         }
         .love1 {
             font-size: 0.8rem;
             margin-top: 10px;
-            transition: opacity 2s ease-in-out, transform 2s ease-in-out;
         }
         .extra {
             font-size: 1.8rem;
             margin-top: 10px;
-            transition: opacity 2.5s ease-in-out, transform 2.5s ease-in-out;
+        }
+        .letter {
+            font-size: 1.2rem;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #ff6f91;
+            padding: 20px;
+            border-radius: 12px;
+            max-width: 80%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .show {
             opacity: 1;
@@ -70,9 +73,19 @@
 </head>
 <body>
     <div class="message">You Look Amazing Tonight ✨</div>
-    <div class="love">I Love You ..</div>
+    <div class="love">I Love You So Much ..</div>
     <div class="love1">You know that, right?</div>
     <div class="heart">💖</div>
+    <div class="letter">My dearest Rosaura,<br><br>
+        Hi baby, alam mo naman siguro na mahal na mahal kita! Sana nagustuhan mo 'tong ginawa ko para sayo hehe! Masaya ka naman ba ngayon? Sana masaya ka ah! I love you so much!<br><br>
+        Always ka mag-iingat! Thank you kasi dumating ka sa life ko hehe I love you so much! And I miss you so much!<br><br>
+        Inlove sayo,<br>
+        Martel
+    </div>
+    <audio autoplay loop>
+        <source src="itsyou.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             setTimeout(() => {
@@ -84,6 +97,9 @@
             setTimeout(() => {
                 document.querySelector(".love1").classList.add("show");
             }, 4000);
+            setTimeout(() => {
+                document.querySelector(".letter").classList.add("show");
+            }, 13000);
         });
     </script>
 </body>
