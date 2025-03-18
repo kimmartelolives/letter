@@ -1,1 +1,176 @@
-test
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:site_name" content="Hello, Rosaura Meowie!">
+    <meta property="og:title" content="Hello, Rosaura Meowie!" />
+    <meta property="og:description" content="A special letter for someone special!" />
+    <meta property="og:image" content="/pink.png/" />
+    <meta property="og:url" content="https://rosaura-letter.vercel.app/" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hello, Rosaura Meowie!" />
+    <meta name="twitter:description" content="A special letter for someone special!" />
+    <meta name="twitter:image" content="/pink.png/" /> 
+    <link rel="icon" href="pink.png" type="image/png">
+    <title>Hello, Rosaura Meowie!</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            margin: 0;
+            padding: 20px;
+        }
+        .lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .lock-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        .lock-screen h2 {
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        .lock-screen input {
+            padding: 10px;
+            width: 200px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            outline: none;
+        }
+        .lock-screen button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #ff6b81;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+        .lock-screen button:hover {
+            background: #ff4757;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-in-out;
+            display: none;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1, h2 {
+            color: #d81b60;
+            font-weight: bold;
+        }
+        .video {
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        video {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .collage {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .collage img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: filter 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            filter: brightness(0%);
+        }
+        .collage img:hover {
+            filter: brightness(100%);
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+    <script>
+        function unlockPage() {
+            var password = document.getElementById("password").value;
+            if (password === "022820") {
+                document.getElementById("lock-screen").style.display = "none";
+                document.getElementById("content").style.display = "block";
+            } else {
+                alert("Incorrect password!");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="lock-screen" class="lock-screen">
+        <div class="lock-box">
+            <h2>🔒 Enter Password to Access 🔒</h2>
+            <h3>Hint: Wedding date sa audition</h3>
+            <input type="password" id="password" placeholder="Enter Password">
+            <br>
+            <button onclick="unlockPage()">Unlock</button>
+        </div>
+    </div>
+    <div id="content" class="container decorative-border">
+        <h1>For Saura </h1>
+        <div class="video">
+            <video controls>
+                <source src="https://www.youtube.com/embed/Y5XaLHxzZPw?si=w4_5wYUgo_iHC8Cz" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <h2>Memories?</h2>
+        <div class="collage">
+            <img src="us/IMG_2272.JPEG" alt="Photo 1">
+            <img src="us/IMG_2273.JPEG" alt="Photo 2">
+            <img src="us/IMG_2274.JPEG" alt="Photo 3">
+            <img src="us/IMG_2276.JPEG" alt="Photo 4">
+            <img src="us/IMG_2278.JPEG" alt="Photo 5">
+            <img src="us/IMG_2281.JPEG" alt="Photo 6">
+            <img src="us/IMG_2283.JPEG" alt="Photo 7">
+            <img src="us/IMG_2284.JPEG" alt="Photo 8">
+            <img src="us/IMG_2259.JPEG" alt="Photo 9">
+            <img src="us/IMG_2261.JPEG" alt="Photo 10">
+            <img src="us/IMG_2267.JPEG" alt="Photo 11">
+            <img src="us/IMG_2271.JPEG" alt="Photo 12">
+        </div>
+
+    </div>
+</body>
+</html>
+
+     
+
