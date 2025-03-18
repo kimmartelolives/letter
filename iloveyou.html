@@ -16,6 +16,26 @@
     <link rel="icon" href="pink.png" type="image/png">
     <title>Hello, Rosaura Meowie!</title>
     <style>
+                @keyframes floatHearts {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .heart {
+            position: fixed;
+            bottom: -10px;
+            font-size: 24px;
+            color: red;
+            animation: floatHearts 5s linear infinite;
+            opacity: 0;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             text-align: center;
@@ -29,19 +49,20 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            /* background: linear-gradient(to right, #ff9a9e, #fad0c4); */
+            background: url('us/bb.jpg') no-repeat center center/cover;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             color: white;
             text-align: center;
-            animation: fadeIn 1s ease-in-out;
+            animation: fadeIn 1s ease-in-out;           
         }
         .lock-box {
             background: rgba(255, 255, 255, 0.2);
-            padding: 30px;
-            border-radius: 15px;
+            padding: 50px;
+            border-radius: 25px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
         }
@@ -132,13 +153,37 @@
                 alert("Incorrect password!");
             }
         }
+
+
+    function createHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️"; // You can also use '💖' or '💜'
+
+        // Random position within the screen width
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = Math.random() * 3 + 3 + "s"; // Random floating speed
+
+        document.body.appendChild(heart);
+
+        // Remove heart after animation completes
+        setTimeout(() => {
+            heart.remove();
+        }, 5000);
+    }
+
+    // Create hearts every 500ms
+    setInterval(createHeart, 500);
+
     </script>
+
+
 </head>
 <body>
     <div id="lock-screen" class="lock-screen">
         <div class="lock-box">
             <h2>🔒 Enter Password to Access 🔒</h2>
-            <h3>Hint: Wedding date sa audition</h3>
+            <h3>Hint: Wedding date sa audition: 0228__</h3>
             <input type="password" id="password" placeholder="Enter Password">
             <br>
             <button onclick="unlockPage()">Unlock</button>
