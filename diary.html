@@ -286,28 +286,30 @@ document.getElementById('sendAt').value = noteData?.send_at ? new Date(noteData.
   }
   
 
-  async function saveNote() {
+ async function saveNote() {
   const dateKey = noteEditor.getAttribute('data-date');
   const content = noteContent.value.trim();
   const color = noteType.value;
   const recipientEmail = document.getElementById('emailRecipient').value.trim();
-  
-  const sendAtInput = document.getElementById('sendAt').value;
-  let sendAtUtc = null;
-
-  if (sendAtInput) {
-    const localDate = new Date(sendAtInput); // assumes user picked PHT
-    sendAtUtc = new Date(localDate.getTime() - (8 * 60 * 60 * 1000)).toISOString();
-  }
+  const sendAt = document.getElementById('sendAt').value;
 
   if (content) {
+    let adjustedSendAt = null;
+    if (sendAt) {
+      // Convert the selected datetime to a Date object
+      const selectedDate = new Date(sendAt);
+      // Adjust for Philippine Time (UTC +8)
+      selectedDate.setHours(selectedDate.getHours() + 8);
+      adjustedSendAt = selectedDate.toISOString(); // Convert back to ISO string
+    }
+
     const insertData = {
       date: dateKey,
       text: content,
       color: color,
       email: recipientEmail || null,
       email_sent: false,
-      send_at: sendAtUtc,
+      send_at: adjustedSendAt, // Save the adjusted send_at time
     };
 
     const { error: upsertError } = await supabaseClient
@@ -320,6 +322,8 @@ document.getElementById('sendAt').value = noteData?.send_at ? new Date(noteData.
     }
 
     alert("✅ Note saved!");
+
+    // Clear input fields
     document.getElementById('emailRecipient').value = "";
     document.getElementById('sendAt').value = "";
   } else {
@@ -337,7 +341,6 @@ document.getElementById('sendAt').value = noteData?.send_at ? new Date(noteData.
   noteEditor.style.display = 'none';
   await renderCalendar();
 }
-
 
 
 
