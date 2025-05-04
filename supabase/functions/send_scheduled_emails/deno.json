@@ -1,3 +1,8 @@
 {
-  "imports": {}
+  "tasks": {
+    "send_scheduled_emails": {
+      "cron": "* * * * *", 
+      "path": "/send_scheduled_emails"
+    }
+  }
 }
