@@ -27,28 +27,35 @@ serve(async (req) => {
     const recipient = entry.email;
     if (!recipient) continue;
 
-    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "api-key": brevoApiKey,
-      },
-      body: JSON.stringify({
-        sender: { name: "Calendar Diary", email: "kimmartel.olives@gmail.com" },
-        to: [{ email: recipient }],
-        subject: `📅 Diary Entry for ${entry.date}`,
-        htmlContent: `<h3>Entry Type: ${entry.color || "None"}</h3><p>${entry.text}</p>`,
-      }),
-    });
+    // Convert the send_at field (in UTC) to Philippine Time (UTC +8)
+    const sendAtDate = new Date(entry.send_at);
+    sendAtDate.setHours(sendAtDate.getHours() + 8); // Adjust to PHT
 
-    if (response.ok) {
-      await supabase
-        .from("diary_entries")
-        .update({ email_sent: true })
-        .eq("id", entry.id);
-    } else {
-      const errData = await response.text();
-      console.error("Email send failed:", errData);
+    // If the adjusted time is already passed, send the email
+    if (sendAtDate <= new Date()) {
+      const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "api-key": brevoApiKey,
+        },
+        body: JSON.stringify({
+          sender: { name: "Calendar Diary", email: "kimmartel.olives@gmail.com" },
+          to: [{ email: recipient }],
+          subject: `📅 Diary Entry for ${entry.date}`,
+          htmlContent: `<h3>Entry Type: ${entry.color || "None"}</h3><p>${entry.text}</p>`,
+        }),
+      });
+
+      if (response.ok) {
+        await supabase
+          .from("diary_entries")
+          .update({ email_sent: true })
+          .eq("id", entry.id);
+      } else {
+        const errData = await response.text();
+        console.error("Email send failed:", errData);
+      }
     }
   }
 
