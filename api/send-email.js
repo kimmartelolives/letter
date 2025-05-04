@@ -33,7 +33,7 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           sender: { name: "Calendar Diary", email: "kimmartel.olives@gmail.com" },
-          to: [{ email: "kimolives789@gmail.com" }],
+          to: [{ email: "josejoaquincanete@gmail.com" }],
           subject: `📅 Diary Entry for ${date}`,
           htmlContent: `<h3>Entry Type: ${color || 'None'}</h3><p>${text}</p>`,
         }),
