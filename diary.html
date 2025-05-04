@@ -320,10 +320,6 @@
   await renderCalendar();
 }
 
-console.log('Brevo API Key:', process.env.BREVO_API_KEY);
-
-
-
   function formatDateKey(y, m, d) {
     return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
   }

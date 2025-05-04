@@ -1,5 +1,5 @@
 // /api/send-email.js
-
+console.log('Brevo API Key:', process.env.BREVO_API_KEY);
 export const config = {
     runtime: 'edge', // Specify edge runtime for Vercel
     maxDuration: 10, // Set timeout to 10 seconds to avoid timeout issues
