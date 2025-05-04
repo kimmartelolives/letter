@@ -19,9 +19,9 @@ export default async function handler(req, res) {
         });
       });
   
-      const { date, text, color } = body;
+      const { date, text, color, recipientEmail } = body;
   
-      if (!date || !text) {
+      if (!date || !text || !recipientEmail) {
         return res.status(400).json({ success: false, error: 'Missing required fields' });
       }
   
@@ -33,7 +33,7 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           sender: { name: "Calendar Diary", email: "kimmartel.olives@gmail.com" },
-          to: [{ email: "josejoaquincanete@gmail.com" }],
+          to: [{ email: body.recipientEmail }],
           subject: `📅 Diary Entry for ${date}`,
           htmlContent: `<h3>Entry Type: ${color || 'None'}</h3><p>${text}</p>`,
         }),

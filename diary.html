@@ -150,6 +150,10 @@
   </select>
 
   <textarea id="noteContent" placeholder="Write your thoughts..."></textarea>
+
+  <input type="email" id="emailRecipient" placeholder="Recipient email (optional)" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
+
+  
   <button onclick="saveNote()">Save</button>
 </div>
 
@@ -281,6 +285,7 @@
   const dateKey = noteEditor.getAttribute('data-date');
   const content = noteContent.value.trim();
   const color = noteType.value;
+  const recipientEmail = document.getElementById('emailRecipient').value.trim();  // Capture the email input
 
   if (content) {
     const { error: upsertError } = await supabaseClient
@@ -292,23 +297,25 @@
       return alert("❌ Error saving note.");
     }
 
-    // Send email via Edge Function
-    try {
-      const res = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ date: dateKey, text: content, color }),
-      });
+    // Send email via Edge Function if a recipient email is provided
+    if (recipientEmail) {
+      try {
+        const res = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail }),  // Send recipient email in the body
+        });
 
-      if (res.ok) {
-        // Mark note as email_sent = true
-        await supabaseClient
-          .from('diary_entries')
-          .update({ email_sent: true })
-          .eq('date', dateKey);
+        if (res.ok) {
+          // Mark note as email_sent = true
+          await supabaseClient
+            .from('diary_entries')
+            .update({ email_sent: true })
+            .eq('date', dateKey);
+        }
+      } catch (e) {
+        console.error("❌ Email send failed", e);
       }
-    } catch (e) {
-      console.error("❌ Email send failed", e);
     }
 
   } else {
@@ -326,6 +333,7 @@
   noteEditor.style.display = 'none';
   await renderCalendar();
 }
+
 
 
   function formatDateKey(y, m, d) {
