@@ -271,40 +271,55 @@
   
 
   async function saveNote() {
-    const dateKey = noteEditor.getAttribute('data-date');
-    const content = noteContent.value.trim();
-    const color = noteType.value;
+  const dateKey = noteEditor.getAttribute('data-date');
+  const content = noteContent.value.trim();
+  const color = noteType.value;
 
-    if (content) {
-      const { error } = await supabaseClient
-        .from('diary_entries')
-        .upsert({
-          date: dateKey,
-          text: content,
-          color: color,
-        });
+  if (content) {
+    const { error: upsertError } = await supabaseClient
+      .from('diary_entries')
+      .upsert({ date: dateKey, text: content, color: color, email_sent: false });
 
-      if (error) {
-        console.error("Insert/Update error:", error);
-        return alert("❌ Error saving note.");
-      }
-
-
-    } else {
-      const { error } = await supabaseClient
-        .from('diary_entries')
-        .delete()
-        .eq('date', dateKey);
-
-      if (error) {
-        console.error("Delete error:", error);
-        return alert("❌ Error deleting note.");
-      }
+    if (upsertError) {
+      console.error("Insert/Update error:", upsertError);
+      return alert("❌ Error saving note.");
     }
 
-    noteEditor.style.display = 'none';
-    await renderCalendar();
+    // Send email via Edge Function
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date: dateKey, text: content, color }),
+      });
+
+      if (res.ok) {
+        // Mark note as email_sent = true
+        await supabaseClient
+          .from('diary_entries')
+          .update({ email_sent: true })
+          .eq('date', dateKey);
+      }
+    } catch (e) {
+      console.error("❌ Email send failed", e);
+    }
+
+  } else {
+    const { error: delError } = await supabaseClient
+      .from('diary_entries')
+      .delete()
+      .eq('date', dateKey);
+
+    if (delError) {
+      console.error("Delete error:", delError);
+      return alert("❌ Error deleting note.");
+    }
   }
+
+  noteEditor.style.display = 'none';
+  await renderCalendar();
+}
+
 
 
   function formatDateKey(y, m, d) {
