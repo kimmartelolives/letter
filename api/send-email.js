@@ -1,11 +1,4 @@
-// /api/send-email.js
-console.log('Brevo API Key:', process.env.BREVO_API_KEY);
-export const config = {
-    runtime: 'edge', // Specify edge runtime for Vercel
-    maxDuration: 10, // Set timeout to 10 seconds to avoid timeout issues
-  };
-  
-  export default async function handler(req) {
+export default async function handler(req) {
     try {
       // Parse the incoming JSON request
       const { date, text, color } = await req.json();
@@ -18,7 +11,7 @@ export const config = {
       // Prepare the email content
       const emailContent = {
         sender: { name: "Calendar Diary", email: "kimmartel.olives@gmail.com" },  // Replace with your sender email
-        to: [{ email: "recipient@example.com" }],  // Replace with recipient email
+        to: [{ email: "kimolives789@gmail.com" }],  // Replace with recipient email
         subject: `📅 Diary Entry for ${date}`,
         htmlContent: `<h2>Diary Entry - ${color || 'No Type'}</h2><p>${text}</p>`,
       };
