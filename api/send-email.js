@@ -1,40 +1,54 @@
 // /api/send-email.js
 
 export const config = {
-    runtime: 'edge',
+    runtime: 'edge', // Specify edge runtime for Vercel
+    maxDuration: 10, // Set timeout to 10 seconds to avoid timeout issues
   };
   
   export default async function handler(req) {
     try {
-      // Parse the incoming request body
+      // Parse the incoming JSON request
       const { date, text, color } = await req.json();
   
-      // Make the request to Brevo (formerly Sendinblue) to send the email
+      // Check if essential fields are present
+      if (!date || !text) {
+        return new Response(JSON.stringify({ success: false, error: 'Missing required fields (date or text)' }), { status: 400 });
+      }
+  
+      // Prepare the email content
+      const emailContent = {
+        sender: { name: "Calendar Diary", email: "kimmartel.olives@gmail.com" },  // Replace with your sender email
+        to: [{ email: "recipient@example.com" }],  // Replace with recipient email
+        subject: `📅 Diary Entry for ${date}`,
+        htmlContent: `<h2>Diary Entry - ${color || 'No Type'}</h2><p>${text}</p>`,
+      };
+  
+      // Log the request for debugging
+      console.log("Sending request to Brevo with body:", emailContent);
+  
+      // Send the email via Brevo API
       const res = await fetch('https://api.brevo.com/v3/smtp/email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'api-key': process.env.BREVO_API_KEY, // Ensure you have this key in your Vercel environment variables
+          'api-key': process.env.BREVO_API_KEY,  // Get the API key from environment variables
         },
-        body: JSON.stringify({
-          sender: { name: "Calendar Diary", email: "kimmartel.olives@gmail.com" },  // Replace with your email
-          to: [{ email: "kimolives789@gmail.com" }],  // Replace with recipient email
-          subject: `📅 Diary Entry for ${date}`,
-          htmlContent: `<h2>Diary Entry - ${color || 'No Type'}</h2><p>${text}</p>`,
-        }),
+        body: JSON.stringify(emailContent),
       });
   
-      // If Brevo response is successful, return success
-      if (res.ok) {
-        const data = await res.json();
-        return new Response(JSON.stringify({ success: true, data }), { status: 200 });
-      } else {
-        // Handle case where Brevo returns an error
+      // Handle Brevo API response
+      if (!res.ok) {
         const error = await res.json();
-        return new Response(JSON.stringify({ success: false, error }), { status: 500 });
+        console.error("Brevo error response:", error); // Log the error for debugging
+        return new Response(JSON.stringify({ success: false, error: error }), { status: 500 });
       }
+  
+      // Return the successful response
+      const data = await res.json();
+      return new Response(JSON.stringify({ success: true, data }), { status: 200 });
+  
     } catch (error) {
-      // Catch any unexpected errors
+      // Catch any errors that occur and log them for debugging
       console.error('Error sending email:', error);
       return new Response(JSON.stringify({ success: false, error: error.message }), { status: 500 });
     }
