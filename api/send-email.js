@@ -1,49 +1,55 @@
-export default async function handler(req) {
-    try {
-      // Parse the incoming JSON request
-      const { date, text, color } = await req.json();
+export default async function handler(req, res) {
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Method Not Allowed' });
+    }
   
-      // Check if essential fields are present
+    try {
+      // Manually parse JSON body
+      const body = await new Promise((resolve, reject) => {
+        let data = '';
+        req.on('data', chunk => {
+          data += chunk;
+        });
+        req.on('end', () => {
+          try {
+            resolve(JSON.parse(data));
+          } catch (err) {
+            reject(err);
+          }
+        });
+      });
+  
+      const { date, text, color } = body;
+  
       if (!date || !text) {
-        return new Response(JSON.stringify({ success: false, error: 'Missing required fields (date or text)' }), { status: 400 });
+        return res.status(400).json({ success: false, error: 'Missing required fields' });
       }
   
-      // Prepare the email content
-      const emailContent = {
-        sender: { name: "Calendar Diary", email: "kimmartel.olives@gmail.com" },  // Replace with your sender email
-        to: [{ email: "kimolives789@gmail.com" }],  // Replace with recipient email
-        subject: `📅 Diary Entry for ${date}`,
-        htmlContent: `<h2>Diary Entry - ${color || 'No Type'}</h2><p>${text}</p>`,
-      };
-  
-      // Log the request for debugging
-      console.log("Sending request to Brevo with body:", emailContent);
-  
-      // Send the email via Brevo API
-      const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+      const response = await fetch('https://api.brevo.com/v3/smtp/email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'api-key': process.env.BREVO_API_KEY,  // Get the API key from environment variables
+          'api-key': process.env.BREVO_API_KEY,
         },
-        body: JSON.stringify(emailContent),
+        body: JSON.stringify({
+          sender: { name: "Calendar Diary", email: "kimmartel.olives@gmail.com" },
+          to: [{ email: "kimolives789@gmail.com" }],
+          subject: `📅 Diary Entry for ${date}`,
+          htmlContent: `<h3>Entry Type: ${color || 'None'}</h3><p>${text}</p>`,
+        }),
       });
   
-      // Handle Brevo API response
-      if (!res.ok) {
-        const error = await res.json();
-        console.error("Brevo error response:", error); // Log the error for debugging
-        return new Response(JSON.stringify({ success: false, error: error }), { status: 500 });
+      const data = await response.json();
+  
+      if (!response.ok) {
+        return res.status(500).json({ success: false, error: data });
       }
   
-      // Return the successful response
-      const data = await res.json();
-      return new Response(JSON.stringify({ success: true, data }), { status: 200 });
+      return res.status(200).json({ success: true, data });
   
     } catch (error) {
-      // Catch any errors that occur and log them for debugging
-      console.error('Error sending email:', error);
-      return new Response(JSON.stringify({ success: false, error: error.message }), { status: 500 });
+      console.error("Error sending email:", error);
+      return res.status(500).json({ success: false, error: error.message });
     }
   }
   
