@@ -193,72 +193,79 @@
   yearSelect.value = today.getFullYear();
 
   async function renderCalendar() {
-    calendarEl.innerHTML = '';
-    const year = parseInt(yearSelect.value);
-    const month = parseInt(monthSelect.value);
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
+  calendarEl.innerHTML = '';
+  const year = parseInt(yearSelect.value);
+  const month = parseInt(monthSelect.value);
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const lastDay = daysInMonth; // ✅ use real last day
 
-    const filter = filterSelect.value;
-    const searchTerm = searchInput.value.toLowerCase();
+  const filter = filterSelect.value;
+  const searchTerm = searchInput.value.toLowerCase();
 
-    const { data: notes, error } = await supabaseClient
-      .from('diary_entries')
-      .select('*')
-      .gte('date', `${year}-${String(month + 1).padStart(2, '0')}-01`)
-      .lte('date', `${year}-${String(month + 1).padStart(2, '0')}-31`);
+  const { data: notes, error } = await supabaseClient
+    .from('diary_entries')
+    .select('*')
+    .gte('date', `${year}-${String(month + 1).padStart(2, '0')}-01`)
+    .lte('date', `${year}-${String(month + 1).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`);
 
-    if (error) {
-      console.error("Failed to load notes:", error);
-      return;
-    }
-
-    const now = new Date();
-    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-    const phNow = new Date(utc + 8 * 60 * 60 * 1000);
-    const phYear = phNow.getFullYear();
-    const phMonth = phNow.getMonth();
-    const phDay = phNow.getDate();
-
-    daysOfWeek.forEach(day => {
-      const header = document.createElement('div');
-      header.className = 'day-name';
-      header.textContent = day;
-      calendarEl.appendChild(header);
-    });
-
-    for (let i = 0; i < firstDay; i++) {
-      const blank = document.createElement('div');
-      calendarEl.appendChild(blank);
-    }
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dateKey = formatDateKey(year, month, day);
-      const noteData = notes.find(n => n.date === dateKey);
-      const noteText = noteData?.text?.toLowerCase() || '';
-      const noteColor = noteData?.color || '';
-
-      if (
-        (filter && noteColor !== filter) ||
-        (searchTerm && !noteText.includes(searchTerm))
-      ) {
-        continue;
-      }
-
-      const cell = document.createElement('div');
-      cell.className = 'day';
-      cell.innerHTML = `<strong>${day}</strong>` + (noteText ? `<br><span style="font-size: 20px;">📝</span>` : '');
-
-      if (noteColor) cell.classList.add(noteColor);
-      if (noteText) cell.classList.add('has-note');
-      if (year === phYear && month === phMonth && day === phDay) {
-        cell.classList.add('today');
-      }
-
-      cell.onclick = () => openNote(year, month, day, noteData);
-      calendarEl.appendChild(cell);
-    }
+  if (error) {
+    console.error("Failed to load notes:", error);
+    return;
   }
+
+  const now = new Date();
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  const phNow = new Date(utc + 8 * 60 * 60 * 1000);
+  const phYear = phNow.getFullYear();
+  const phMonth = phNow.getMonth();
+  const phDay = phNow.getDate();
+
+  // Day headers
+  daysOfWeek.forEach(day => {
+    const header = document.createElement('div');
+    header.className = 'day-name';
+    header.textContent = day;
+    calendarEl.appendChild(header);
+  });
+
+  // Blank cells before 1st day
+  for (let i = 0; i < firstDay; i++) {
+    const blank = document.createElement('div');
+    calendarEl.appendChild(blank);
+  }
+
+  // Render each day
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateKey = formatDateKey(year, month, day);
+    const noteData = notes.find(n => n.date === dateKey);
+    const noteText = noteData?.text?.toLowerCase() || '';
+    const noteColor = noteData?.color || '';
+
+    let showNote = true;
+    if ((filter && noteColor !== filter) || (searchTerm && !noteText.includes(searchTerm))) {
+      showNote = false;
+    }
+
+    const cell = document.createElement('div');
+    cell.className = 'day';
+    cell.innerHTML = `<strong>${day}</strong>`;
+
+    if (noteText && showNote) {
+      cell.innerHTML += `<br><span style="font-size: 20px;">📝</span>`;
+      cell.classList.add('has-note');
+      if (noteColor) cell.classList.add(noteColor);
+    }
+
+    if (year === phYear && month === phMonth && day === phDay) {
+      cell.classList.add('today');
+    }
+
+    cell.onclick = () => openNote(year, month, day, noteData);
+    calendarEl.appendChild(cell);
+  }
+}
+
 
   function openNote(year, month, day, noteData = null) {
     const dateKey = formatDateKey(year, month, day);
@@ -319,6 +326,7 @@
   noteEditor.style.display = 'none';
   await renderCalendar();
 }
+
 
   function formatDateKey(y, m, d) {
     return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
