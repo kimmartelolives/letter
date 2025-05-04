@@ -12,7 +12,7 @@ serve(async (req) => {
     .from("diary_entries")
     .select("*")
     .eq("email_sent", false)
-    .lte("send_at", new Date().toISOString());
+    .lte("send_at", new Date().toISOString()); // Fetch entries that should be sent
 
   if (error) {
     console.error("Database fetch error:", error);
@@ -32,8 +32,15 @@ serve(async (req) => {
     const sendAtDate = new Date(entry.send_at);
     sendAtDate.setHours(sendAtDate.getHours() + 8); // Adjust to PHT (UTC +8)
 
+    // Log for debugging
+    console.log(`Processing entry for ${entry.date}`);
+    console.log(`Scheduled Send Time: ${sendAtDate}`);
+    console.log(`Current Time: ${new Date()}`);
+
     // Proceed to send the email only if the `send_at` time has passed
     if (sendAtDate <= new Date()) {
+      console.log("Send time has passed. Sending email...");
+
       // Send email using Brevo (formerly Sendinblue)
       const response = await fetch("https://api.brevo.com/v3/smtp/email", {
         method: "POST",
@@ -53,16 +60,22 @@ serve(async (req) => {
         console.log(`Email sent successfully to ${recipient}`);
 
         // Update the `email_sent` flag to `true` once the email is sent
-        await supabase
+        const { error: updateError } = await supabase
           .from("diary_entries")
           .update({ email_sent: true })
           .eq("id", entry.id);
 
-        console.log(`Email status updated for entry ${entry.id}`);
+        if (updateError) {
+          console.error("Error updating email_sent:", updateError);
+        } else {
+          console.log(`Email status updated for entry ${entry.id}`);
+        }
       } else {
         const errData = await response.text();
         console.error("Email send failed:", errData);
       }
+    } else {
+      console.log(`Scheduled time has not yet passed for entry ${entry.id}`);
     }
   }
 
