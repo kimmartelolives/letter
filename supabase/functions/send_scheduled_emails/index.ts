@@ -23,16 +23,18 @@ serve(async (req) => {
     return new Response("No entries to send", { status: 200 });
   }
 
+  // Loop over each entry to send emails
   for (const entry of entries) {
     const recipient = entry.email;
     if (!recipient) continue;
 
-    // Convert the send_at field (in UTC) to Philippine Time (UTC +8)
+    // Convert `send_at` to Philippine Time (UTC +8)
     const sendAtDate = new Date(entry.send_at);
-    sendAtDate.setHours(sendAtDate.getHours() + 8); // Adjust to PHT
+    sendAtDate.setHours(sendAtDate.getHours() + 8); // Adjust to PHT (UTC +8)
 
-    // If the adjusted time is already passed, send the email
+    // Proceed to send the email only if the `send_at` time has passed
     if (sendAtDate <= new Date()) {
+      // Send email using Brevo (formerly Sendinblue)
       const response = await fetch("https://api.brevo.com/v3/smtp/email", {
         method: "POST",
         headers: {
@@ -48,10 +50,15 @@ serve(async (req) => {
       });
 
       if (response.ok) {
+        console.log(`Email sent successfully to ${recipient}`);
+
+        // Update the `email_sent` flag to `true` once the email is sent
         await supabase
           .from("diary_entries")
           .update({ email_sent: true })
           .eq("id", entry.id);
+
+        console.log(`Email status updated for entry ${entry.id}`);
       } else {
         const errData = await response.text();
         console.error("Email send failed:", errData);
