@@ -155,6 +155,7 @@
 
   
   <button onclick="saveNote()">Save</button>
+  <input type="datetime-local" id="sendAt" placeholder="Send at (PH Time)">
 </div>
 
 <!-- Supabase CDN -->
@@ -272,6 +273,10 @@
 
 
   function openNote(year, month, day, noteData = null) {
+    
+    document.getElementById('emailRecipient').value = noteData?.email || '';
+document.getElementById('sendAt').value = noteData?.send_at ? new Date(noteData.send_at).toISOString().slice(0, 16) : '';
+
     const dateKey = formatDateKey(year, month, day);
     noteContent.value = noteData?.text || '';
     noteType.value = noteData?.color || '';
@@ -285,39 +290,33 @@
   const dateKey = noteEditor.getAttribute('data-date');
   const content = noteContent.value.trim();
   const color = noteType.value;
-  const recipientEmail = document.getElementById('emailRecipient').value.trim();  // Capture the email input
+  const recipientEmail = document.getElementById('emailRecipient').value.trim();
+  const sendAt = document.getElementById('sendAt').value;
 
   if (content) {
+    const insertData = {
+      date: dateKey,
+      text: content,
+      color: color,
+      email: recipientEmail || null,
+      email_sent: false,
+      send_at: sendAt ? new Date(sendAt).toISOString() : null,
+    };
+
     const { error: upsertError } = await supabaseClient
       .from('diary_entries')
-      .upsert({ date: dateKey, text: content, color: color, email_sent: false });
+      .upsert(insertData, { onConflict: ['date'] });
 
     if (upsertError) {
       console.error("Insert/Update error:", upsertError);
       return alert("❌ Error saving note.");
     }
 
-    // Send email via Edge Function if a recipient email is provided
-    if (recipientEmail) {
-      try {
-        const res = await fetch('/api/send-email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail }),  // Send recipient email in the body
-        });
+    alert("✅ Note saved!");
 
-        if (res.ok) {
-          // Mark note as email_sent = true
-          await supabaseClient
-            .from('diary_entries')
-            .update({ email_sent: true })
-            .eq('date', dateKey);
-        }
-      } catch (e) {
-        console.error("❌ Email send failed", e);
-      }
-    }
-
+    // Clear input fields
+    document.getElementById('emailRecipient').value = "";
+    document.getElementById('sendAt').value = "";
   } else {
     const { error: delError } = await supabaseClient
       .from('diary_entries')
@@ -334,6 +333,8 @@
   document.getElementById('emailRecipient').value = '';
   await renderCalendar();
 }
+
+
 
 
 
