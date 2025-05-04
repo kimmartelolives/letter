@@ -296,12 +296,11 @@ document.getElementById('sendAt').value = noteData?.send_at ? new Date(noteData.
   if (content) {
     let adjustedSendAt = null;
     if (sendAt) {
-      // Convert the selected datetime to a Date object
-      const selectedDate = new Date(sendAt);
-      // Adjust for Philippine Time (UTC +8)
-      selectedDate.setHours(selectedDate.getHours() + 8);
-      adjustedSendAt = selectedDate.toISOString(); // Convert back to ISO string
-    }
+  const selectedDate = new Date(sendAt);
+  selectedDate.setHours(selectedDate.getHours() + 8);
+  adjustedSendAt = selectedDate.toISOString(); // Store as UTC without adjusting
+}
+
 
     const insertData = {
       date: dateKey,
