@@ -148,13 +148,6 @@
     <option value="personal">Personal</option>
     <option value="important">Important</option>
   </select>
-  <!-- Inside the note editor -->
-<label for="reminderEnabled">Set Reminder</label>
-<input type="checkbox" id="reminderEnabled">
-<br>
-
-<label for="reminderTime">Reminder Time:</label>
-<input type="datetime-local" id="reminderTime">
 
   <textarea id="noteContent" placeholder="Write your thoughts..."></textarea>
   <button onclick="saveNote()">Save</button>
@@ -276,45 +269,11 @@
     noteEditor.setAttribute('data-date', dateKey);
   }
   
-  async function sendReminderEmail() {
-    const reminderTime = document.getElementById('reminderTime').value;
-    
-    // Ensure the reminder time is valid
-    if (!reminderTime) {
-      return alert('Please set a valid reminder time.');
-    }
-
-    const reminderDate = new Date(reminderTime);
-
-    // Adjust the reminder date to local timezone (if necessary)
-    const reminderDateString = reminderDate.toISOString();
-
-    // Sending email via Supabase Edge Function
-    const response = await fetch("https://rushdtpzxfnvobniswwm.supabase.co/functions/v1/send-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        to: "kimolives789@gmail.com",
-        subject: "Reminder from Your Diary",
-        message: "Don't forget your diary entry today!",
-        reminder_time: reminderDateString // Pass reminder time to server for scheduling email
-      }),
-    });
-
-    const data = await response.json();
-    console.log("Email sent:", data);
-  }
-
-
-
 
   async function saveNote() {
     const dateKey = noteEditor.getAttribute('data-date');
     const content = noteContent.value.trim();
     const color = noteType.value;
-
-    const reminderEnabled = document.getElementById('reminderEnabled').checked;
-    const reminderTime = document.getElementById('reminderTime').value;
 
     if (content) {
       const { error } = await supabaseClient
@@ -323,8 +282,6 @@
           date: dateKey,
           text: content,
           color: color,
-          reminder_enabled: reminderEnabled,
-          reminder_time: reminderEnabled ? new Date(reminderTime).toISOString() : null
         });
 
       if (error) {
@@ -332,10 +289,7 @@
         return alert("❌ Error saving note.");
       }
 
-      // If reminder is enabled, trigger the reminder email
-      if (reminderEnabled && reminderTime) {
-        sendReminderEmail();
-      }
+
     } else {
       const { error } = await supabaseClient
         .from('diary_entries')
