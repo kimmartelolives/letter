@@ -472,7 +472,7 @@
         const res = await fetch('/api/send-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail }),
+          body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail, image_url, title }),
         });
 
         if (res.ok) {
