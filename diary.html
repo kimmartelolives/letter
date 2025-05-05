@@ -394,7 +394,11 @@
 
     const { error: uploadError } = await supabaseClient.storage
       .from('images')
-      .upload(filePath, imageFile, { upsert: true });
+      .upload(`images/${dateKey}-${imageFile.name}`, imageFile, {
+    cacheControl: '3600',
+    upsert: true,
+    contentType: imageFile.type, // <- this is key
+  });
 
     if (uploadError) {
       console.error("❌ Image upload failed:", uploadError);
