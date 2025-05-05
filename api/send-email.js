@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       });
     });
 
-    const { date, text, color, recipientEmail, imageURL, title } = body;
+    const { date, text, color, recipientEmail, imageUrl, title } = body;
 
     if (!date || !text || !recipientEmail || !title) {
       return res.status(400).json({ success: false, error: 'Missing required fields' });
