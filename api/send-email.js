@@ -200,7 +200,7 @@ export default async function handler(req, res) {
           </div>
 
           <div class="photo-frame">
-             <a href="https://rosaura-letter.vercel.app/diary.html">Visit the Rosaura Letter - Dear Diary Now</a>
+             <a href="https://rosaura-letter.vercel.app/diary.html">🔮 A Glimpse Into His Mind – Saura's Dear Diary Letter Is Here</a>
             <div class="caption">dreams scribbled in pastel ink 🌈</div>
           </div>
 
@@ -442,7 +442,7 @@ export default async function handler(req, res) {
           </div>
 
           <div class="photo-frame">
-            <a href="https://rosaura-letter.vercel.app/diary.html">Visit the Rosaura Letter - Dear Diary Now</a>
+            <a href="https://rosaura-letter.vercel.app/diary.html">🔮 A Glimpse Into His Mind – Saura's Dear Diary Letter Is Here</a>
             <div class="caption">truth in ink and light 🖋️</div>
           </div>
 
@@ -635,7 +635,7 @@ export default async function handler(req, res) {
           </div>
 
           <div class="photo-frame">
-             <a href="https://rosaura-letter.vercel.app/diary.html">Visit the Rosaura Letter - Dear Diary Now</a>
+             <a href="https://rosaura-letter.vercel.app/diary.html">🔮 A Glimpse Into His Mind – Saura's Dear Diary Letter Is Here</a>
             <div class="caption">because memories are the softest gifts 🎁</div>
           </div>
 
@@ -827,7 +827,7 @@ export default async function handler(req, res) {
           </div>
 
           <div class="photo-frame">
-            <a href="https://rosaura-letter.vercel.app/diary.html">Visit the Rosaura Letter - Dear Diary Now</a>
+            <a href="https://rosaura-letter.vercel.app/diary.html">🔮 A Glimpse Into His Mind – Saura's Dear Diary Letter Is Here</a>
             <div class="caption">small things, big impact 🌱</div>
           </div>
 
@@ -856,9 +856,9 @@ export default async function handler(req, res) {
         'api-key': process.env.BREVO_API_KEY,
       },
       body: JSON.stringify({
-        sender: { name: "Calendar Diary", email: "kimmartel.olives@gmail.com" },
+        sender: { name: "Dear Saura ᰔ", email: "kimmartel.olives@gmail.com" },
         to: [{ email: body.recipientEmail }],
-        subject: `📅 Dear Diary: ${subject}`,
+        subject: `💖 Dear Diary: ${subject}`,
         htmlContent,
       }),
     });
