@@ -172,46 +172,46 @@ export default async function handler(req, res) {
 
         </style>
       </head>
-       <body>
-          <div class="container">
-            <img src="${image_url}" class="ribbon" alt="cute ribbon">
+      <body>
+        <div class="container">
+          <img src="https://i.imgur.com/R1C9FEn.png" class="ribbon" alt="cute ribbon">
 
-            <div class="title">My Sweet Diary</div>
-            <div class="date">${date} · Monday ☁️</div> <!-- Dynamic date -->
-            <div class="sticker">🌸 Mood: dreamy & giggly</div>
+          <div class="title">My Sweet Diary</div>
+          <div class="date">May 5, 2025 · Monday ☁️</div>
+          <div class="sticker">🌸 Mood: dreamy & giggly</div>
 
-            <div class="entry-title">${title}</div> <!-- Dynamic title -->
+          <div class="entry-title">${title}</div>
 
-            <div class="note">
-            ${text} <!-- Dynamic text -->
-            </div>
-
-            <div class="photo-frame">
-              <img src="${image_url}" alt="Cute photo"> <!-- Dynamic image -->
-              <div class="caption">this view made me smile without trying 💖</div>
-            </div>
-
-            <div class="note">
-              I added little heart stickers in my planner and made a new page in my dream journal. I really want to visit a lavender field this summer... Maybe even wear a straw hat like in a Studio Ghibli film 🌾✨
-            </div>
-
-            <div class="photo-frame">
-              <img src="${image_url}" alt="Planner">
-              <div class="caption">dreams scribbled in pastel ink 🌈</div>
-            </div>
-
-            <div class="divider">˗ˏˋ 💕 ˎˊ˗</div>
-
-            <div class="quote">“In every ordinary day, there is something beautifully soft — if you listen gently.”</div>
-
-            <div class="footer">
-              Thanks for reading my little pink memory 🌸<br>
-              Sent with love from <strong>Sweet Diary Club</strong> 🍓<br>
-              <a href="#">Unsubscribe</a> if soft things aren’t your cup of tea.
-            </div>
+          <div class="note">
+          ${text}
           </div>
-        </body>
-        </html>
+
+          <div class="photo-frame">
+            <img src="${image_url}" alt="Cute photo">
+            <div class="caption">this view made me smile without trying 💖</div>
+          </div>
+
+          <div class="note">
+            I added little heart stickers in my planner and made a new page in my dream journal. I really want to visit a lavender field this summer... Maybe even wear a straw hat like in a Studio Ghibli film 🌾✨ ${email}
+          </div>
+
+          <div class="photo-frame">
+            <img src="${image_url}" alt="Planner">
+            <div class="caption">dreams scribbled in pastel ink 🌈</div>
+          </div>
+
+          <div class="divider">˗ˏˋ 💕 ˎˊ˗</div>
+
+          <div class="quote">“In every ordinary day, there is something beautifully soft — if you listen gently.”</div>
+
+          <div class="footer">
+            Thanks for reading my little pink memory 🌸<br>
+            Sent with love from <strong>Sweet Diary Club</strong> 🍓<br>
+            <a href="#">Unsubscribe</a> if soft things aren’t your cup of tea.
+          </div>
+        </div>
+      </body>
+      </html>
 
     `,
         }),
