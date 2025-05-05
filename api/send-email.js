@@ -123,6 +123,16 @@ export default async function handler(req, res) {
             box-shadow: 0 4px 12px rgba(255, 182, 193, 0.15);
           }
 
+          
+           .message {
+            background: #fff6fa;
+            border-left: 4px solid #f4b2c2;
+            padding: 12px 18px;
+            font-size: 15px;
+            color: #aa6782;
+            margin-bottom: 25px;
+          }
+
           .photo-frame img {
             max-width: 100%;
             border-radius: 12px;
@@ -195,8 +205,6 @@ export default async function handler(req, res) {
           </div>
 
           <div class="divider">˗ˏˋ 💕 ˎˊ˗</div>
-
-          <div class="quote">“In every ordinary day, there is something beautifully soft — if you listen gently.”</div>
 
           <div class="message">
             P.S. You are always in my heart. ❤️ Wishing you a day as beautiful as you are.
@@ -356,6 +364,15 @@ export default async function handler(req, res) {
             margin-top: 8px;
           }
 
+           .message {
+            background: #ffffff;
+            border-left: 4px solid #ccb9a2;
+            padding: 12px 18px;
+            font-size: 15px;
+            color: #b5906d;
+            margin-bottom: 25px;
+          }
+
           .divider {
             text-align: center;
             font-size: 18px;
@@ -429,8 +446,6 @@ export default async function handler(req, res) {
           </div>
 
           <div class="divider">⋆˖⁺‧₊🤎₊‧⁺˖⋆</div>
-
-          <div class="quote">“Sometimes the most important moments are the quietest.”</div>
 
           <div class="message">
             P.S. You are always in my thoughts. Wishing you a day filled with meaningful moments and lasting joy. ☀️
@@ -625,8 +640,6 @@ export default async function handler(req, res) {
 
           <div class="divider">⋆˖⁺‧₊🧁₊‧⁺˖⋆</div>
 
-          <div class="quote">“A single moment of joy can light up a whole year — and today is filled with sparks.”</div>
-
           <div class="message">
             P.S. Don’t forget to make a wish. ✨ You deserve all the warmth, magic, and little wonders the universe has to offer. Sending hugs and confetti your way!
           </div>
@@ -767,11 +780,11 @@ export default async function handler(req, res) {
           }
 
           .message {
-            background: #ffffff;
+            background: #f1f1f1;
             border-left: 4px solid #4a90e2;
             padding: 12px 18px;
             font-size: 15px;
-            color: #333333;
+            color: #4a90e2;
             margin-bottom: 25px;
           }
 
@@ -818,8 +831,6 @@ export default async function handler(req, res) {
           </div>
 
           <div class="divider">⋆˖⁺‧₊☀️₊‧⁺˖⋆</div>
-
-          <div class="quote">“The best moments in life are the simple ones we often overlook.”</div>
 
           <div class="message">
             P.S. Don’t forget to take care of yourself today. 💙 Wishing you a peaceful and fulfilling day ahead!
