@@ -174,7 +174,7 @@ export default async function handler(req, res) {
     </head>
     <body>
       <div class="container">
-        <img src="https://i.imgur.com/R1C9FEn.png" class="ribbon" alt="cute ribbon">
+        <img src="https://rushdtpzxfnvobniswwm.supabase.co/storage/v1/object/public/images/images/2025-05-06-pngtree-red-cute-ribbon-png-image_6541869.png" class="ribbon" alt="cute ribbon">
 
         <div class="title">My Sweet Diary</div>
         <div class="date">May 5, 2025 · Monday ☁️</div>
