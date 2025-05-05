@@ -177,7 +177,7 @@ export default async function handler(req, res) {
         <img src="https://rushdtpzxfnvobniswwm.supabase.co/storage/v1/object/public/images/images/2025-05-06-pngtree-red-cute-ribbon-png-image_6541869.png" class="ribbon" alt="cute ribbon">
 
         <div class="title">My Sweet Diary</div>
-        <div class="date">May 5, 2025 · Monday ☁️</div>
+        <div class="date">${date} ·  ☁️</div>
         <div class="sticker">🌸 Mood: dreamy & giggly</div>
 
         <div class="entry-title">${title}</div>
