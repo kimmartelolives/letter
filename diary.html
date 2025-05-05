@@ -154,12 +154,12 @@
 
   <input type="email" id="emailRecipient" placeholder="Recipient email (optional)" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
 
-    <!-- Image upload section -->
-    <input type="file" id="imageUpload" accept="image/*" style="margin-top: 10px;">
-    <div id="imagePreview" style="margin-top: 10px;"></div> <!-- For previewing image -->
+  <input type="file" id="noteImage" accept="image/*" style="margin: 10px 0; font-family: inherit;">
+  <img id="noteImagePreview" src="" alt="" style="max-width:100%; display:none; margin-bottom:10px;">
 
-  
+
   <button onclick="saveNote()">Save</button>
+  <button onclick="clearNote()">Clear</button>
 </div>
 
 <div id="saveModal" style="
@@ -254,44 +254,11 @@
   monthSelect.value = today.getMonth();
   yearSelect.value = today.getFullYear();
 
-
-
-
-  const imageUpload = document.getElementById('imageUpload');
-  const imagePreview = document.getElementById('imagePreview');
-
-  let uploadedImageURL = ''; // To store the image URL after upload
-
-  imageUpload.addEventListener('change', async function(e) {
-    const file = e.target.files[0];
-    if (file) {
-      // Preview the image
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        imagePreview.innerHTML = `<img src="${event.target.result}" style="max-width: 100%; max-height: 200px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">`;
-      };
-      reader.readAsDataURL(file);
-
-      // Optionally, you can upload the image to Supabase Storage or another service here.
-      // Example: Upload the image to Supabase Storage
-      const { data, error } = await supabaseClient
-        .storage
-        .from('diary-photos') // Replace with your storage bucket name
-        .upload(`images/${file.name}`, file);
-
-      if (error) {
-        console.error("Image upload error:", error);
-        return alert("❌ Error uploading image.");
-      }
-
-      uploadedImageURL = data.Key; // Store the URL to reference later
-      const imageUrl = `${supabaseUrl}/storage/v1/object/public/${data.path}`;
-      document.getElementById('imageUrlInput').value = imageUrl;  // Store the URL
-    }
-  });
-
-
-
+  function clearNote() {
+  noteContent.value = '';
+  noteType.value = '';
+  document.getElementById('emailRecipient').value = '';
+}
 
   async function renderCalendar() {
   calendarEl.innerHTML = '';
@@ -342,7 +309,6 @@
     const noteData = notes.find(n => n.date === dateKey);
     const noteText = noteData?.text?.toLowerCase() || '';
     const noteColor = noteData?.color || '';
-    const noteImageUrl = noteData?.image_url || '';
 
     let showNote = true;
     if ((filter && noteColor !== filter) || (searchTerm && !noteText.includes(searchTerm))) {
@@ -357,11 +323,8 @@
       cell.innerHTML += `<br><span style="font-size: 20px;">📝</span>`;
       cell.classList.add('has-note');
       if (noteColor) cell.classList.add(noteColor);
-      if (noteImageUrl) {
-        cell.innerHTML += `<br><img src="${noteImageUrl}" alt="Note image" style="max-width: 100%; max-height: 80px; object-fit: cover;">`;
-      }
     }
-    
+
     if (year === phYear && month === phMonth && day === phDay) {
       cell.classList.add('today');
     }
@@ -380,6 +343,17 @@
     noteTitle.textContent = `Diary - ${months[month]} ${day}, ${year}`;
     noteEditor.setAttribute('data-date', dateKey);
 
+    const preview = document.getElementById('noteImagePreview');
+
+    if (noteData?.image_url) {
+      preview.src = noteData.image_url;
+      preview.style.display = 'block';
+    } else {
+      preview.style.display = 'none';
+      preview.src = '';
+    }
+
+
     // If an email is present, set it as the value of the emailRecipient input
     if (noteData?.email) {
         document.getElementById('emailRecipient').value = noteData.email;
@@ -387,62 +361,102 @@
         document.getElementById('emailRecipient').value = ''; // Ensure the field is clear if no email
     }
   }
-  
 
-  async function saveNote() {
+
+
+  async function saveNote() {  
+
   const dateKey = noteEditor.getAttribute('data-date');
   const content = noteContent.value.trim();
   const color = noteType.value;
   const recipientEmail = document.getElementById('emailRecipient').value.trim();  // Capture the email input
-  let imageUrl = ''; // Initialize imageUrl as an empty string
+  const imageFile = document.getElementById('noteImage').files[0];
+  
+   // ✅ Fetch existing note (must come AFTER dateKey is defined)
+   let { data: existingNote, error: fetchError } = await supabaseClient
+    .from('diary_entries')
+    .select('image_url')
+    .eq('date', dateKey)
+    .single();
 
-  // Add the image URL to the content if it's available
-  if (uploadedImageURL) {
-      imageUrl = `${supabaseUrl}/storage/v1/object/public/diary-photos/images/${uploadedImageURL}`;
-      content += `<br><img src="${imageUrl}" style="max-width: 100%; max-height: 200px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">`;
+  if (fetchError && fetchError.code !== 'PGRST116') {
+    console.error("Error fetching existing note:", fetchError.message);
+  }
+
+  let imageUrl = existingNote?.image_url || '';
+
+
+  // ✅ Upload image if file selected
+  if (imageFile) {
+    const fileExt = imageFile.name.split('.').pop();
+    const fileName = `${dateKey}.${fileExt}`;
+    const filePath = `diary-images/${fileName}`;
+
+    const { error: uploadError } = await supabaseClient.storage
+      .from('images')
+      .upload(filePath, imageFile, { upsert: true });
+
+    if (uploadError) {
+      console.error("❌ Image upload failed:", uploadError);
+      return alert("❌ Image upload failed: " + uploadError.message);
+    }
+
+    const { data: publicUrlData } = supabaseClient
+      .storage
+      .from('images')
+      .getPublicUrl(filePath);
+
+    imageUrl = publicUrlData.publicUrl;
   }
 
   if (content) {
-   
     const { error: upsertError } = await supabaseClient
-    .from('diary_entries')
-    .upsert(
-      { date: dateKey, text: content, color: color, email: recipientEmail, image_url: imageUrl, email_sent: false },
-      { onConflict: 'date' }
-    );
+      .from('diary_entries')
+      .upsert(
+        {
+          date: dateKey,
+          text: content,
+          color: color,
+          email: recipientEmail,
+          email_sent: false,
+          image_url: imageUrl   // ✅ Save image URL to DB
+        },
+        { onConflict: 'date' }
+      );
 
     if (upsertError) {
       console.error("Insert/Update error:", upsertError.message);
       return alert("❌ Error saving note: " + upsertError.message);
     }
 
-    // Send email via Edge Function if a recipient email is provided
+    // ✅ Send email via Edge Function if recipientEmail is provided
     if (recipientEmail) {
-  try {
-    const res = await fetch('/api/send-email', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail }),
-    });
+      try {
+        const res = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail }),
+        });
 
-    if (res.ok) {
-      // Mark as sent
-      await supabaseClient
-        .from('diary_entries')
-        .update({ email_sent: true })
-        .eq('date', dateKey);
+        if (res.ok) {
+          // Mark as sent
+          await supabaseClient
+            .from('diary_entries')
+            .update({ email_sent: true })
+            .eq('date', dateKey);
 
-      showModal('emailSuccessModal'); // ✅ Show success modal
-    } else {
-      showModal('emailFailModal'); // ❌ Show failure modal
+          showModal('emailSuccessModal'); // ✅ Show success modal
+        } else {
+          showModal('emailFailModal'); // ❌ Show failure modal
+        }
+      } catch (e) {
+        console.error("❌ Email send failed", e);
+        showModal('emailFailModal');
+      }
     }
-  } catch (e) {
-    console.error("❌ Email send failed", e);
-    showModal('emailFailModal');
-  }
-}
 
   } else {
+    // ❌ Delete note if content is empty
     const { error: delError } = await supabaseClient
       .from('diary_entries')
       .delete()
@@ -459,6 +473,7 @@
   showSaveModal();
   await renderCalendar();
 }
+
 
 function showSaveModal() {
   const modal = document.getElementById('saveModal');
