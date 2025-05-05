@@ -21,7 +21,7 @@ export default async function handler(req, res) {
   
       const { date, text, color, recipientEmail, image_url, title } = body;
   
-      if (!date || !text || !recipientEmail, title) {
+      if (!date || !text || !recipientEmail, !title) {
         return res.status(400).json({ success: false, error: 'Missing required fields' });
       }
   
@@ -173,61 +173,59 @@ export default async function handler(req, res) {
         </style>
       </head>
       <body>
-        <div class="container">
-          <img src="${image_url}" class="ribbon" alt="cute ribbon">
+          <div class="container">
+            <img src="${image_url}" class="ribbon" alt="cute ribbon">
 
-          <div class="title">My Sweet Diary</div>
-          <div class="date">May 5, 2025 · Monday ☁️</div>
-          <div class="sticker">🌸 Mood: dreamy & giggly</div>
+            <div class="title">My Sweet Diary</div>
+            <div class="date">${date} · Monday ☁️</div> <!-- Dynamic date -->
+            <div class="sticker">🌸 Mood: dreamy & giggly</div>
 
-          <div class="entry-title">${title}</div>
+            <div class="entry-title">${title}</div> <!-- Dynamic title -->
 
-          <div class="note">
-          ${text}
+            <div class="note">
+            ${text} <!-- Dynamic text -->
+            </div>
+
+            <div class="photo-frame">
+              <img src="${image_url}" alt="Cute photo"> <!-- Dynamic image -->
+              <div class="caption">this view made me smile without trying 💖</div>
+            </div>
+
+            <div class="note">
+              I added little heart stickers in my planner and made a new page in my dream journal. I really want to visit a lavender field this summer... Maybe even wear a straw hat like in a Studio Ghibli film 🌾✨
+            </div>
+
+            <div class="photo-frame">
+              <img src="${image_url}" alt="Planner">
+              <div class="caption">dreams scribbled in pastel ink 🌈</div>
+            </div>
+
+            <div class="divider">˗ˏˋ 💕 ˎˊ˗</div>
+
+            <div class="quote">“In every ordinary day, there is something beautifully soft — if you listen gently.”</div>
+
+            <div class="footer">
+              Thanks for reading my little pink memory 🌸<br>
+              Sent with love from <strong>Sweet Diary Club</strong> 🍓<br>
+              <a href="#">Unsubscribe</a> if soft things aren’t your cup of tea.
+            </div>
           </div>
+        </body>
+        </html>
+      `,
+      }),
+    });
 
-          <div class="photo-frame">
-            <img src="${image_url}" alt="Cute photo">
-            <div class="caption">this view made me smile without trying 💖</div>
-          </div>
+    const data = await response.json();
 
-          <div class="note">
-            I added little heart stickers in my planner and made a new page in my dream journal. I really want to visit a lavender field this summer... Maybe even wear a straw hat like in a Studio Ghibli film 🌾✨
-          </div>
-
-          <div class="photo-frame">
-            <img src="${image_url}" alt="Planner">
-            <div class="caption">dreams scribbled in pastel ink 🌈</div>
-          </div>
-
-          <div class="divider">˗ˏˋ 💕 ˎˊ˗</div>
-
-          <div class="quote">“In every ordinary day, there is something beautifully soft — if you listen gently.”</div>
-
-          <div class="footer">
-            Thanks for reading my little pink memory 🌸<br>
-            Sent with love from <strong>Sweet Diary Club</strong> 🍓<br>
-            <a href="#">Unsubscribe</a> if soft things aren’t your cup of tea.
-          </div>
-        </div>
-      </body>
-      </html>
-
-    `,
-        }),
-      });
-  
-      const data = await response.json();
-  
-      if (!response.ok) {
-        return res.status(500).json({ success: false, error: data });
-      }
-  
-      return res.status(200).json({ success: true, data });
-  
-    } catch (error) {
-      console.error("Error sending email:", error);
-      return res.status(500).json({ success: false, error: error.message });
+    if (!response.ok) {
+      return res.status(500).json({ success: false, error: data });
     }
+
+    return res.status(200).json({ success: true, data });
+
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return res.status(500).json({ success: false, error: error.message });
   }
-  
+}
