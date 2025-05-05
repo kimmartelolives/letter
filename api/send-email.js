@@ -172,7 +172,7 @@ export default async function handler(req, res) {
 
         </style>
       </head>
-      <body>
+       <body>
           <div class="container">
             <img src="${image_url}" class="ribbon" alt="cute ribbon">
 
@@ -212,20 +212,22 @@ export default async function handler(req, res) {
           </div>
         </body>
         </html>
-      `,
-      }),
-    });
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      return res.status(500).json({ success: false, error: data });
+    `,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        return res.status(500).json({ success: false, error: data });
+      }
+  
+      return res.status(200).json({ success: true, data });
+  
+    } catch (error) {
+      console.error("Error sending email:", error);
+      return res.status(500).json({ success: false, error: error.message });
     }
-
-    return res.status(200).json({ success: true, data });
-
-  } catch (error) {
-    console.error("Error sending email:", error);
-    return res.status(500).json({ success: false, error: error.message });
   }
-}
+  
