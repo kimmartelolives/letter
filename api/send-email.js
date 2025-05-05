@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       });
     });
 
-    const { date, text, color, recipientEmail, imageUrl, title, remarks } = body;
+    const { date, text, color, recipientEmail, imageUrl, title, remarks, subject } = body;
 
     if (!date || !text || !recipientEmail || !title || !remarks) {
       return res.status(400).json({ success: false, error: 'Missing required fields' });
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         sender: { name: "Calendar Diary", email: "kimmartel.olives@gmail.com" },
         to: [{ email: body.recipientEmail }],
-        subject: `📅 Dear Diary Entry for ${date}`,
+        subject: `📅 Dear Diary Entry for ${subject}`,
           htmlContent: `
     <!DOCTYPE html>
     <html lang="en">

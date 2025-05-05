@@ -169,6 +169,8 @@
     <option value="important">Important</option>
   </select>
 
+  <input type="text" id="subject" placeholder="Subject" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
+
   <input type="text" id="title" placeholder="Title" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
   <textarea id="noteContent" placeholder="Write your thoughts..."></textarea>
 
@@ -282,6 +284,8 @@
   noteContent.value = '';
   noteType.value = '';
   document.getElementById('emailRecipient').value = '';
+  document.getElementById('remarks').value = '';
+  document.getElementById('subject').value = '';
   document.getElementById('title').value = ''; // Clear title too
 }
 
@@ -379,6 +383,8 @@
 
   document.getElementById('remarks').value = noteData?.remarks || '';
 
+  document.getElementById('subject').value = noteData?.remarks || '';
+
 
   if (noteData?.image_url) {
     preview.src = noteData.image_url;
@@ -411,7 +417,7 @@
   const imageFile = document.getElementById('noteImage').files[0];
   const title = document.getElementById('title').value.trim();  // Capture the email input
   const remarks = document.getElementById('remarks').value.trim();
-
+  const subject = document.getElementById('subject').value.trim();
   
    // ✅ Fetch existing note (must come AFTER dateKey is defined)
    let { data: existingNote, error: fetchError } = await supabaseClient
@@ -467,7 +473,8 @@
           email_sent: false,
           image_url: imageUrl,
           title: title,
-          remarks: remarks
+          remarks: remarks,
+          subject: subject
         },
         { onConflict: 'date' }
       );
@@ -483,7 +490,7 @@
         const res = await fetch('/api/send-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail, imageUrl, title, remarks }),
+          body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail, imageUrl, title, remarks, subject }),
         });
 
         if (res.ok) {
