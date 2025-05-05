@@ -195,10 +195,10 @@ export default async function handler(req, res) {
           I added little heart stickers in my planner and made a new page in my dream journal. I really want to visit a lavender field this summer... Maybe even wear a straw hat like in a Studio Ghibli film 🌾✨
         </div>
 
-        <div class="photo-frame">
-          <img src="${imageUrl}" alt="Planner">
-          <div class="caption">dreams scribbled in pastel ink 🌈</div>
-        </div>
+        // <div class="photo-frame">
+        //   <a href="https://rosaura-letter.vercel.app/diary.html">Visit the Rosaura Letter - Dear Diary Now</a>
+        //   <div class="caption">dreams scribbled in pastel ink 🌈</div>
+        // </div>
 
         <div class="divider">˗ˏˋ 💕 ˎˊ˗</div>
 
@@ -206,8 +206,8 @@ export default async function handler(req, res) {
 
         <div class="footer">
           Thanks for reading my little pink memory 🌸<br>
-          Sent with love from <strong>Sweet Diary Club</strong> 🍓<br>
-          <a href="#">Unsubscribe</a> if soft things aren’t your cup of tea.
+          Sent with love from <strong>Dear Diary</strong> 🍓<br>
+          Developed by: <a href="https://www.facebook.com/oliveskimmartel/">Kim Martel Olives</a>
         </div>
       </div>
     </body>
