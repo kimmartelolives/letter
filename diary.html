@@ -142,7 +142,9 @@
 <div class="calendar" id="calendar"></div>
 
 <div class="note-editor" id="noteEditor" style="display:none;">
-  <img id="noteImagePreview" src="" alt="" style="max-width:100%; display:none; margin-bottom:10px;">
+  <!-- This image will be dynamically updated -->
+<img id="noteImagePreview" src="" alt="Note Image" style="max-width:100%; display:none; margin-bottom:10px;">
+
   <h2 id="noteTitle">Diary Entry</h2>
   <select id="noteType">
     <option value="">None</option>
@@ -344,15 +346,16 @@
     noteTitle.textContent = `Diary - ${months[month]} ${day}, ${year}`;
     noteEditor.setAttribute('data-date', dateKey);
 
-    const preview = document.getElementById('noteImagePreview');
+      // Get the image preview element
+  const preview = document.getElementById('noteImagePreview');
 
-    if (noteData?.image_url) {
-      preview.src = noteData.image_url;
-      preview.style.display = 'block';
-    } else {
-      preview.style.display = 'none';
-      preview.src = '';
-    }
+  if (noteData?.image_url) {
+    preview.src = noteData.image_url;
+    preview.style.display = 'block';
+  } else {
+    preview.style.display = 'none'; // Hide if no image
+    preview.src = '';
+  }
 
 
     // If an email is present, set it as the value of the emailRecipient input
