@@ -201,7 +201,7 @@ export default async function handler(req, res) {
 
           <div class="photo-frame">
              <a href="https://rosaura-letter.vercel.app/diary.html">🔮 A Glimpse Into His Mind – Saura's Dear Diary Letter Is Here</a>
-            <div class="caption">dreams scribbled in pastel ink 🌈</div>
+            <div class="caption">📖 You're Invited – Visit Dear Diary Now</div>
           </div>
 
           <div class="divider">˗ˏˋ 💕 ˎˊ˗</div>
@@ -443,7 +443,7 @@ export default async function handler(req, res) {
 
           <div class="photo-frame">
             <a href="https://rosaura-letter.vercel.app/diary.html">🔮 A Glimpse Into His Mind – Saura's Dear Diary Letter Is Here</a>
-            <div class="caption">truth in ink and light 🖋️</div>
+            <div class="caption">📖 You're Invited – Visit Dear Diary Now</div>
           </div>
 
           <div class="divider">⋆˖⁺‧₊🤎₊‧⁺˖⋆</div>
@@ -636,7 +636,7 @@ export default async function handler(req, res) {
 
           <div class="photo-frame">
              <a href="https://rosaura-letter.vercel.app/diary.html">🔮 A Glimpse Into His Mind – Saura's Dear Diary Letter Is Here</a>
-            <div class="caption">because memories are the softest gifts 🎁</div>
+            <div class="caption">📖 You're Invited – Visit Dear Diary Now</div>
           </div>
 
           <div class="divider">⋆˖⁺‧₊🧁₊‧⁺˖⋆</div>
@@ -828,7 +828,7 @@ export default async function handler(req, res) {
 
           <div class="photo-frame">
             <a href="https://rosaura-letter.vercel.app/diary.html">🔮 A Glimpse Into His Mind – Saura's Dear Diary Letter Is Here</a>
-            <div class="caption">small things, big impact 🌱</div>
+            <div class="caption">📖 You're Invited – Visit Dear Diary Now</div>
           </div>
 
           <div class="divider">⋆˖⁺‧₊☀️₊‧⁺˖⋆</div>
