@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       });
     });
 
-    const { date, text, color, recipientEmail, image_url, title } = body;
+    const { date, text, color, recipientEmail, imageURL, title } = body;
 
     if (!date || !text || !recipientEmail || !title) {
       return res.status(400).json({ success: false, error: 'Missing required fields' });
@@ -174,7 +174,7 @@ export default async function handler(req, res) {
     </head>
     <body>
       <div class="container">
-        <img src="${image_url}" class="ribbon" alt="cute ribbon">
+        <img src="https://i.imgur.com/R1C9FEn.png" class="ribbon" alt="cute ribbon">
 
         <div class="title">My Sweet Diary</div>
         <div class="date">May 5, 2025 · Monday ☁️</div>
@@ -187,7 +187,7 @@ export default async function handler(req, res) {
         </div>
 
         <div class="photo-frame">
-          <img src="${image_url}" alt="Cute photo">
+          <img src="${imageUrl}" alt="Cute photo">
           <div class="caption">this view made me smile without trying 💖</div>
         </div>
 
@@ -196,7 +196,7 @@ export default async function handler(req, res) {
         </div>
 
         <div class="photo-frame">
-          <img src="${image_url}" alt="Planner">
+          <img src="${imageUrl}" alt="Planner">
           <div class="caption">dreams scribbled in pastel ink 🌈</div>
         </div>
 
