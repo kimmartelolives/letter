@@ -7,6 +7,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
 
   <style>
+    
     body {
       margin: 0;
       font-family: 'Courier New', monospace;
@@ -157,6 +158,59 @@
   <button onclick="saveNote()">Save</button>
 </div>
 
+<div id="saveModal" style="
+  display: none;
+  position: fixed;
+  top: 20px; /* ⬅️ Changed from bottom to top */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  z-index: 9999;
+  opacity: 0.95;
+  font-family: sans-serif;  
+">
+  ✅ Note saved successfully!
+</div>
+
+<div id="emailSuccessModal" style="
+  display: none;
+  position: fixed;
+  top: 30px; /* ⬅️ Changed from bottom to top */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  z-index: 9999;
+  opacity: 0.95;
+  font-family: sans-serif;
+">
+  ✉️ Email sent successfully!
+</div>
+
+<div id="emailFailModal" style="
+  display: none;
+  position: fixed;
+  top: 65px; /* ⬅️ Changed from bottom to top */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  z-index: 9999;
+  opacity: 0.95;
+  font-family: sans-serif;
+">
+  ❌ Failed to send email.
+</div>
+
+
+
 <!-- Supabase CDN -->
 <script>
   const supabaseUrl = 'https://rushdtpzxfnvobniswwm.supabase.co';
@@ -278,6 +332,13 @@
     noteEditor.style.display = 'block';
     noteTitle.textContent = `Diary - ${months[month]} ${day}, ${year}`;
     noteEditor.setAttribute('data-date', dateKey);
+
+    // If an email is present, set it as the value of the emailRecipient input
+    if (noteData?.email) {
+        document.getElementById('emailRecipient').value = noteData.email;
+    } else {
+        document.getElementById('emailRecipient').value = ''; // Ensure the field is clear if no email
+    }
   }
   
 
@@ -288,35 +349,44 @@
   const recipientEmail = document.getElementById('emailRecipient').value.trim();  // Capture the email input
 
   if (content) {
+   
     const { error: upsertError } = await supabaseClient
-      .from('diary_entries')
-      .upsert({ date: dateKey, text: content, color: color, email_sent: false });
+    .from('diary_entries')
+    .upsert(
+      { date: dateKey, text: content, color: color, email: recipientEmail, email_sent: false },
+      { onConflict: 'date' }
+    );
 
     if (upsertError) {
-      console.error("Insert/Update error:", upsertError);
-      return alert("❌ Error saving note.");
+      console.error("Insert/Update error:", upsertError.message);
+      return alert("❌ Error saving note: " + upsertError.message);
     }
 
     // Send email via Edge Function if a recipient email is provided
     if (recipientEmail) {
-      try {
-        const res = await fetch('/api/send-email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail }),  // Send recipient email in the body
-        });
+  try {
+    const res = await fetch('/api/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail }),
+    });
 
-        if (res.ok) {
-          // Mark note as email_sent = true
-          await supabaseClient
-            .from('diary_entries')
-            .update({ email_sent: true })
-            .eq('date', dateKey);
-        }
-      } catch (e) {
-        console.error("❌ Email send failed", e);
-      }
+    if (res.ok) {
+      // Mark as sent
+      await supabaseClient
+        .from('diary_entries')
+        .update({ email_sent: true })
+        .eq('date', dateKey);
+
+      showModal('emailSuccessModal'); // ✅ Show success modal
+    } else {
+      showModal('emailFailModal'); // ❌ Show failure modal
     }
+  } catch (e) {
+    console.error("❌ Email send failed", e);
+    showModal('emailFailModal');
+  }
+}
 
   } else {
     const { error: delError } = await supabaseClient
@@ -332,8 +402,28 @@
 
   noteEditor.style.display = 'none';
   document.getElementById('emailRecipient').value = '';
+  showSaveModal();
   await renderCalendar();
 }
+
+function showSaveModal() {
+  const modal = document.getElementById('saveModal');
+  modal.style.display = 'block';
+
+  setTimeout(() => {
+    modal.style.display = 'none';
+  }, 2000); // hides after 2 seconds
+}
+
+function showModal(modalId) {
+  const modal = document.getElementById(modalId);
+  modal.style.display = 'block';
+  setTimeout(() => {
+    modal.style.display = 'none';
+  }, 2000);
+}
+
+
 
 
 
