@@ -143,7 +143,7 @@
 
 <div class="note-editor" id="noteEditor" style="display:none;">
   <!-- This image will be dynamically updated -->
-<img id="noteImagePreview" src="" alt="Note Image" style="max-width:100%; display:none; margin-bottom:10px;">
+<img id="noteImagePreview" src="" alt="Note Image" style="max-width:100%; height:auto; max-height:200px;  display: block; object-fit:cover; float: right;  display:none; margin-bottom:10px;">
 
   <h2 id="noteTitle">Diary Entry</h2>
   <select id="noteType">
@@ -161,8 +161,8 @@
 
 
 
-  <button onclick="saveNote()">Save</button>
-  <button onclick="clearNote()">Clear</button>
+  <button onclick="saveNote()" style=" display: block; object-fit:cover; float: right;">Save</button>
+  <button onclick="clearNote()" style=" display: block; object-fit:cover; margin-right: 10px; float: right;">Clear</button>
 </div>
 
 <div id="saveModal" style="
@@ -394,14 +394,15 @@
   if (imageFile) {
     const fileExt = imageFile.name.split('.').pop();
     const fileName = `${dateKey}.${fileExt}`;
-    const filePath = `diary-images/${fileName}`;
+    // const filePath = `diary-images/${dateKey}-${imageFile.name}`;
+    const filePath = `images/${dateKey}-${imageFile.name}`; // ← matches upload path
 
     const { error: uploadError } = await supabaseClient.storage
-      .from('images')
-      .upload(`images/${dateKey}-${imageFile.name}`, imageFile, {
+    .from('images')
+  .upload(filePath, imageFile, {
     cacheControl: '3600',
     upsert: true,
-    contentType: imageFile.type, // <- this is key
+    contentType: imageFile.type,
   });
 
     if (uploadError) {
