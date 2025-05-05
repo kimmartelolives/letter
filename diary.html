@@ -378,7 +378,7 @@
     .from('diary_entries')
     .select('image_url')
     .eq('date', dateKey)
-    .single();
+    .maybeSingle();
 
   if (fetchError && fetchError.code !== 'PGRST116') {
     console.error("Error fetching existing note:", fetchError.message);
