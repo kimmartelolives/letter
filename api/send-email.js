@@ -98,7 +98,7 @@ export default async function handler(req, res) {
         <body>
           <div class="email-container">
             <div class="header">
-              <h2>Your Diary Entry for ${date}</h2>
+              <h2>Your Diary Entry1 for ${date}</h2>
             </div>
             <div class="content">
               <div class="entry-type">Entry Type: ${color || 'None'}</div>
