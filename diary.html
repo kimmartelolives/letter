@@ -125,16 +125,16 @@
       background: #bca27d;
     }
 
-    .work {
+    .love {
       background-color: #ffe4e1 !important;
     }
 
-    .personal {
+    .important {
       background-color: #e0ffff !important;
     }
 
-    .important {
-      background-color: #ffffe0 !important;
+    .greetings {
+      background-color: #f0f5ad !important;
     }
   </style>
 </head>
@@ -147,10 +147,9 @@
   <select id="yearSelect"></select>
   <select id="filterSelect">
     <option value="">Filter by type</option>
-    <option value="Work">Work</option>
-    <option value="Love">Love</option>
-    <option value="Greetings">Greetings</option>
-    <option value="Reminder">Reminder</option>
+    <option value="important">Important</option>
+    <option value="love">Love</option>
+    <option value="greetings">Greetings</option>
   </select>
   <input type="text" id="searchInput" placeholder="Search notes...">
 </div>
@@ -164,9 +163,9 @@
   <h2 id="noteTitle">Diary Entry</h2>
   <select id="noteType">
     <option value="">None</option>
-    <option value="work">Work</option>
-    <option value="personal">Personal</option>
     <option value="important">Important</option>
+    <option value="love">Love</option>
+    <option value="greetings">Greetings</option>
   </select>
 
   <input type="text" id="subject" placeholder="Subject" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
