@@ -19,9 +19,9 @@ export default async function handler(req, res) {
         });
       });
   
-      const { date, text, color, recipientEmail } = body;
+      const { date, text, color, recipientEmail, image_url, title } = body;
   
-      if (!date || !text || !recipientEmail) {
+      if (!date || !text || !recipientEmail, title) {
         return res.status(400).json({ success: false, error: 'Missing required fields' });
       }
   
@@ -34,165 +34,185 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           sender: { name: "Calendar Diary", email: "kimmartel.olives@gmail.com" },
           to: [{ email: body.recipientEmail }],
-          subject: `📅 Diary Entry for ${date}`,
+          subject: `📅 Dear Diary Entry for ${date}`,
             htmlContent: `
-      <html>
-<head>
-  <meta charset="UTF-8">
-  <title>Diary Email</title>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Quicksand&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #fefaf6 url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat;
-      font-family: 'Quicksand', sans-serif;
-      color: #5a4b42;
-    }
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>Kawaii Diary Email</title>
+        <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Quicksand&display=swap" rel="stylesheet">
+        <style>
+          body {
+            margin: 0;
+            padding: 0;
+            background: #fffafc url('https://www.transparenttextures.com/patterns/white-wall-3.png') repeat;
+            font-family: 'Quicksand', sans-serif;
+            color: #5a4b42;
+          }
 
-    .email-container {
-      max-width: 640px;
-      margin: 30px auto;
-      background: #fffefb;
-      border-radius: 20px;
-      padding: 40px 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
-      border: 1px solid #f4e8db;
-      background-image: linear-gradient(to bottom, #fffefb, #fff9f2);
-    }
+          .container {
+            max-width: 680px;
+            margin: 40px auto;
+            background: #fff6fa;
+            border: 3px dashed #f8cdd6;
+            border-radius: 22px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.2);
+            position: relative;
+          }
 
-    .header {
-      font-family: 'Dancing Script', cursive;
-      font-size: 42px;
-      color: #c2797f;
-      text-align: center;
-      margin-bottom: 0px;
-    }
+          .ribbon {
+            width: 100px;
+            position: absolute;
+            top: -30px;
+            left: 20px;
+          }
 
-    .date {
-      text-align: center;
-      font-size: 14px;
-      color: #a1988d;
-      margin-bottom: 30px;
-    }
+          .title {
+            font-family: 'Indie Flower', cursive;
+            font-size: 40px;
+            color: #ff7fa5;
+            text-align: center;
+            margin-bottom: 5px;
+          }
 
-    .weather-stamp {
-      text-align: right;
-      font-size: 12px;
-      color: #9e8d81;
-      font-style: italic;
-      margin-top: -20px;
-      margin-bottom: 20px;
-    }
+          .date {
+            text-align: center;
+            font-size: 14px;
+            color: #a7988d;
+            margin-bottom: 25px;
+          }
 
-    .divider {
-      text-align: center;
-      font-size: 24px;
-      color: #d3bab0;
-      margin: 20px 0;
-    }
+          .sticker {
+            text-align: right;
+            font-size: 14px;
+            color: #ffb6c1;
+            font-style: italic;
+            margin-bottom: 15px;
+          }
 
-    .entry-title {
-      font-size: 26px;
-      color: #8a6f61;
-      font-weight: bold;
-      margin-bottom: 15px;
-      text-align: center;
-    }
+          .entry-title {
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            color: #c37485;
+            margin: 25px 0 15px;
+          }
 
-    .entry-content {
-      font-size: 16px;
-      line-height: 1.7;
-      margin-bottom: 30px;
-      text-align: justify;
-    }
+          .note {
+            background: #fff0f4;
+            border: 2px dotted #f4b2c2;
+            padding: 20px;
+            border-radius: 16px;
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            position: relative;
+          }
 
-    .polaroid {
-      background: #fff;
-      border: 1px solid #e4d8cb;
-      box-shadow: 2px 5px 15px rgba(0,0,0,0.08);
-      padding: 10px 10px 20px;
-      border-radius: 8px;
-      text-align: center;
-      margin-bottom: 30px;
-    }
+          .note::before {
+            content: "📝";
+            position: absolute;
+            top: -18px;
+            left: -18px;
+            font-size: 28px;
+          }
 
-    .polaroid img {
-      width: 100%;
-      border-radius: 4px;
-    }
+          .photo-frame {
+            background: #ffeef5;
+            border: 2px solid #fcd5de;
+            border-radius: 16px;
+            padding: 12px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 4px 12px rgba(255, 182, 193, 0.15);
+          }
 
-    .caption {
-      font-size: 14px;
-      font-style: italic;
-      color: #a37a73;
-      margin-top: 10px;
-    }
+          .photo-frame img {
+            max-width: 100%;
+            border-radius: 12px;
+          }
 
-    .mood {
-      font-size: 14px;
-      font-style: italic;
-      text-align: center;
-      color: #967b72;
-      margin-top: -15px;
-      margin-bottom: 25px;
-    }
+          .caption {
+            font-style: italic;
+            font-size: 14px;
+            color: #aa6782;
+            margin-top: 8px;
+          }
 
-    .footer {
-      text-align: center;
-      font-size: 12px;
-      color: #b1a79f;
-      margin-top: 50px;
-    }
+          .divider {
+            text-align: center;
+            font-size: 18px;
+            color: #ebb3c5;
+            margin: 30px 0;
+          }
 
-    .footer a {
-      color: #c2797f;
-      text-decoration: none;
-    }
-  </style>
-</head>
-<body>
-  <div class="email-container">
-    <div class="header">Dear Diary</div>
-    <div class="date">May 5, 2025</div>
-    <div class="weather-stamp">☀️ Sunny, 21°C – light breeze</div>
+          .quote {
+            background: #fff8fa;
+            border-left: 5px solid #fbb1c8;
+            padding: 15px 20px;
+            font-style: italic;
+            font-size: 15px;
+            color: #b27a8c;
+            margin-bottom: 25px;
+          }
 
-    <div class="entry-title">Magic Beneath the Petals</div>
+          .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #b39a9f;
+            margin-top: 40px;
+          }
 
-    <div class="entry-content">
-      Today I wandered into a corner of the world that felt untouched by time. Cherry blossoms danced around me like little pink fairies, each whispering secrets I could almost understand. I let myself drift, heart-first, into that softness.
-    </div>
+          .footer a {
+            color: #ff94b6;
+            text-decoration: none;
+          }
 
-    <div class="polaroid">
-      <img src="https://via.placeholder.com/560x320/ffeaea/333333?text=Cherry+Blossom+Path" alt="Cherry Blossoms">
-      <div class="caption">They swirled around me like warm wishes 🌸</div>
-    </div>
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <img src="${image_url}" class="ribbon" alt="cute ribbon">
 
-    <div class="entry-content">
-      I found a cozy bench under the oldest tree and sketched whatever came to mind. Time melted. Even the birds seemed to slow their songs just for me.
-    </div>
+          <div class="title">My Sweet Diary</div>
+          <div class="date">May 5, 2025 · Monday ☁️</div>
+          <div class="sticker">🌸 Mood: dreamy & giggly</div>
 
-    <div class="polaroid">
-      <img src="https://via.placeholder.com/560x320/fff1ed/333333?text=Tea+%26+Sketchbook" alt="Sketch and Tea">
-      <div class="caption">My cup of quiet joy ☕🖊️</div>
-    </div>
+          <div class="entry-title">${title}</div>
 
-    <div class="mood">🎵 Mood: "Bloom" by The Paper Kites</div>
+          <div class="note">
+          ${text}
+          </div>
 
-    <div class="divider">⋆⁺₊✧༚ ˚₊· ͟͟͞͞➳❥</div>
+          <div class="photo-frame">
+            <img src="${image_url}" alt="Cute photo">
+            <div class="caption">this view made me smile without trying 💖</div>
+          </div>
 
-    <div class="entry-content">
-      I hope days like this keep finding me — full of little magics, soft skies, and room to breathe. If not, I’ll just paint one into existence.
-    </div>
+          <div class="note">
+            I added little heart stickers in my planner and made a new page in my dream journal. I really want to visit a lavender field this summer... Maybe even wear a straw hat like in a Studio Ghibli film 🌾✨
+          </div>
 
-    <div class="footer">
-      Thanks for letting me share this petal-filled day with you 🌸<br>
-      You’re receiving this because you’re subscribed to <strong>Diary Digest</strong>. <br>
-      <a href="#">Unsubscribe</a> if you'd prefer quieter inboxes.
-    </div>
-  </div>
-</body>
-</html>
+          <div class="photo-frame">
+            <img src="${image_url}" alt="Planner">
+            <div class="caption">dreams scribbled in pastel ink 🌈</div>
+          </div>
+
+          <div class="divider">˗ˏˋ 💕 ˎˊ˗</div>
+
+          <div class="quote">“In every ordinary day, there is something beautifully soft — if you listen gently.”</div>
+
+          <div class="footer">
+            Thanks for reading my little pink memory 🌸<br>
+            Sent with love from <strong>Sweet Diary Club</strong> 🍓<br>
+            <a href="#">Unsubscribe</a> if soft things aren’t your cup of tea.
+          </div>
+        </div>
+      </body>
+      </html>
+
     `,
         }),
       });

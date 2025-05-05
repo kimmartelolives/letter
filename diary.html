@@ -47,9 +47,11 @@
       background: #fff8dc;
       border: 1px solid #c4b89b;
       text-align: center;
-      min-height: 80px;
+      min-height: 100px;
       cursor: pointer;
       box-sizing: border-box;
+      overflow: hidden;           /* Prevent overflow */
+      max-height: 100px;        
     }
 
     .day-name {
@@ -78,6 +80,19 @@
       max-width: 700px;
       box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     }
+
+     .note-title {
+      white-space: nowrap;       
+      overflow: hidden;           
+      text-overflow: ellipsis;    
+      max-width: 100%;            
+      text-align: center;        
+      line-height: 20px;          
+      display: inline-block;     
+      height: 20px;               
+      width: 100%;           
+    }
+
 
     .note-editor h2 {
       margin-top: 0;
@@ -153,6 +168,7 @@
     <option value="important">Important</option>
   </select>
 
+  <input type="text" id="title" placeholder="Title" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
   <textarea id="noteContent" placeholder="Write your thoughts..."></textarea>
 
   <input type="email" id="emailRecipient" placeholder="Recipient email (optional)" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
@@ -261,6 +277,7 @@
   noteContent.value = '';
   noteType.value = '';
   document.getElementById('emailRecipient').value = '';
+  document.getElementById('title').value = ''; // Clear title too
 }
 
   async function renderCalendar() {
@@ -323,10 +340,15 @@
     cell.innerHTML = `<strong>${day}</strong>`;
 
     if (noteText && showNote) {
-      cell.innerHTML += `<br><span style="font-size: 20px;">📝</span>`;
-      cell.classList.add('has-note');
-      if (noteColor) cell.classList.add(noteColor);
-    }
+  cell.innerHTML += `<br><span style="font-size: 20px;">📝</span>`;
+  if (noteData.title) {
+    // Wrap the title in a div with a class that will handle the text truncation
+    cell.innerHTML += `<div class="note-title" style="font-size: 12px; margin-top: 4px;">${noteData.title}</div>`;
+  }
+  cell.classList.add('has-note');
+  if (noteColor) cell.classList.add(noteColor);
+}
+
 
     if (year === phYear && month === phMonth && day === phDay) {
       cell.classList.add('today');
@@ -348,6 +370,7 @@
 
       // Get the image preview element
   const preview = document.getElementById('noteImagePreview');
+  document.getElementById('title').value = noteData?.title || '';
 
   if (noteData?.image_url) {
     preview.src = noteData.image_url;
@@ -367,6 +390,9 @@
   }
 
 
+  
+
+
 
   async function saveNote() {  
 
@@ -375,6 +401,7 @@
   const color = noteType.value;
   const recipientEmail = document.getElementById('emailRecipient').value.trim();  // Capture the email input
   const imageFile = document.getElementById('noteImage').files[0];
+  const title = document.getElementById('title').value.trim();  // Capture the email input
   
    // ✅ Fetch existing note (must come AFTER dateKey is defined)
    let { data: existingNote, error: fetchError } = await supabaseClient
@@ -428,7 +455,8 @@
           color: color,
           email: recipientEmail,
           email_sent: false,
-          image_url: imageUrl   // ✅ Save image URL to DB
+          image_url: imageUrl,
+          title: title
         },
         { onConflict: 'date' }
       );
