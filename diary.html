@@ -155,7 +155,6 @@
 
   
   <button onclick="saveNote()">Save</button>
-  <input type="datetime-local" id="sendAt" placeholder="Send at (PH Time)">
 </div>
 
 <!-- Supabase CDN -->
@@ -273,10 +272,6 @@
 
 
   function openNote(year, month, day, noteData = null) {
-
-    document.getElementById('emailRecipient').value = noteData?.email || '';
-document.getElementById('sendAt').value = noteData?.send_at ? new Date(noteData.send_at).toISOString().slice(0, 16) : '';
-
     const dateKey = formatDateKey(year, month, day);
     noteContent.value = noteData?.text || '';
     noteType.value = noteData?.color || '';
@@ -286,45 +281,43 @@ document.getElementById('sendAt').value = noteData?.send_at ? new Date(noteData.
   }
   
 
- async function saveNote() {
+  async function saveNote() {
   const dateKey = noteEditor.getAttribute('data-date');
   const content = noteContent.value.trim();
   const color = noteType.value;
-  const recipientEmail = document.getElementById('emailRecipient').value.trim();
-  const sendAt = document.getElementById('sendAt').value;
+  const recipientEmail = document.getElementById('emailRecipient').value.trim();  // Capture the email input
 
   if (content) {
-    let adjustedSendAt = null;
-    if (sendAt) {
-  const selectedDate = new Date(sendAt);
-  selectedDate.setHours(selectedDate.getHours() + 8);
-  adjustedSendAt = selectedDate.toISOString(); // Store as UTC without adjusting
-}
-
-
-    const insertData = {
-      date: dateKey,
-      text: content,
-      color: color,
-      email: recipientEmail || null,
-      email_sent: false,
-      send_at: adjustedSendAt, // Save the adjusted send_at time
-    };
-
     const { error: upsertError } = await supabaseClient
       .from('diary_entries')
-      .upsert(insertData, { onConflict: ['date'] });
+      .upsert({ date: dateKey, text: content, color: color, email_sent: false });
 
     if (upsertError) {
       console.error("Insert/Update error:", upsertError);
       return alert("❌ Error saving note.");
     }
 
-    alert("✅ Note saved!");
+    // Send email via Edge Function if a recipient email is provided
+    if (recipientEmail) {
+      try {
+        const res = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail }),  // Send recipient email in the body
+        });
 
-    // Clear input fields
-    document.getElementById('emailRecipient').value = "";
-    document.getElementById('sendAt').value = "";
+        if (res.ok) {
+          // Mark note as email_sent = true
+          await supabaseClient
+            .from('diary_entries')
+            .update({ email_sent: true })
+            .eq('date', dateKey);
+        }
+      } catch (e) {
+        console.error("❌ Email send failed", e);
+      }
+    }
+
   } else {
     const { error: delError } = await supabaseClient
       .from('diary_entries')
@@ -338,10 +331,9 @@ document.getElementById('sendAt').value = noteData?.send_at ? new Date(noteData.
   }
 
   noteEditor.style.display = 'none';
+  document.getElementById('emailRecipient').value = '';
   await renderCalendar();
 }
-
-
 
 
 
