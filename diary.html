@@ -172,7 +172,11 @@
   <input type="text" id="title" placeholder="Title" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
   <textarea id="noteContent" placeholder="Write your thoughts..."></textarea>
 
+  <input type="text" id="remarks" placeholder="Remarks" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
+
   <input type="email" id="emailRecipient" placeholder="Recipient email (optional)" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
+
+  
 
   <input type="file" id="noteImage" accept="image/*" style="margin: 10px 0; font-family: inherit;">
 
@@ -373,6 +377,9 @@
   const preview = document.getElementById('noteImagePreview');
   document.getElementById('title').value = noteData?.title || '';
 
+  document.getElementById('remarks').value = noteData?.remarks || '';
+
+
   if (noteData?.image_url) {
     preview.src = noteData.image_url;
     preview.style.display = 'block';
@@ -403,6 +410,8 @@
   const recipientEmail = document.getElementById('emailRecipient').value.trim();  // Capture the email input
   const imageFile = document.getElementById('noteImage').files[0];
   const title = document.getElementById('title').value.trim();  // Capture the email input
+  const remarks = document.getElementById('remarks').value.trim();
+
   
    // ✅ Fetch existing note (must come AFTER dateKey is defined)
    let { data: existingNote, error: fetchError } = await supabaseClient
@@ -457,7 +466,8 @@
           email: recipientEmail,
           email_sent: false,
           image_url: imageUrl,
-          title: title
+          title: title,
+          remarks: remarks
         },
         { onConflict: 'date' }
       );
@@ -473,7 +483,7 @@
         const res = await fetch('/api/send-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail, imageUrl, title }),
+          body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail, imageUrl, title, remarks }),
         });
 
         if (res.ok) {

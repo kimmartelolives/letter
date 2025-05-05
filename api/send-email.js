@@ -19,9 +19,9 @@ export default async function handler(req, res) {
       });
     });
 
-    const { date, text, color, recipientEmail, imageUrl, title } = body;
+    const { date, text, color, recipientEmail, imageUrl, title, remarks } = body;
 
-    if (!date || !text || !recipientEmail || !title) {
+    if (!date || !text || !recipientEmail || !title || !remarks) {
       return res.status(400).json({ success: false, error: 'Missing required fields' });
     }
 
@@ -195,10 +195,10 @@ export default async function handler(req, res) {
           I added little heart stickers in my planner and made a new page in my dream journal. I really want to visit a lavender field this summer... Maybe even wear a straw hat like in a Studio Ghibli film 🌾✨
         </div>
 
-        // <div class="photo-frame">
+         <div class="photo-frame">
         //   <a href="https://rosaura-letter.vercel.app/diary.html">Visit the Rosaura Letter - Dear Diary Now</a>
         //   <div class="caption">dreams scribbled in pastel ink 🌈</div>
-        // </div>
+         </div>
 
         <div class="divider">˗ˏˋ 💕 ˎˊ˗</div>
 
