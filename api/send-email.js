@@ -178,7 +178,7 @@ export default async function handler(req, res) {
       </head>
       <body>
         <div class="container">
-          <img src="https://rushdtpzxfnvobniswwm.supabase.co/storage/v1/object/public/images/images/2025-05-06-pngtree-red-cute-ribbon-png-image_6541869.png" class="ribbon" alt="cute ribbon">
+          <img src="https://rushdtpzxfnvobniswwm.supabase.co/storage/v1/object/public/images/images/2025-05-01-ChatGPT%20Image%20May%206,%202025,%2001_07_23%20AM.png" class="ribbon" alt="cute ribbon">
 
           <div class="title">My Sweet Diary</div>
           <div class="date">${date} ·  ☁️</div>
@@ -225,6 +225,7 @@ export default async function handler(req, res) {
     }
 
     else if (color == 'important') {
+
       htmlContent = `
       <!DOCTYPE html>
       <html lang="en">
@@ -418,7 +419,7 @@ export default async function handler(req, res) {
       </head>
       <body>
         <div class="container">
-          <img src="https://i.imgur.com/R1C9FEn.png" class="ribbon" alt="ribbon" />
+          <img src="https://rushdtpzxfnvobniswwm.supabase.co/storage/v1/object/public/images/images/2025-05-01-ChatGPT%20Image%20May%206,%202025,%2001_07_23%20AM.png" class="ribbon" alt="ribbon" />
 
           <div class="title">My Cozy Diary</div>
           <div class="date">${date} ·  🌤️</div>
@@ -612,7 +613,7 @@ export default async function handler(req, res) {
       </head>
       <body>
         <div class="container">
-          <img src="https://i.imgur.com/R1C9FEn.png" class="ribbon" alt="ribbon" />
+          <img src="https://rushdtpzxfnvobniswwm.supabase.co/storage/v1/object/public/images/images/2025-05-01-ChatGPT%20Image%20May%206,%202025,%2001_07_23%20AM.png" class="ribbon" alt="ribbon" />
 
           <div class="title">Happy Wishes</div>
           <div class="date"> ${date} · 🎈</div>
@@ -625,7 +626,7 @@ export default async function handler(req, res) {
           </div>
 
           <div class="photo-frame">
-            <img src=" ${imageUrl}" alt="Celebration Image">
+            <img src="${imageUrl}" alt="Celebration Image">
             <div class="caption">balloons, cake, and smiles — the sweet trio 🥳</div>
           </div>
 
@@ -804,7 +805,7 @@ export default async function handler(req, res) {
       </head>
       <body>
         <div class="container">
-          <img src="https://i.imgur.com/R1C9FEn.png" class="ribbon" alt="ribbon" />
+          <img src="https://rushdtpzxfnvobniswwm.supabase.co/storage/v1/object/public/images/images/2025-05-01-ChatGPT%20Image%20May%206,%202025,%2001_07_23%20AM.png" class="ribbon" alt="ribbon" />
 
           <div class="title">Hello There!</div>
           <div class="date">${date} · 🌞</div>

@@ -136,13 +136,22 @@
     .greetings {
       background-color: #f0f5ad !important;
     }
+    .controls select, .controls input {
+    font-size: 22px; /* Adjust the font size as needed */
+  }
+
   </style>
 </head>
 <body>
 
-<h1>📖 My Calendar Diary</h1>
 
-<div class="controls">
+    <center>
+  <h1 style="margin-bottom: 0;">📖 Dear Diary</h1>
+  <small style="margin-top: 0; display: block; margin-bottom: 30px;">Developed by: Martel</small>
+</center>
+ 
+
+<div class="controls" style="margin-bottom: 40px;">
   <select id="monthSelect"></select>
   <select id="yearSelect"></select>
   <select id="filterSelect">
