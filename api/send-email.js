@@ -103,6 +103,7 @@ export default async function handler(req, res) {
             line-height: 1.7;
             margin-bottom: 30px;
             position: relative;
+            text-align: justify;
           }
 
           .note::before {
@@ -195,7 +196,7 @@ export default async function handler(req, res) {
             <div class="caption">this view made me smile without trying 💖</div>
           </div>
 
-          <div class="note">
+          <div class="note" style="text-align: center;">
             ${remarks} 🌾✨
           </div>
 
@@ -316,6 +317,7 @@ export default async function handler(req, res) {
             line-height: 1.7;
             margin-bottom: 30px;
             position: relative;
+            text-align: justify;
           }
 
           .note::before {
@@ -440,7 +442,7 @@ export default async function handler(req, res) {
             <div class="caption">a gentle glow that felt like a hug ☀️</div>
           </div>
 
-          <div class="note">
+          <div class="note" style="text-align: center;">
           ${remarks} 🌤️☀️
           </div>
 
@@ -744,6 +746,7 @@ export default async function handler(req, res) {
             font-size: 16px;
             line-height: 1.6;
             margin-bottom: 25px;
+            text-align: justify;
           }
 
           .note::before {
@@ -835,7 +838,7 @@ export default async function handler(req, res) {
             <div class="caption">coffee, books, and a cozy chair — the essentials of a calm day ☕📖</div>
           </div>
 
-          <div class="note">
+          <div class="note" style="text-align: center;">
           ${remarks}
           </div>
 
