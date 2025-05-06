@@ -221,7 +221,7 @@
     }
 
     .important {
-      background-color: #a05647 !important;
+      background-color: #c9604b !important;
     }
 
     .greetings {
@@ -313,9 +313,14 @@ body.dark-mode #emailFailModal {
 }
 
 .switch input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   opacity: 0;
-  width: 0;
-  height: 0;
+  z-index: 3;
+  cursor: pointer;
 }
 
 .slider {
@@ -519,34 +524,41 @@ input:not(:checked) + .slider .sun {
 
 
 <script>
-  const themeSwitch = document.getElementById('themeSwitch');
+  document.addEventListener('DOMContentLoaded', function () {
+    const themeSwitch = document.getElementById('themeSwitch');
+    const sunIcon = document.querySelector('.slider .sun');
+    const moonIcon = document.querySelector('.slider .moon');
 
-  window.addEventListener('DOMContentLoaded', () => {
+    // Load and apply theme preference from localStorage
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
       document.body.classList.add('dark-mode');
-      themeSwitch.checked = true;
+      if (themeSwitch) themeSwitch.checked = true;
     }
-    updateIcons();
-  });
 
-  themeSwitch.addEventListener('change', () => {
-    document.body.classList.toggle('dark-mode');
-    localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    // Update icons on initial load
     updateIcons();
-  });
 
-  function updateIcons() {
-    const sun = document.querySelector('.slider .sun');
-    const moon = document.querySelector('.slider .moon');
-    if (document.body.classList.contains('dark-mode')) {
-      sun.style.opacity = '0.3';
-      moon.style.opacity = '1';
-    } else {
-      sun.style.opacity = '1';
-      moon.style.opacity = '0.3';
+    if (themeSwitch) {
+      themeSwitch.addEventListener('change', () => {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        updateIcons();
+      });
     }
-  }
+
+    function updateIcons() {
+      if (sunIcon && moonIcon) {
+        if (document.body.classList.contains('dark-mode')) {
+          sunIcon.style.opacity = '0.3';
+          moonIcon.style.opacity = '1';
+        } else {
+          sunIcon.style.opacity = '1';
+          moonIcon.style.opacity = '0.3';
+        }
+      }
+    }
+  });
 </script>
 
 
