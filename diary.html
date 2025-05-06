@@ -738,6 +738,11 @@ async function trackView(ipAddress, noteId) {
       }
     }
 
+    const fileInput = document.getElementById('noteFileInput');
+  if (fileInput) {
+    fileInput.value = '';
+  }
+
   } else {
     // ❌ Delete note if content is empty
     const { error: delError } = await supabaseClient
