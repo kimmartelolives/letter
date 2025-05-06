@@ -402,6 +402,7 @@ input:not(:checked) + .slider .sun {
     <input type="text" id="searchInput" placeholder="Search notes...">
   </div>
 
+  
   <div class="theme-toggle">
     <label class="switch">
       <input type="checkbox" id="themeSwitch">
@@ -412,8 +413,17 @@ input:not(:checked) + .slider .sun {
     </label>
   </div>
   
+  <!-- Light Mode Song -->
+  <audio id="sunAudio" preload="auto">
+    <source src="dilaw.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
   
-  
+  <!-- Dark Mode Song -->
+  <audio id="moonAudio" preload="auto">
+    <source src="espresso.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
   
 
 <div class="calendar" id="calendar"></div>
@@ -552,6 +562,14 @@ input:not(:checked) + .slider .sun {
         localStorage.setItem('theme', currentTheme);
         console.log('Theme saved to localStorage:', currentTheme); // Debug log to confirm saving
         updateIcons();
+
+         // Play the respective song when theme is toggled
+        if (document.body.classList.contains('dark-mode')) {
+          playMoonSong(); // Play the moon song for dark mode
+        } else {
+          playSunSong(); // Play the sun song for light mode
+        }
+        
       });
     }
 
@@ -566,6 +584,19 @@ input:not(:checked) + .slider .sun {
         }
       }
     }
+
+     // Function to play the sun song and pause the moon song
+  function playSunSong() {
+    moonAudio.pause(); // Pause the moon song if playing
+    sunAudio.play();   // Play the sun song
+  }
+
+  // Function to play the moon song and pause the sun song
+  function playMoonSong() {
+    sunAudio.pause();  // Pause the sun song if playing
+    moonAudio.play();  // Play the moon song
+  }
+
   });
 </script>
 
