@@ -16,9 +16,7 @@
     <link rel="icon" href="pink.png" type="image/png">
     <title>Hello, Rosaura Meowie!</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
-
   <style>
-    
     body {
       margin: 0;
       font-family: 'Courier New', monospace;
@@ -32,10 +30,46 @@
     h1 {
       color: #4e342e;
     }
+/* Default layout — all in a row */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
 
-    .controls {
-      margin: 10px 0;
-    }
+/* On mobile: stack all, but Month & Year stay side by side */
+@media (max-width: 600px) {
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .month-year-group {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .month-year-group select {
+    flex: 1;
+    font-size: 16px;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  #filterSelect,
+  #searchInput {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 10px;
+  }
+}
+
+
+
 
     select, input[type="text"] {
       font-family: inherit;
@@ -153,7 +187,6 @@
       cursor: pointer;
       border-radius: 5px;
     }
-
     /* Mobile responsiveness */
 @media (max-width: 600px) {
   .form-container {
@@ -177,7 +210,6 @@
     font-size: 14px; /* Adjust font size for mobile */
   }
 }
-
     /* Specific button styles for Save and Clear */
     button.save {
       float: right;
@@ -233,7 +265,6 @@
   font-size: 14px;
   font-weight: 500;
 }
-
   </style>
 </head>
 <body>
@@ -241,24 +272,24 @@
   <center>
     <h1 style="margin: 0; line-height: 1.2;">📖 Dear Saura ᰔ</h1>
     <small style="display: block; margin: 0; font-size: 0.9em; margin-bottom: 15px;">Developed by: Martel</small>
-  </center>
-  
- 
+  </center> 
 
-<div class="controls" style="margin-bottom: 30px;">
-  <select id="monthSelect"></select>
-  <select id="yearSelect"></select>
-  <select id="filterSelect">
-    <option value="">Filter by theme</option>
-    <option value="important">Important</option>
-    <option value="love">Love</option>
-    <option value="greetings">Greetings</option>
-  </select>
-  <input type="text" id="searchInput" placeholder="Search notes...">
-</div>
+  <div class="controls" style="margin-bottom: 25px;">
+    <div class="month-year-group">
+      <select id="monthSelect"></select>
+      <select id="yearSelect"></select>
+    </div>
+    <select id="filterSelect">
+      <option value="">Filter by theme</option>
+      <option value="important">Important</option>
+      <option value="love">Love</option>
+      <option value="greetings">Greetings</option>
+    </select>
+    <input type="text" id="searchInput" placeholder="Search notes...">
+  </div>
+  
 
 <div class="calendar" id="calendar"></div>
-
 <div class="note-editor" id="noteEditor" style="display:none;">
   <!-- This image will be dynamically updated -->
 <img id="noteImagePreview" src="" alt="Note Image" style="max-width:100%; height:auto; max-height:200px;  display: block; object-fit:cover; float: right;  display:none; margin-bottom:10px; border: 2px solid #ccc; border-radius: 8px;">
@@ -301,7 +332,6 @@
   <label for="emailRecipient" style="display:block; margin-top:10px;">Recipient Email: (optional)</label>
   <input type="email" id="emailRecipient" placeholder="..." style="width:95%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
 
-  
   <div class="form-container">
     <!-- Input for file upload aligned to the left -->
     <input type="file" id="noteImage" accept="image/*" style="margin: 10px 0; font-family: inherit;">
@@ -312,8 +342,6 @@
       <button class="clear" onclick="clearNote()">Clear</button>
     </div>
   </div>
-  
-  
 
 </div>
 
@@ -367,8 +395,6 @@
 ">
   ❌ Failed to send email.
 </div>
-
-
 
 <!-- Supabase CDN -->
 <script>
@@ -444,10 +470,6 @@ async function trackView(ipAddress, noteId) {
     console.error('Error logging view:', error);
   }
 }
-
-
-
-
 
   async function renderCalendar() {
   calendarEl.innerHTML = '';
@@ -529,7 +551,6 @@ async function trackView(ipAddress, noteId) {
   }
 }
 
-
   async function openNote(year, month, day, noteData = null) {
     const dateKey = formatDateKey(year, month, day);
     noteContent.value = noteData?.text || '';
@@ -554,8 +575,6 @@ async function trackView(ipAddress, noteId) {
 
   document.getElementById('mood').value = noteData?.mood || '';
 
-
-
   if (noteData?.image_url) {
     preview.src = noteData.image_url;
     preview.style.display = 'block';
@@ -573,8 +592,6 @@ async function trackView(ipAddress, noteId) {
     }
   }
 
-
-
   async function getNoteViews(noteId) {
   try {
     console.log('Fetching views for noteId:', noteId);
@@ -590,11 +607,6 @@ async function trackView(ipAddress, noteId) {
     console.error('Supabase fetch error:', err);
   }
 }
-
-  
-
-
-
   async function saveNote() {  
 
   const dateKey = noteEditor.getAttribute('data-date');
@@ -620,7 +632,6 @@ async function trackView(ipAddress, noteId) {
   }
 
   let imageUrl = existingNote?.image_url || '';
-
 
   // ✅ Upload image if file selected
   if (imageFile) {
@@ -737,10 +748,6 @@ function showModal(modalId) {
   }, 2000);
 }
 
-
-
-
-
   function formatDateKey(y, m, d) {
     return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
   }
@@ -749,9 +756,8 @@ function showModal(modalId) {
   yearSelect.onchange = renderCalendar;
   filterSelect.onchange = renderCalendar;
   searchInput.oninput = renderCalendar;
-
   renderCalendar();
-</script>
 
+</script>
 </body>
 </html>
