@@ -439,6 +439,11 @@
   const preview = document.getElementById('noteImagePreview');
   preview.style.display = 'none';
   preview.src = '';
+
+  const fileInput = document.getElementById('noteImage');
+  if (fileInput) {
+    fileInput.value = '';
+  }
 }
 
 
