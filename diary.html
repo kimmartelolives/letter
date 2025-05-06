@@ -6,7 +6,7 @@
     <meta property="og:site_name" content="Hello, Rosaura Meowie!">
     <meta property="og:title" content="Hello, Rosaura Meowie!" />
     <meta property="og:description" content="A special letter for someone special!" />
-    <meta property="og:image" content="/pink.png/" />
+    <meta property="og:image" content="/pink.png" />
     <meta property="og:url" content="https://rosaura-letter.vercel.app/diary.html" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -122,6 +122,28 @@
       line-height: 1.5;
     }
 
+    .form-container {
+      display: flex;
+      justify-content: space-between; /* Distribute items evenly, aligning them to opposite sides */
+      align-items: center; /* Vertically align items in the center */
+      gap: 10px; /* Optional: add space between the input and buttons */
+      padding: 10px;
+      flex-wrap: wrap; /* Allow items to wrap when the screen size is smaller */
+    }
+
+    /* Input file element style */
+    #noteImage {
+      margin: 10px 0;
+      font-family: inherit;
+      flex-grow: 1; /* Make the input take the available space */
+      max-width: 70%; /* Limit the width to 70% */
+    }
+
+    .button-container {
+      display: flex;
+      gap: 10px; /* Space between the buttons */
+    }
+
     button {
       background: #d2b48c;
       border: none;
@@ -130,6 +152,39 @@
       font-family: inherit;
       cursor: pointer;
       border-radius: 5px;
+    }
+
+    /* Mobile responsiveness */
+@media (max-width: 600px) {
+  .form-container {
+    flex-direction: column; /* Stack items vertically on mobile */
+    align-items: stretch; /* Stretch items to fill the available width */
+  }
+
+  #noteImage {
+    width: 100%; /* Make the file input take the full width */
+    margin-bottom: 10px; /* Add spacing below the input */
+  }
+
+  .button-container {
+    width: 100%; /* Make the button container take full width */
+    justify-content: space-evenly; /* Distribute buttons evenly across the container */
+  }
+
+  button {
+    width: 45%; /* Make buttons take 45% of the container width */
+    padding: 12px 20px; /* Slightly larger padding for mobile */
+    font-size: 14px; /* Adjust font size for mobile */
+  }
+}
+
+    /* Specific button styles for Save and Clear */
+    button.save {
+      float: right;
+    }
+
+    button.clear {
+      float: left;
     }
 
     button:hover {
@@ -247,13 +302,19 @@
   <input type="email" id="emailRecipient" placeholder="..." style="width:95%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
 
   
+  <div class="form-container">
+    <!-- Input for file upload aligned to the left -->
+    <input type="file" id="noteImage" accept="image/*" style="margin: 10px 0; font-family: inherit;">
+  
+    <!-- Container for the buttons aligned to the right -->
+    <div class="button-container">
+      <button class="save" onclick="saveNote()">Save</button>
+      <button class="clear" onclick="clearNote()">Clear</button>
+    </div>
+  </div>
+  
+  
 
-  <input type="file" id="noteImage" accept="image/*" style="margin: 10px 0; font-family: inherit;">
-
-
-
-  <button onclick="saveNote()" style=" display: block; object-fit:cover; float: right;">Save</button>
-  <button onclick="clearNote()" style=" display: block; object-fit:cover; margin-right: 10px; float: right;">Clear</button>
 </div>
 
 <div id="saveModal" style="
@@ -515,17 +576,19 @@ async function trackView(ipAddress, noteId) {
 
 
   async function getNoteViews(noteId) {
-  const { data, error } = await supabaseClient
-    .from('note_views')
-    .select('*')
-    .eq('note_id', noteId);
+  try {
+    console.log('Fetching views for noteId:', noteId);
 
-  if (error) {
-    console.error('Error fetching note views:', error);
-    return;
+    const { data, error } = await supabaseClient
+      .from('note_views')
+      .select('*')
+      .eq('note_id', noteId)
+      .throwOnError();
+
+    console.log('Note Views:', data);
+  } catch (err) {
+    console.error('Supabase fetch error:', err);
   }
-
-  console.log('Note Views:', data);
 }
 
   
