@@ -704,7 +704,7 @@ body:not(.dark-mode) #floatingMessage {
   preview.style.display = 'none';
   preview.src = '';
 
-  const fileInput = document.getElementById('noteFileInput');
+  const fileInput = document.getElementById('noteImage');
   if (fileInput) {
     fileInput.value = '';
   }
@@ -1010,7 +1010,7 @@ async function trackView(ipAddress, noteId) {
       }
     }
 
-    const fileInput = document.getElementById('noteFileInput');
+  const fileInput = document.getElementById('noteImage');
   if (fileInput) {
     fileInput.value = '';
   }
