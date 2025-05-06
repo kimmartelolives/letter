@@ -545,6 +545,7 @@ export default async function handler(req, res) {
             line-height: 1.7;
             margin-bottom: 30px;
             position: relative;
+            text-align: justify;
           }
 
           .note::before {
@@ -637,7 +638,7 @@ export default async function handler(req, res) {
             <div class="caption">balloons, cake, and smiles — the sweet trio 🥳</div>
           </div>
 
-          <div class="note">
+          <div class="note" style="text-align: center;">
              ${remarks}
           </div>
 
