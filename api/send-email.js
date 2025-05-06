@@ -207,7 +207,8 @@ export default async function handler(req, res) {
           <div class="divider">˗ˏˋ 💕 ˎˊ˗</div>
 
           <div class="message">
-            P.S. You are always in my heart. ❤️ Wishing you a day as beautiful as you are.
+            P.S. You are always in my heart. ❤️ Wishing you a day as beautiful as you are.<br>
+            Yours Truly, <strong>${from}</strong>
           </div>
 
           <div class="footer">

@@ -912,6 +912,10 @@ async function trackView(ipAddress, noteId) {
   const subject = document.getElementById('subject').value.trim();
   const mood = document.getElementById('mood').value;
   const from = document.getElementById('from').value;
+  
+
+  const dateCreatedPHT = new Date().toLocaleString("en-PH", { timeZone: "Asia/Manila" });
+
 
    // ✅ Fetch existing note (must come AFTER dateKey is defined)
    let { data: existingNote, error: fetchError } = await supabaseClient
@@ -969,7 +973,8 @@ async function trackView(ipAddress, noteId) {
           remarks: remarks,
           subject: subject,
           mood: mood,
-          from: from
+          from: from,
+          date_created: dateCreatedPHT 
         },
         { onConflict: 'date' }
       );
