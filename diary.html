@@ -188,6 +188,18 @@
     <option value="greetings">Greetings</option>
   </select>
 
+  <label for="mood" style="display:block; margin-top:10px;">Mood:</label>
+<select id="mood" style="font-family: inherit; font-size: 16px; padding: 5px;">
+  <option value="">Select mood</option>
+  <option value="😊">😊 Happy</option>
+  <option value="😢">😢 Sad</option>
+  <option value="😠">😠 Angry</option>
+  <option value="😴">😴 Tired</option>
+  <option value="😍">😍 In Love</option>
+  <option value="🤔">🤔 Thoughtful</option>
+  <option value="😎">😎 Cool</option>
+</select>
+
   <input type="text" id="subject" placeholder="Subject" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
 
   <input type="text" id="title" placeholder="Title" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
@@ -368,7 +380,8 @@
     cell.innerHTML = `<strong>${day}</strong>`;
 
     if (noteText && showNote) {
-  cell.innerHTML += `<br><span style="font-size: 20px;">📝</span>`;
+  // cell.innerHTML += `<br><span style="font-size: 20px;">📝</span>`;
+  cell.innerHTML += `<div style="font-size: 18px;">${noteData.mood}</div>`;
   if (noteData.title) {
     // Wrap the title in a div with a class that will handle the text truncation
     cell.innerHTML += `<div class="note-title" style="font-size: 12px; margin-top: 4px;">${noteData.title}</div>`;
@@ -404,6 +417,9 @@
 
   document.getElementById('subject').value = noteData?.subject || '';
 
+  document.getElementById('mood').value = noteData?.mood || '';
+
+
 
   if (noteData?.image_url) {
     preview.src = noteData.image_url;
@@ -437,6 +453,8 @@
   const title = document.getElementById('title').value.trim();  // Capture the email input
   const remarks = document.getElementById('remarks').value.trim();
   const subject = document.getElementById('subject').value.trim();
+  const mood = document.getElementById('mood').value;
+
   
    // ✅ Fetch existing note (must come AFTER dateKey is defined)
    let { data: existingNote, error: fetchError } = await supabaseClient
@@ -493,7 +511,8 @@
           image_url: imageUrl,
           title: title,
           remarks: remarks,
-          subject: subject
+          subject: subject,
+          mood: mood
         },
         { onConflict: 'date' }
       );
