@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       });
     });
 
-    const { date, text, color, recipientEmail, imageUrl, title, remarks, subject } = body;
+    const { date, text, color, recipientEmail, imageUrl, title, remarks, subject, mood } = body;
 
     if (!date || !text || !recipientEmail || !title || !remarks || !subject) {
       return res.status(400).json({ success: false, error: 'Missing required fields' });
@@ -182,7 +182,7 @@ export default async function handler(req, res) {
 
           <div class="title">My Sweet Diary</div>
           <div class="date">${date} ·  ☁️</div>
-          <div class="sticker">🌸 Mood: dreamy & giggly</div>
+          <div class="sticker">🌸 Mood: ${mood} ${mood} ${mood}</div>
 
           <div class="entry-title">${title}</div>
 
@@ -423,7 +423,7 @@ export default async function handler(req, res) {
 
           <div class="title">My Cozy Diary</div>
           <div class="date">${date} ·  🌤️</div>
-          <div class="sticker">🌾 Mood: warm & thoughtful</div>
+          <div class="sticker">🌾 Mood: ${mood} ${mood} ${mood}</div>
           <div class="important-badge">🌟 Important Entry</div>
 
           <div class="entry-title">${title}</div>
@@ -618,6 +618,7 @@ export default async function handler(req, res) {
           <div class="title">Happy Wishes</div>
           <div class="date"> ${date} · 🎈</div>
           <div class="sticker">🎂 Occasion: A heartwarming celebration</div>
+          <div class="sticker">🌾 Mood: ${mood} ${mood} ${mood}</div>
 
           <div class="entry-title"> ${title}</div>
 
@@ -810,6 +811,7 @@ export default async function handler(req, res) {
           <div class="title">Hello There!</div>
           <div class="date">${date} · 🌞</div>
           <div class="sticker">🎉 Occasion: A cheerful moment to share</div>
+          <div class="sticker">🌾 Mood: ${mood} ${mood} ${mood}</div>
 
           <div class="entry-title">${title}</div>
 

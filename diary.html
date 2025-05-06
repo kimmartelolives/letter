@@ -150,6 +150,34 @@
     .controls select, .controls input {
     font-size: 14 px; /* Adjust the font size as needed */
   }
+  
+  .outlined-input {
+  position: relative;
+  margin: 30px 0;
+  width: 250px;
+}
+
+.outlined-input input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid;
+  border-radius: 8px;
+  outline: none;
+  background: transparent;
+  color: #333;
+}
+
+.outlined-input label {
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  background: white; /* or match your page background */
+  padding: 0 5px;
+  color: #5d00ff;
+  font-size: 14px;
+  font-weight: 500;
+}
 
   </style>
 </head>
@@ -181,7 +209,9 @@
 <img id="noteImagePreview" src="" alt="Note Image" style="max-width:100%; height:auto; max-height:200px;  display: block; object-fit:cover; float: right;  display:none; margin-bottom:10px; border: 2px solid #ccc; border-radius: 8px;">
 
   <h2 id="noteTitle">Diary Entry</h2>
-  <select id="noteType">
+
+  <label for="noteType" style="display:block; margin-top:10px;">Theme:</label>
+  <select id="noteType" style="font-family: inherit; font-size: 16px; padding: 5px;">
     <option value="">None</option>
     <option value="important">Important</option>
     <option value="love">Love</option>
@@ -190,24 +220,31 @@
 
   <label for="mood" style="display:block; margin-top:10px;">Mood:</label>
 <select id="mood" style="font-family: inherit; font-size: 16px; padding: 5px;">
-  <option value="">Select mood</option>
+  <option value="">Select Mood</option>
   <option value="😊">😊 Happy</option>
   <option value="😢">😢 Sad</option>
+  <option value="😭">😭 Crying</option>
   <option value="😠">😠 Angry</option>
+  <option value="🤭">🤭 Embarrassed</option>
   <option value="😴">😴 Tired</option>
   <option value="😍">😍 In Love</option>
   <option value="🤔">🤔 Thoughtful</option>
   <option value="😎">😎 Cool</option>
 </select>
 
-  <input type="text" id="subject" placeholder="Subject" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
+<label for="subject" style="display:block; margin-top:20px;">Subject:</label>
+  <input type="text" id="subject" placeholder="..." style="width:95%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
 
-  <input type="text" id="title" placeholder="Title" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
-  <textarea id="noteContent" placeholder="Write your thoughts..."></textarea>
+  <label for="subject" style="display:block; margin-top:10px;">Title:</label>
+  <input type="text" id="title" placeholder="..." style="width:95%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
 
-  <input type="text" id="remarks" placeholder="Remarks" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
+  <textarea id="noteContent" placeholder="Write your thoughts..." style="width:95%;"></textarea>
 
-  <input type="email" id="emailRecipient" placeholder="Recipient email (optional)" style="width:100%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
+  <label for="remarks" style="display:block; margin-top:10px;">Remarks:</label>
+  <input type="text" id="remarks" placeholder="..." style="width:95%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
+
+  <label for="emailRecipient" style="display:block; margin-top:10px;">Recipient Email: (optional)</label>
+  <input type="email" id="emailRecipient" placeholder="..." style="width:95%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
 
   
 
@@ -528,7 +565,7 @@
         const res = await fetch('/api/send-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail, imageUrl, title, remarks, subject }),
+          body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail, imageUrl, title, remarks, subject, mood }),
         });
 
         if (res.ok) {
