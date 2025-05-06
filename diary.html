@@ -1010,18 +1010,43 @@ async function trackView(ipAddress, noteId) {
     fileInput.value = '';
   }
 
-  } else {
-    // ❌ Delete note if content is empty
-    const { error: delError } = await supabaseClient
-      .from('diary_entries')
-      .delete()
-      .eq('date', dateKey);
+} else {
+  const { data: noteToDelete, error: fetchNoteError } = await supabaseClient
+    .from('diary_entries')
+    .select('id')
+    .eq('date', dateKey)
+    .maybeSingle();
 
-    if (delError) {
-      console.error("Delete error:", delError);
-      return alert("❌ Error deleting note.");
-    }
+  if (fetchNoteError || !noteToDelete?.id) {
+    console.error("Could not fetch note:", fetchNoteError?.message);
+    return alert("❌ Could not find note to delete.");
   }
+
+  const noteId = noteToDelete.id;
+  console.log("Attempting delete for noteId:", noteId);
+
+  // Delete related note_views
+  const { error: viewsDeleteError } = await supabaseClient
+    .from('note_views')
+    .delete()
+    .eq('note_id', noteId);
+
+  if (viewsDeleteError) {
+    console.error("View delete failed:", viewsDeleteError.message);
+    return alert("❌ Failed to delete views.");
+  }
+
+  // Delete the diary entry
+  const { error: delError } = await supabaseClient
+    .from('diary_entries')
+    .delete()
+    .eq('id', noteId);
+
+  if (delError) {
+    console.error("Note delete failed:", delError.message);
+    return alert("❌ Failed to delete note.");
+  }
+}
 
   noteEditor.style.display = 'none';
   document.getElementById('emailRecipient').value = '';
