@@ -108,7 +108,7 @@
     }
 
     .today {
-      border: 2px solid #d2691e;
+      border: 2px solid #000000;
     }
 
     .note-editor {
@@ -263,6 +263,10 @@
 body.dark-mode {
   background-color: #121212;
   color: #f3f3f3;
+}
+
+body.dark-mode .calendar .day.today {
+  border-color: #ffffff !important;
 }
 
 body.dark-mode .calendar .day,
@@ -450,13 +454,13 @@ body:not(.dark-mode) #floatingMessage {
   </div>
   
   <!-- Light Mode Song -->
-  <audio id="sunAudio" preload="auto">
+  <audio id="sunAudio" preload="auto" loop>
     <source src="youllbeinmyheart.mp3" type="audio/mp3">
     Your browser does not support the audio element.
   </audio>
   
   <!-- Dark Mode Song -->
-  <audio id="moonAudio" preload="auto">
+  <audio id="moonAudio" preload="auto" loop>
     <source src="sabawatsandali.mp3" type="audio/mp3">
     Your browser does not support the audio element.
   </audio>
@@ -650,9 +654,6 @@ body:not(.dark-mode) #floatingMessage {
 
 </script>
 
-
-
-
 <!-- Supabase CDN -->
 <script>
   const supabaseUrl = 'https://rushdtpzxfnvobniswwm.supabase.co';
@@ -841,7 +842,6 @@ async function trackView(ipAddress, noteId) {
     noteTitle.textContent = `Diary - ${months[month]} ${day}, ${year}`;
     noteEditor.setAttribute('data-date', dateKey);
 
-   
   const ipAddress = await getUserIpAddress();
 
   await trackView(ipAddress, noteData?.id); 
