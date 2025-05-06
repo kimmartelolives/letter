@@ -207,8 +207,10 @@ export default async function handler(req, res) {
           <div class="divider">˗ˏˋ 💕 ˎˊ˗</div>
 
           <div class="message">
-            P.S. You are always in my heart. ❤️ Wishing you a day as beautiful as you are.<br>
-            Yours Truly, <strong>${from}</strong>
+            P.S. You are always in my heart. ❤️ Wishing you a day as beautiful as you are.
+             <br><br>
+            <strong>With love and care,</strong><br>
+            <strong><h2>${from}</h2></strong>
           </div>
 
           <div class="footer">
@@ -451,6 +453,9 @@ export default async function handler(req, res) {
 
           <div class="message">
             P.S. You are always in my thoughts. Wishing you a day filled with meaningful moments and lasting joy. ☀️
+             <br><br>
+            <strong>With love and care,</strong><br>
+            <strong><h2>${from}</h2></strong>
           </div>
 
           <div class="footer">
@@ -645,6 +650,10 @@ export default async function handler(req, res) {
 
           <div class="message">
             P.S. Don’t forget to make a wish. ✨ You deserve all the warmth, magic, and little wonders the universe has to offer. Sending hugs and confetti your way!
+
+              <br><br>
+            <strong>With love and care,</strong><br>
+            <strong><h2>${from}</h2></strong>
           </div>
 
           <div class="footer">
@@ -838,6 +847,9 @@ export default async function handler(req, res) {
 
           <div class="message">
             P.S. Don’t forget to take care of yourself today. 💙 Wishing you a peaceful and fulfilling day ahead!
+             <br><br>
+            <strong>With love and care,</strong><br>
+            <strong><h2>${from}</h2></strong>
           </div>
 
           <div class="footer">
