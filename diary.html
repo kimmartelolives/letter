@@ -206,10 +206,14 @@
 
     button.save {
       float: right;
+      border: 1px solid #d2b48c; 
+      
     }
 
     button.clear {
       float: left;
+      border: 1px solid #d2b48c; 
+     
     }
 
     button:hover {
@@ -476,7 +480,7 @@ body:not(.dark-mode) #floatingMessage {
   <h2 id="noteTitle">Diary Entry</h2>
 
   <label for="noteType" style="display:block; margin-top:10px;">Theme:</label>
-  <select id="noteType" style="font-family: inherit; font-size: 16px; padding: 5px;">
+  <select id="noteType" style="font-family: inherit; font-size: 16px; padding: 5px; border: 1px solid #d2b48c;">
     <option value="">None</option>
     <option value="important">Important</option>
     <option value="love">Love</option>
@@ -484,7 +488,7 @@ body:not(.dark-mode) #floatingMessage {
   </select>
 
   <label for="mood" style="display:block; margin-top:10px;">Mood:</label>
-<select id="mood" style="font-family: inherit; font-size: 16px; padding: 5px;">
+<select id="mood" style="font-family: inherit; font-size: 16px; padding: 5px; border: 1px solid #d2b48c;">
   <option value="">Select Mood</option>
   <option value="😊">😊 Happy</option>
   <option value="😢">😢 Sad</option>
@@ -503,7 +507,7 @@ body:not(.dark-mode) #floatingMessage {
   <label for="subject" style="display:block; margin-top:10px;">Title:</label>
   <input type="text" id="title" placeholder="..." style="width:95%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
 
-  <textarea id="noteContent" placeholder="Write your thoughts..." style="width:95%;"></textarea>
+  <textarea id="noteContent" placeholder="Write your thoughts..." style="width:95%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;"></textarea>
 
   <label for="remarks" style="display:block; margin-top:10px;">Remarks:</label>
   <input type="text" id="remarks" placeholder="..." style="width:95%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
