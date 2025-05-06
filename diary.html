@@ -67,10 +67,6 @@
     padding: 10px;
   }
 }
-
-
-
-
     select, input[type="text"] {
       font-family: inherit;
       font-size: 16px;
@@ -444,6 +440,11 @@
   document.getElementById('title').value = ''; // Clear title too
 }
 
+
+function isMobileView() {
+  return window.innerWidth <= 600; // Adjust as per your design breakpoints
+}
+
 async function getUserIpAddress() {
   try {
     const response = await fetch('https://api.ipify.org?format=json');
@@ -529,6 +530,7 @@ async function trackView(ipAddress, noteId) {
     const cell = document.createElement('div');
     cell.className = 'day';
     cell.innerHTML = `<strong>${day}</strong>`;
+    cell.setAttribute('data-date', dateKey); // Add data-date attribute
 
     if (noteText && showNote) {
   // cell.innerHTML += `<br><span style="font-size: 20px;">📝</span>`;
@@ -590,6 +592,22 @@ async function trackView(ipAddress, noteId) {
     } else {
         document.getElementById('emailRecipient').value = ''; // Ensure the field is clear if no email
     }
+
+       // If on mobile, scroll to the selected day and focus on the note editor
+  if (isMobileView()) {
+    setTimeout(() => {
+      // Find the day cell corresponding to the date
+      const dayCell = document.querySelector(`.day[data-date="${dateKey}"]`);
+      if (dayCell) {
+        // Scroll the day cell into view
+        dayCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      // Now focus on the note editor container
+      noteEditor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      noteEditor.focus();
+    }, 300); // Give time for rendering to complete before applying scrolling/focus
+  }
   }
 
   async function getNoteViews(noteId) {
