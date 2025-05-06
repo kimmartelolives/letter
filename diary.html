@@ -376,6 +376,42 @@ input:not(:checked) + .slider .sun {
   opacity: 1;
 }
 
+#floatingMessage {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  font-weight: bold;
+  pointer-events: none;
+  opacity: 0;
+  animation: none;
+  z-index: 9999;
+  color: white; /* default for dark mode */
+}
+
+body:not(.dark-mode) #floatingMessage {
+  color: black;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  90% {
+    opacity: 1;
+    transform: translate(-50%, -60px);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -80px);
+  }
+}
 
 
 
@@ -415,15 +451,17 @@ input:not(:checked) + .slider .sun {
   
   <!-- Light Mode Song -->
   <audio id="sunAudio" preload="auto">
-    <source src="dilaw.mp3" type="audio/mp3">
+    <source src="youllbeinmyheart.mp3" type="audio/mp3">
     Your browser does not support the audio element.
   </audio>
   
   <!-- Dark Mode Song -->
   <audio id="moonAudio" preload="auto">
-    <source src="espresso.mp3" type="audio/mp3">
+    <source src="sabawatsandali.mp3" type="audio/mp3">
     Your browser does not support the audio element.
   </audio>
+
+  <div id="floatingMessage"></div>
   
 
 <div class="calendar" id="calendar"></div>
@@ -534,6 +572,15 @@ input:not(:checked) + .slider .sun {
 
 
 <script>
+  
+  function showFloatingMessage(text) {
+  const msg = document.getElementById('floatingMessage');
+  msg.textContent = text;
+  msg.style.animation = 'none'; // Reset animation
+  msg.offsetHeight; // Force reflow
+  msg.style.animation = 'floatUp 2s ease forwards';
+}
+
   // Wait until the page has fully loaded before executing the code
   window.addEventListener('DOMContentLoaded', function () {
     const themeSwitch = document.getElementById('themeSwitch');
@@ -566,8 +613,10 @@ input:not(:checked) + .slider .sun {
          // Play the respective song when theme is toggled
         if (document.body.classList.contains('dark-mode')) {
           playMoonSong(); // Play the moon song for dark mode
+          showFloatingMessage("I miss you...");
         } else {
           playSunSong(); // Play the sun song for light mode
+          showFloatingMessage("I love you...");
         }
         
       });
@@ -598,6 +647,7 @@ input:not(:checked) + .slider .sun {
   }
 
   });
+
 </script>
 
 
