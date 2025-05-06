@@ -318,6 +318,7 @@ export default async function handler(req, res) {
             margin-bottom: 30px;
             position: relative;
             text-align: justify;
+            
           }
 
           .note::before {
@@ -338,6 +339,7 @@ export default async function handler(req, res) {
             margin: 30px 0;
             position: relative;
             box-shadow: 0 0 10px rgba(244, 213, 184, 0.2);
+            text-align: justify;
           }
 
           .highlight-note::before {
