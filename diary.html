@@ -524,25 +524,33 @@ input:not(:checked) + .slider .sun {
 
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  // Wait until the page has fully loaded before executing the code
+  window.addEventListener('DOMContentLoaded', function () {
     const themeSwitch = document.getElementById('themeSwitch');
     const sunIcon = document.querySelector('.slider .sun');
     const moonIcon = document.querySelector('.slider .moon');
 
-    // Load and apply theme preference from localStorage
+    // Retrieve the saved theme from localStorage
     const savedTheme = localStorage.getItem('theme');
+    console.log('Saved theme from localStorage:', savedTheme); // Debug log to check what's in localStorage
+
+    // If a theme is saved, apply it
     if (savedTheme === 'dark') {
       document.body.classList.add('dark-mode');
-      if (themeSwitch) themeSwitch.checked = true;
+      if (themeSwitch) themeSwitch.checked = true; // Check the switch if the theme is dark
     }
 
-    // Update icons on initial load
+    // Update the icons when the page loads
     updateIcons();
 
+    // Add event listener to the theme switch to toggle dark mode
     if (themeSwitch) {
       themeSwitch.addEventListener('change', () => {
         document.body.classList.toggle('dark-mode');
-        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        // Save the current theme to localStorage
+        const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+        localStorage.setItem('theme', currentTheme);
+        console.log('Theme saved to localStorage:', currentTheme); // Debug log to confirm saving
         updateIcons();
       });
     }
@@ -560,6 +568,7 @@ input:not(:checked) + .slider .sun {
     }
   });
 </script>
+
 
 
 
