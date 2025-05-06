@@ -508,6 +508,9 @@ body:not(.dark-mode) #floatingMessage {
   <label for="remarks" style="display:block; margin-top:10px;">Remarks:</label>
   <input type="text" id="remarks" placeholder="..." style="width:95%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
 
+  <label for="from" style="display:block; margin-top:10px;">From:</label>
+  <input type="text" id="from" placeholder="..." style="width:95%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
+
   <label for="emailRecipient" style="display:block; margin-top:10px;">Recipient Email: (optional)</label>
   <input type="email" id="emailRecipient" placeholder="..." style="width:95%; margin: 10px 0; font-family: inherit; font-size: 16px; padding: 10px; border: 1px solid #d2b48c; background: transparent;">
 
@@ -595,16 +598,13 @@ body:not(.dark-mode) #floatingMessage {
     const savedTheme = localStorage.getItem('theme');
     console.log('Saved theme from localStorage:', savedTheme); // Debug log to check what's in localStorage
 
-    // If a theme is saved, apply it
     if (savedTheme === 'dark') {
       document.body.classList.add('dark-mode');
       if (themeSwitch) themeSwitch.checked = true; // Check the switch if the theme is dark
     }
 
-    // Update the icons when the page loads
     updateIcons();
 
-    // Add event listener to the theme switch to toggle dark mode
     if (themeSwitch) {
       themeSwitch.addEventListener('change', () => {
         document.body.classList.toggle('dark-mode');
@@ -638,18 +638,15 @@ body:not(.dark-mode) #floatingMessage {
       }
     }
 
-     // Function to play the sun song and pause the moon song
   function playSunSong() {
-    moonAudio.pause(); // Pause the moon song if playing
-    sunAudio.play();   // Play the sun song
+    moonAudio.pause(); 
+    sunAudio.play();  
   }
 
-  // Function to play the moon song and pause the sun song
   function playMoonSong() {
-    sunAudio.pause();  // Pause the sun song if playing
-    moonAudio.play();  // Play the moon song
+    sunAudio.pause();  
+    moonAudio.play();  
   }
-
   });
 
 </script>
@@ -701,6 +698,7 @@ body:not(.dark-mode) #floatingMessage {
   document.getElementById('subject').value = '';
   document.getElementById('title').value = '';
   document.getElementById('mood').value = '';
+  document.getElementById('from').value = '';
 
   const preview = document.getElementById('noteImagePreview');
   preview.style.display = 'none';
@@ -855,6 +853,8 @@ async function trackView(ipAddress, noteId) {
 
   document.getElementById('mood').value = noteData?.mood || '';
 
+  document.getElementById('from').value = noteData?.from || '';
+
   if (noteData?.image_url) {
     preview.src = noteData.image_url;
     preview.style.display = 'block';
@@ -911,6 +911,7 @@ async function trackView(ipAddress, noteId) {
   const remarks = document.getElementById('remarks').value.trim();
   const subject = document.getElementById('subject').value.trim();
   const mood = document.getElementById('mood').value;
+  const from = document.getElementById('from').value;
 
    // ✅ Fetch existing note (must come AFTER dateKey is defined)
    let { data: existingNote, error: fetchError } = await supabaseClient
@@ -967,7 +968,8 @@ async function trackView(ipAddress, noteId) {
           title: title,
           remarks: remarks,
           subject: subject,
-          mood: mood
+          mood: mood,
+          from: from
         },
         { onConflict: 'date' }
       );
@@ -983,7 +985,7 @@ async function trackView(ipAddress, noteId) {
         const res = await fetch('/api/send-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail, imageUrl, title, remarks, subject, mood }),
+          body: JSON.stringify({ date: dateKey, text: content, color, recipientEmail, imageUrl, title, remarks, subject, mood, from }),
         });
 
         if (res.ok) {
@@ -1054,10 +1056,6 @@ function showModal(modalId) {
   filterSelect.onchange = renderCalendar;
   searchInput.oninput = renderCalendar;
   renderCalendar();
-
-
-
-
 
 </script>
 </body>
