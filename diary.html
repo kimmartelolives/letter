@@ -502,11 +502,12 @@ body.dark-mode #recordingStatus {
 
 <img id="noteImagePreview" src="" alt="Note Image" style="max-width:100%; height:auto; max-height:200px;  display: block; object-fit:cover; float: right;  display:none; margin-bottom:10px; border: 2px solid #ccc; border-radius: 8px;">
 
+
 <!-- Add this below the image preview section in your note-editor div -->
-<div style="margin: 15px 0; border: 1px solid #d2b48c; padding: 15px; border-radius: 8px;">
-  <div style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">
-    <button id="startRecording" style="background: #ff6b6b;">🎤 New Recording</button>
-    <button id="stopRecording" disabled style="background: #6b6bff;">⏹ Stop</button>
+ <div style="display: flex; justify-content: center;">
+<div style="width: 100%; max-width: 500px; margin: 15px 0; border: 1px solid #d2b48c; padding: 15px; border-radius: 8px;">
+   <div style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; justify-content: center;">
+    <button id="toggleRecording" style="background: #ff6b6b;">🎤 New Recording</button>
     <button id="playRecording" disabled style="background: #6bff6b;">▶ Play</button>
     <button id="deleteRecording" disabled style="background: #ff0000;">🗑 Delete</button>
   </div>
@@ -519,6 +520,7 @@ body.dark-mode #recordingStatus {
   
   <!-- Add this hidden input to track if we're replacing an existing recording -->
   <input type="hidden" id="hasExistingRecording" value="false">
+</div>
 </div>
 
 
@@ -698,56 +700,65 @@ body.dark-mode #recordingStatus {
   }
   });
 
-  // Voice recording functionality
 let mediaRecorder;
 let audioChunks = [];
 let audioBlob;
 let audioUrl;
+let isRecording = false;
 
-document.getElementById('startRecording').addEventListener('click', async () => {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+document.getElementById('toggleRecording').addEventListener('click', async () => {
+  const toggleBtn = document.getElementById('toggleRecording');
+  const status = document.getElementById('recordingStatus');
 
-    const options = MediaRecorder.isTypeSupported('audio/webm')
-      ? { mimeType: 'audio/webm' }
-      : {};
-    mediaRecorder = new MediaRecorder(stream, options);
+  if (!isRecording) {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-    document.getElementById('startRecording').disabled = true;
-    document.getElementById('stopRecording').disabled = false;
-    document.getElementById('recordingStatus').textContent = "Recording...";
+      const options = MediaRecorder.isTypeSupported('audio/webm')
+        ? { mimeType: 'audio/webm' }
+        : {};
+      mediaRecorder = new MediaRecorder(stream, options);
 
-    mediaRecorder.ondataavailable = event => {
-      audioChunks.push(event.data);
-    };
+      toggleBtn.textContent = '⏹ Stop';
+      toggleBtn.style.background = '#6b6bff';
+      status.textContent = 'Recording...';
+      isRecording = true;
+      audioChunks = [];
 
-    mediaRecorder.onstop = () => {
-      audioBlob = new Blob(audioChunks, { type: 'audio/webm' }); // match MIME
-      if (audioUrl) URL.revokeObjectURL(audioUrl); // cleanup
-      audioUrl = URL.createObjectURL(audioBlob);
+      mediaRecorder.ondataavailable = event => {
+        audioChunks.push(event.data);
+      };
 
-      document.getElementById('audioPreview').src = audioUrl;
-      document.getElementById('audioPreview').style.display = 'block';
-      document.getElementById('playRecording').disabled = false;
-      document.getElementById('deleteRecording').disabled = false;
-      document.getElementById('recordingStatus').textContent = "Recording ready!";
-    };
+      mediaRecorder.onstop = () => {
+        audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        if (audioUrl) URL.revokeObjectURL(audioUrl);
+        audioUrl = URL.createObjectURL(audioBlob);
 
-    mediaRecorder.start();
-    audioChunks = [];
+        const preview = document.getElementById('audioPreview');
+        preview.src = audioUrl;
+        preview.style.display = 'block';
 
-  } catch (error) {
-    console.error("Error accessing microphone:", error);
-    alert("Could not access microphone. Please check permissions.");
+        document.getElementById('playRecording').disabled = false;
+        document.getElementById('deleteRecording').disabled = false;
+        status.textContent = 'Recording ready!';
+      };
+
+      mediaRecorder.start();
+
+    } catch (error) {
+      console.error('Error accessing microphone:', error);
+      alert('Could not access microphone. Please check permissions.');
+    }
+
+  } else {
+    // Stop recording
+    mediaRecorder.stop();
+    mediaRecorder.stream.getTracks().forEach(track => track.stop());
+
+    toggleBtn.textContent = '🎤 New Recording';
+    toggleBtn.style.background = '#ff6b6b';
+    isRecording = false;
   }
-});
-
-
-document.getElementById('stopRecording').addEventListener('click', () => {
-  mediaRecorder.stop();
-  document.getElementById('startRecording').disabled = false;
-  document.getElementById('stopRecording').disabled = true;
-  mediaRecorder.stream.getTracks().forEach(track => track.stop());
 });
 
 document.getElementById('playRecording').addEventListener('click', () => {
@@ -757,12 +768,18 @@ document.getElementById('playRecording').addEventListener('click', () => {
 document.getElementById('deleteRecording').addEventListener('click', () => {
   audioChunks = [];
   audioBlob = null;
-  document.getElementById('audioPreview').src = '';
-  document.getElementById('audioPreview').style.display = 'none';
+  if (audioUrl) URL.revokeObjectURL(audioUrl);
+  audioUrl = null;
+
+  const preview = document.getElementById('audioPreview');
+  preview.src = '';
+  preview.style.display = 'none';
+
   document.getElementById('playRecording').disabled = true;
   document.getElementById('deleteRecording').disabled = true;
-  document.getElementById('recordingStatus').textContent = "Recording deleted";
+  document.getElementById('recordingStatus').textContent = 'Recording deleted';
 });
+
 
 </script>
 
