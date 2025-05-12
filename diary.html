@@ -723,9 +723,9 @@ document.getElementById('toggleRecording').addEventListener('click', async () =>
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-      const options = MediaRecorder.isTypeSupported('audio/webm')
-        ? { mimeType: 'audio/webm' }
-        : {};
+      const options = MediaRecorder.isTypeSupported('audio/mp3')
+        ? { mimeType: 'audio/mp3' } 
+        : { mimeType: 'audio/wav' };
       mediaRecorder = new MediaRecorder(stream, options);
 
       toggleBtn.textContent = '⏹ Stop';
@@ -739,7 +739,7 @@ document.getElementById('toggleRecording').addEventListener('click', async () =>
       };
 
       mediaRecorder.onstop = () => {
-        audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
         if (audioUrl) URL.revokeObjectURL(audioUrl);
         audioUrl = URL.createObjectURL(audioBlob);
 
