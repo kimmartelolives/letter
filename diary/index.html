@@ -446,7 +446,14 @@ body.dark-mode #recordingStatus {
   color: #aaa;
 }
 
+.slider .icon {
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
 
+input#muteSwitch:checked + .slider .icon:first-child { opacity: 1; }  /* 🔇 */
+input#muteSwitch:not(:checked) + .slider .icon:last-child { opacity: 1; }  /* 🔊 */
 
   </style>
 </head>
@@ -471,26 +478,39 @@ body.dark-mode #recordingStatus {
     <input type="text" id="searchInput" placeholder="Search notes...">
   </div>
 
-  
-  <div class="theme-toggle">
-    <label class="switch">
-      <input type="checkbox" id="themeSwitch">
-      <span class="slider">
-        <span class="icon sun">☀️</span>
-        <span class="icon moon">🌙</span>
-      </span>
-    </label>
-  </div>
+ <!-- Mute toggle on the left -->
+<div class="mute-toggle" style="position: fixed; left: 20px; z-index: 10000;">
+  <label class="switch">
+    <input type="checkbox" id="muteSwitch">
+    <span class="slider">
+      <span class="icon">🔇</span>
+      <span class="icon">🔊</span>
+    </span>
+  </label>
+</div>
+
+<!-- Theme toggle on the right -->
+<div class="theme-toggle" style="position: fixed; right: 20px; z-index: 10000;">
+  <label class="switch">
+    <input type="checkbox" id="themeSwitch">
+    <span class="slider">
+     
+      <span class="icon moon">🌙</span>
+       <span class="icon sun">☀️</span>
+    </span>
+  </label>
+</div>
+
   
   <!-- Light Mode Song -->
   <audio id="sunAudio" preload="auto" loop>
-    <source src="youllbeinmyheart.mp3" type="audio/mp3">
+    <source src="../youllbeinmyheart.mp3" type="audio/mp3">
     Your browser does not support the audio element.
   </audio>
   
   <!-- Dark Mode Song -->
   <audio id="moonAudio" preload="auto" loop>
-    <source src="sabawatsandali.mp3" type="audio/mp3">
+    <source src="../sabawatsandali.mp3" type="audio/mp3">
     Your browser does not support the audio element.
   </audio>
 
@@ -709,6 +729,24 @@ body.dark-mode #recordingStatus {
     sunAudio.pause();  
     moonAudio.play();  
   }
+  });
+
+  const sunAudio = document.getElementById('sunAudio');
+  const moonAudio = document.getElementById('moonAudio');
+  const muteSwitch = document.getElementById('muteSwitch');
+
+   // Load mute state from localStorage
+  if (localStorage.getItem('isMuted') === 'true') {
+    muteSwitch.checked = true;
+    sunAudio.muted = true;
+    moonAudio.muted = true;
+  }
+
+  muteSwitch.addEventListener('change', () => {
+    const isMuted = muteSwitch.checked;
+    sunAudio.muted = isMuted;
+    moonAudio.muted = isMuted;
+    localStorage.setItem('isMuted', isMuted);
   });
 
 let mediaRecorder;
