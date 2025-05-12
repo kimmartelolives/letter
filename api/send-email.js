@@ -449,7 +449,7 @@ export default async function handler(req, res) {
           </div>
 
           <div class="photo-frame">
-            <a href="https://rosaura-letter.vercel.app/diary.html">🔮 A Glimpse Into His Mind – Saura's Dear Diary Letter Is Here</a>
+            <a href="https://rosaura-letter.vercel.app/diary">🔮 A Glimpse Into His Mind – Saura's Dear Diary Letter Is Here</a>
             <div class="caption">📖 You're Invited – Visit Dear Diary Now</div>
           </div>
 
@@ -464,7 +464,7 @@ export default async function handler(req, res) {
 
           <div class="footer">
             Thanks for pausing with me 🌼<br>
-            From the <strong><a href="https://rosaura-letter.vercel.app/diary.html">Dear Saura</a></strong> ☕<br>
+            From the <strong><a href="https://rosaura-letter.vercel.app/diary">Dear Saura</a></strong> ☕<br>
             Developed & Crafted by: <a href="https://www.facebook.com/oliveskimmartel/">Kim Martel Olives</a>
           </div>
         </div>
@@ -647,7 +647,7 @@ export default async function handler(req, res) {
           </div>
 
           <div class="photo-frame">
-             <a href="https://rosaura-letter.vercel.app/diary.html">🔮 A Glimpse Into His Mind – Saura's Dear Diary Letter Is Here</a>
+             <a href="https://rosaura-letter.vercel.app/diary">🔮 A Glimpse Into His Mind – Saura's Dear Diary Letter Is Here</a>
             <div class="caption">📖 You're Invited – Visit Dear Diary Now</div>
           </div>
 
@@ -662,7 +662,7 @@ export default async function handler(req, res) {
           </div>
 
           <div class="footer">
-            With love from <strong><a href="https://rosaura-letter.vercel.app/diary.html">Dear Saura</a></strong> 🕯️<br>
+            With love from <strong><a href="https://rosaura-letter.vercel.app/diary">Dear Saura</a></strong> 🕯️<br>
             Developed & Crafted by: <a href="https://www.facebook.com/oliveskimmartel/">Kim Martel Olives</a>
           </div>
         </div>
@@ -845,7 +845,7 @@ export default async function handler(req, res) {
           </div>
 
           <div class="photo-frame">
-            <a href="https://rosaura-letter.vercel.app/diary.html">🔮 A Glimpse Into His Mind – Saura's Dear Diary Letter Is Here</a>
+            <a href="https://rosaura-letter.vercel.app/diary">🔮 A Glimpse Into His Mind – Saura's Dear Diary Letter Is Here</a>
             <div class="caption">📖 You're Invited – Visit Dear Diary Now</div>
           </div>
 
@@ -859,7 +859,7 @@ export default async function handler(req, res) {
           </div>
 
           <div class="footer">
-            Cheers, <strong>Your Everyday <a href="https://rosaura-letter.vercel.app/diary.html">Dear Saura</a></strong> 💌<br>
+            Cheers, <strong>Your Everyday <a href="https://rosaura-letter.vercel.app/diary">Dear Saura</a></strong> 💌<br>
              Developed & Crafted by: <a href="https://www.facebook.com/oliveskimmartel/">Kim Martel Olives</a>
           </div>
         </div>
