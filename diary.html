@@ -421,6 +421,31 @@ body:not(.dark-mode) #floatingMessage {
   }
 }
 
+#startRecording, #stopRecording, #playRecording, #deleteRecording {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+#startRecording:hover, #stopRecording:hover, 
+#playRecording:hover, #deleteRecording:hover {
+  opacity: 0.8;
+}
+
+#recordingStatus {
+  color: #666;
+  font-style: italic;
+}
+
+body.dark-mode #recordingStatus {
+  color: #aaa;
+}
+
 
 
   </style>
@@ -476,6 +501,26 @@ body:not(.dark-mode) #floatingMessage {
 <div class="note-editor" id="noteEditor" style="display:none;">
 
 <img id="noteImagePreview" src="" alt="Note Image" style="max-width:100%; height:auto; max-height:200px;  display: block; object-fit:cover; float: right;  display:none; margin-bottom:10px; border: 2px solid #ccc; border-radius: 8px;">
+
+<!-- Add this below the image preview section in your note-editor div -->
+<div style="margin: 15px 0; border: 1px solid #d2b48c; padding: 15px; border-radius: 8px;">
+  <div style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">
+    <button id="startRecording" style="background: #ff6b6b;">🎤 New Recording</button>
+    <button id="stopRecording" disabled style="background: #6b6bff;">⏹ Stop</button>
+    <button id="playRecording" disabled style="background: #6bff6b;">▶ Play</button>
+    <button id="deleteRecording" disabled style="background: #ff0000;">🗑 Delete</button>
+  </div>
+  
+  <audio id="audioPreview" controls style="width: 100%; margin-top: 10px; display: none;"></audio>
+  
+  <div id="recordingStatus" style="margin-top: 5px; font-size: 14px; color: #666;">
+    No recording attached
+  </div>
+  
+  <!-- Add this hidden input to track if we're replacing an existing recording -->
+  <input type="hidden" id="hasExistingRecording" value="false">
+</div>
+
 
   <h2 id="noteTitle">Diary Entry</h2>
 
@@ -653,6 +698,65 @@ body:not(.dark-mode) #floatingMessage {
   }
   });
 
+  // Voice recording functionality
+let mediaRecorder;
+let audioChunks = [];
+let audioBlob;
+let audioUrl;
+
+document.getElementById('startRecording').addEventListener('click', async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    
+    document.getElementById('startRecording').disabled = true;
+    document.getElementById('stopRecording').disabled = false;
+    document.getElementById('recordingStatus').textContent = "Recording...";
+    
+    mediaRecorder.ondataavailable = event => {
+      audioChunks.push(event.data);
+    };
+    
+    mediaRecorder.onstop = () => {
+      audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+      audioUrl = URL.createObjectURL(audioBlob);
+      document.getElementById('audioPreview').src = audioUrl;
+      document.getElementById('audioPreview').style.display = 'block';
+      document.getElementById('playRecording').disabled = false;
+      document.getElementById('deleteRecording').disabled = false;
+      document.getElementById('recordingStatus').textContent = "Recording ready!";
+    };
+    
+    mediaRecorder.start();
+    audioChunks = [];
+    
+  } catch (error) {
+    console.error("Error accessing microphone:", error);
+    alert("Could not access microphone. Please check permissions.");
+  }
+});
+
+document.getElementById('stopRecording').addEventListener('click', () => {
+  mediaRecorder.stop();
+  document.getElementById('startRecording').disabled = false;
+  document.getElementById('stopRecording').disabled = true;
+  mediaRecorder.stream.getTracks().forEach(track => track.stop());
+});
+
+document.getElementById('playRecording').addEventListener('click', () => {
+  document.getElementById('audioPreview').play();
+});
+
+document.getElementById('deleteRecording').addEventListener('click', () => {
+  audioChunks = [];
+  audioBlob = null;
+  document.getElementById('audioPreview').src = '';
+  document.getElementById('audioPreview').style.display = 'none';
+  document.getElementById('playRecording').disabled = true;
+  document.getElementById('deleteRecording').disabled = true;
+  document.getElementById('recordingStatus').textContent = "Recording deleted";
+});
+
 </script>
 
 <!-- Supabase CDN -->
@@ -703,6 +807,14 @@ body:not(.dark-mode) #floatingMessage {
   document.getElementById('title').value = '';
   document.getElementById('mood').value = '';
   document.getElementById('from').value = '';
+
+    document.getElementById('audioPreview').style.display = 'none';
+  document.getElementById('audioPreview').src = '';
+  document.getElementById('playRecording').disabled = true;
+  document.getElementById('deleteRecording').disabled = true;
+  document.getElementById('recordingStatus').textContent = "";
+  audioChunks = [];
+  audioBlob = null;
 
   const preview = document.getElementById('noteImagePreview');
   preview.style.display = 'none';
@@ -761,7 +873,7 @@ async function trackView(ipAddress, noteId) {
   const month = parseInt(monthSelect.value);
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const lastDay = daysInMonth; // ✅ use real last day
+  const lastDay = daysInMonth;
 
   const filter = filterSelect.value;
   const searchTerm = searchInput.value.toLowerCase();
@@ -846,6 +958,8 @@ async function trackView(ipAddress, noteId) {
 
   const ipAddress = await getUserIpAddress();
 
+  
+
   await trackView(ipAddress, noteData?.id); 
 
   const preview = document.getElementById('noteImagePreview');
@@ -858,6 +972,49 @@ async function trackView(ipAddress, noteId) {
   document.getElementById('mood').value = noteData?.mood || '';
 
   document.getElementById('from').value = noteData?.from || '';
+
+   const audioPlayer = document.getElementById('audioPreview');
+  const recordingStatus = document.getElementById('recordingStatus');
+  const hasExistingRecordingInput = document.getElementById('hasExistingRecording');
+
+  if (noteData?.voice_url) {
+    audioPlayer.src = noteData.voice_url;
+    audioPlayer.style.display = 'block';
+    document.getElementById('playRecording').disabled = false;
+    document.getElementById('deleteRecording').disabled = false;
+    recordingStatus.textContent = "Existing recording attached";
+    recordingStatus.style.color = "#4CAF50"; // Green color
+    hasExistingRecordingInput.value = "true";
+    
+    // Store the original voice URL in case we need to delete it
+    audioPlayer.setAttribute('data-original-voice-url', noteData.voice_url);
+  } else {
+    audioPlayer.style.display = 'none';
+    audioPlayer.src = '';
+    document.getElementById('playRecording').disabled = true;
+    document.getElementById('deleteRecording').disabled = true;
+    recordingStatus.textContent = "No recording attached";
+    recordingStatus.style.color = "#666";
+    hasExistingRecordingInput.value = "false";
+    audioPlayer.removeAttribute('data-original-voice-url');
+  }
+
+    audioChunks = [];
+  audioBlob = null;
+
+
+  if (noteData?.voice_url) {
+    audioPlayer.src = noteData.voice_url;
+    audioPlayer.style.display = 'block';
+    document.getElementById('playRecording').disabled = false;
+    document.getElementById('deleteRecording').disabled = false;
+  } else {
+    audioPlayer.style.display = 'none';
+    audioPlayer.src = '';
+    document.getElementById('playRecording').disabled = true;
+    document.getElementById('deleteRecording').disabled = true;
+  }
+
 
   if (noteData?.image_url) {
     preview.src = noteData.image_url;
@@ -875,18 +1032,19 @@ async function trackView(ipAddress, noteId) {
     }
 
        // If on mobile, scroll to the selected day and focus on the note editor
-  if (isMobileView()) {
-    setTimeout(() => {
- 
-      const dayCell = document.querySelector(`.day[data-date="${dateKey}"]`);
-      if (dayCell) {
+    if (isMobileView()) {
+      setTimeout(() => {
+  
+        const dayCell = document.querySelector(`.day[data-date="${dateKey}"]`);
+        if (dayCell) {
 
-        dayCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      noteEditor.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      noteEditor.focus();
-    }, 300); 
-  }
+          dayCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        noteEditor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        noteEditor.focus();
+      }, 300); 
+    }
+
   }
 
   async function getNoteViews(noteId) {
@@ -934,6 +1092,9 @@ async function trackView(ipAddress, noteId) {
 
   let imageUrl = existingNote?.image_url || '';
 
+    const voiceRecording = audioBlob;
+  let voiceUrl = '';
+
   // ✅ Upload image if file selected
   if (imageFile) {
     const fileExt = imageFile.name.split('.').pop();
@@ -962,6 +1123,26 @@ async function trackView(ipAddress, noteId) {
     imageUrl = publicUrlData.publicUrl;
   }
 
+
+   if (voiceRecording) {
+    const voiceFileName = `voice-${dateKey}-${Date.now()}.wav`;
+    const { error: voiceUploadError } = await supabaseClient.storage
+      .from('voice-recordings')
+      .upload(voiceFileName, voiceRecording);
+      
+    if (voiceUploadError) {
+      console.error("Voice upload failed:", voiceUploadError);
+      return alert("Voice upload failed: " + voiceUploadError.message);
+    }
+    
+    const { data: voiceUrlData } = supabaseClient.storage
+      .from('voice-recordings')
+      .getPublicUrl(voiceFileName);
+      
+    voiceUrl = voiceUrlData.publicUrl;
+  }
+
+
   if (content) {
     const { error: upsertError } = await supabaseClient
       .from('diary_entries')
@@ -978,9 +1159,12 @@ async function trackView(ipAddress, noteId) {
           subject: subject,
           mood: mood,
           from: from,
-          date_created: dateCreatedPHT 
+          date_created: dateCreatedPHT,
+          voice_url: voiceUrl
         },
+
         { onConflict: 'date' }
+
       );
 
     if (upsertError) {
