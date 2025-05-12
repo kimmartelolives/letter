@@ -500,29 +500,31 @@ body.dark-mode #recordingStatus {
 <div class="calendar" id="calendar"></div>
 <div class="note-editor" id="noteEditor" style="display:none;">
 
-<img id="noteImagePreview" src="" alt="Note Image" style="max-width:100%; height:auto; max-height:200px;  display: block; object-fit:cover; float: right;  display:none; margin-bottom:10px; border: 2px solid #d2b48c; border-radius: 8px;">
+
 
 
   <h2 id="noteTitle">Diary Entry</h2>
 
-   <div style="display: flex; justify-content: center;">
-<div style="width: 100%; max-width: 500px; margin: 15px 0; border: 1px solid #d2b48c; padding: 15px; border-radius: 8px;">
-   <div style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; justify-content: center;">
-    <button id="toggleRecording" style="background: #ff6b6b;">🎤 New Recording</button>
-    <button id="playRecording" disabled style="background: #6bff6b;">▶ Play</button>
-    <button id="deleteRecording" disabled style="background: #ff0000;">🗑 Delete</button>
+
+   <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 15px; margin-top: 15px;">
+  
+  <!-- Preview Image -->
+  <img id="noteImagePreview" src="" alt="Note Image"
+       style="max-width: 300px; width: 100%; height: auto; max-height: 100%; display: none; object-fit: cover; border: 2px solid #d2b48c; border-radius: 8px;">
+
+  <!-- Recording UI -->
+  <div style="flex: 1; min-width: 250px; max-width: 500px; border: 1px solid #d2b48c; padding: 15px; border-radius: 8px; box-sizing: border-box;">
+    <div style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; justify-content: center;">
+      <button id="toggleRecording" style="background: #ff6b6b;">🎤 New Recording</button>
+      <button id="playRecording" disabled style="background: #6bff6b;">▶ Play</button>
+      <button id="deleteRecording" disabled style="background: #ff0000;">🗑 Delete</button>
+    </div>
+    <audio id="audioPreview" controls style="width: 100%; margin-top: 10px; display: none;"></audio>
+    <div id="recordingStatus" style="margin-top: 5px; font-size: 14px; color: #666;">No recording attached</div>
+    <input type="hidden" id="hasExistingRecording" value="false">
   </div>
-  
-  <audio id="audioPreview" controls style="width: 100%; margin-top: 10px; display: none;"></audio>
-  
-  <div id="recordingStatus" style="margin-top: 5px; font-size: 14px; color: #666;">
-    No recording attached
-  </div>
-  
-  <!-- Add this hidden input to track if we're replacing an existing recording -->
-  <input type="hidden" id="hasExistingRecording" value="false">
 </div>
-</div>
+
 
   <label for="noteType" style="display:block; margin-top:10px;">Theme:</label>
   <select id="noteType" style="font-family: inherit; font-size: 16px; padding: 5px; border: 1px solid #d2b48c;">
