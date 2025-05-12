@@ -715,6 +715,8 @@ let audioBlob;
 let audioUrl;
 let isRecording = false;
 
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
 document.getElementById('toggleRecording').addEventListener('click', async () => {
   const toggleBtn = document.getElementById('toggleRecording');
   const status = document.getElementById('recordingStatus');
@@ -723,9 +725,16 @@ document.getElementById('toggleRecording').addEventListener('click', async () =>
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-      const options = MediaRecorder.isTypeSupported('audio/mp3')
-        ? { mimeType: 'audio/mp3' } 
-        : { mimeType: 'audio/wav' };
+      // const options = MediaRecorder.isTypeSupported('audio/mp3')
+      //   ? { mimeType: 'audio/mp3' } 
+      //   : { mimeType: 'audio/wav' };
+
+       const options = isSafari
+        ? {} // Safari picks default (likely 'audio/wav')
+        : MediaRecorder.isTypeSupported('audio/webm')
+          ? { mimeType: 'audio/webm' }
+          : {};
+
       mediaRecorder = new MediaRecorder(stream, options);
 
       toggleBtn.textContent = '⏹ Stop';
@@ -739,7 +748,8 @@ document.getElementById('toggleRecording').addEventListener('click', async () =>
       };
 
       mediaRecorder.onstop = () => {
-        audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+        const finalMimeType = mediaRecorder.mimeType || 'audio/webm';
+        audioBlob = new Blob(audioChunks, { type: finalMimeType });
         if (audioUrl) URL.revokeObjectURL(audioUrl);
         audioUrl = URL.createObjectURL(audioBlob);
 
@@ -751,6 +761,7 @@ document.getElementById('toggleRecording').addEventListener('click', async () =>
         document.getElementById('deleteRecording').disabled = false;
         status.textContent = 'Recording ready!';
       };
+
 
       mediaRecorder.start();
 
@@ -777,15 +788,21 @@ document.getElementById('toggleRecording').addEventListener('click', async () =>
 });
 
 document.getElementById('playRecording').addEventListener('click', () => {
-  sunAudio.volume = 0.2;
-  moonAudio.volume = 0.2;
-  document.getElementById('audioPreview').play();
+   const audio = document.getElementById('audioPreview');
+   audio.muted = false;
 
-  document.getElementById('audioPreview').onended = () => {
+    sunAudio.volume = 0.1;
+    moonAudio.volume = 0.1;
+
+     audio.play().catch(err => {
+    console.error("Playback failed:", err);
+    alert("Playback failed. Try tapping again or use a different browser.");
+  });
+
+  audio.onended = () => {
     sunAudio.volume = 1;
     moonAudio.volume = 1;
   };
-
 });
 
 document.getElementById('deleteRecording').addEventListener('click', () => {
@@ -801,6 +818,9 @@ document.getElementById('deleteRecording').addEventListener('click', () => {
   document.getElementById('playRecording').disabled = true;
   document.getElementById('deleteRecording').disabled = true;
   document.getElementById('recordingStatus').textContent = 'Recording deleted';
+
+  sunAudio.volume = 1;
+  moonAudio.volume = 1;
 });
 
 
