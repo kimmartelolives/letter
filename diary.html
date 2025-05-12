@@ -707,34 +707,41 @@ let audioUrl;
 document.getElementById('startRecording').addEventListener('click', async () => {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorder = new MediaRecorder(stream);
-    
+
+    const options = MediaRecorder.isTypeSupported('audio/webm')
+      ? { mimeType: 'audio/webm' }
+      : {};
+    mediaRecorder = new MediaRecorder(stream, options);
+
     document.getElementById('startRecording').disabled = true;
     document.getElementById('stopRecording').disabled = false;
     document.getElementById('recordingStatus').textContent = "Recording...";
-    
+
     mediaRecorder.ondataavailable = event => {
       audioChunks.push(event.data);
     };
-    
+
     mediaRecorder.onstop = () => {
-      audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+      audioBlob = new Blob(audioChunks, { type: 'audio/webm' }); // match MIME
+      if (audioUrl) URL.revokeObjectURL(audioUrl); // cleanup
       audioUrl = URL.createObjectURL(audioBlob);
+
       document.getElementById('audioPreview').src = audioUrl;
       document.getElementById('audioPreview').style.display = 'block';
       document.getElementById('playRecording').disabled = false;
       document.getElementById('deleteRecording').disabled = false;
       document.getElementById('recordingStatus').textContent = "Recording ready!";
     };
-    
+
     mediaRecorder.start();
     audioChunks = [];
-    
+
   } catch (error) {
     console.error("Error accessing microphone:", error);
     alert("Could not access microphone. Please check permissions.");
   }
 });
+
 
 document.getElementById('stopRecording').addEventListener('click', () => {
   mediaRecorder.stop();
