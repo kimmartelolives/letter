@@ -500,11 +500,12 @@ body.dark-mode #recordingStatus {
 <div class="calendar" id="calendar"></div>
 <div class="note-editor" id="noteEditor" style="display:none;">
 
-<img id="noteImagePreview" src="" alt="Note Image" style="max-width:100%; height:auto; max-height:200px;  display: block; object-fit:cover; float: right;  display:none; margin-bottom:10px; border: 2px solid #ccc; border-radius: 8px;">
+<img id="noteImagePreview" src="" alt="Note Image" style="max-width:100%; height:auto; max-height:200px;  display: block; object-fit:cover; float: right;  display:none; margin-bottom:10px; border: 2px solid #d2b48c; border-radius: 8px;">
 
 
-<!-- Add this below the image preview section in your note-editor div -->
- <div style="display: flex; justify-content: center;">
+  <h2 id="noteTitle">Diary Entry</h2>
+
+   <div style="display: flex; justify-content: center;">
 <div style="width: 100%; max-width: 500px; margin: 15px 0; border: 1px solid #d2b48c; padding: 15px; border-radius: 8px;">
    <div style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; justify-content: center;">
     <button id="toggleRecording" style="background: #ff6b6b;">🎤 New Recording</button>
@@ -522,9 +523,6 @@ body.dark-mode #recordingStatus {
   <input type="hidden" id="hasExistingRecording" value="false">
 </div>
 </div>
-
-
-  <h2 id="noteTitle">Diary Entry</h2>
 
   <label for="noteType" style="display:block; margin-top:10px;">Theme:</label>
   <select id="noteType" style="font-family: inherit; font-size: 16px; padding: 5px; border: 1px solid #d2b48c;">
@@ -645,6 +643,17 @@ body.dark-mode #recordingStatus {
     const sunIcon = document.querySelector('.slider .sun');
     const moonIcon = document.querySelector('.slider .moon');
 
+      const audioPreview = document.getElementById('audioPreview');
+      audioPreview.addEventListener('play', () => {
+      // Lower background music volume when audio is played
+      sunAudio.volume = 0.1;
+      moonAudio.volume = 0.1;
+    });
+      audioPreview.addEventListener('ended', () => {
+      sunAudio.volume = 1;
+      moonAudio.volume = 1;
+    });
+
     // Retrieve the saved theme from localStorage
     const savedTheme = localStorage.getItem('theme');
     console.log('Saved theme from localStorage:', savedTheme); // Debug log to check what's in localStorage
@@ -745,6 +754,9 @@ document.getElementById('toggleRecording').addEventListener('click', async () =>
 
       mediaRecorder.start();
 
+      sunAudio.volume = 0.1;
+      moonAudio.volume = 0.1;
+
     } catch (error) {
       console.error('Error accessing microphone:', error);
       alert('Could not access microphone. Please check permissions.');
@@ -758,11 +770,22 @@ document.getElementById('toggleRecording').addEventListener('click', async () =>
     toggleBtn.textContent = '🎤 New Recording';
     toggleBtn.style.background = '#ff6b6b';
     isRecording = false;
+
+    sunAudio.volume = 1;
+    moonAudio.volume = 1;
   }
 });
 
 document.getElementById('playRecording').addEventListener('click', () => {
+  sunAudio.volume = 0.2;
+  moonAudio.volume = 0.2;
   document.getElementById('audioPreview').play();
+
+  document.getElementById('audioPreview').onended = () => {
+    sunAudio.volume = 1;
+    moonAudio.volume = 1;
+  };
+
 });
 
 document.getElementById('deleteRecording').addEventListener('click', () => {
@@ -1006,7 +1029,7 @@ async function trackView(ipAddress, noteId) {
     audioPlayer.style.display = 'block';
     document.getElementById('playRecording').disabled = false;
     document.getElementById('deleteRecording').disabled = false;
-    recordingStatus.textContent = "Existing recording attached";
+    recordingStatus.textContent = "Existing recording attached 🫣";
     recordingStatus.style.color = "#4CAF50"; // Green color
     hasExistingRecordingInput.value = "true";
     
